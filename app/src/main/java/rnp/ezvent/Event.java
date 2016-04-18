@@ -181,10 +181,10 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
             @Override
             public void run() {
                 mViewPager.setEnabled(false);
+                finish();
             }
         });
-        Toast.makeText(this, "This Event as been deleted by admin", Toast.LENGTH_LONG).show();
-        finish();
+
     }
 
     /**
