@@ -76,7 +76,10 @@ public final class Constants {
     public final static String Delete_Event = "D";
     public final static String Chat_Message = "M";
     public final static String Request_New_Event = "R";
-
+    public final static int update_event_not_change = 0;
+    public final static int update_event_new = 1;
+    public final static int update_event_delete = 2;
+    public final static int update_event_update = 3;
 
     public final static int index_object_sql_diff = 1;
     private Constants() { }

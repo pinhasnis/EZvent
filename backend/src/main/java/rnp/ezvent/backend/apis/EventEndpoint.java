@@ -2,6 +2,7 @@ package rnp.ezvent.backend.apis;
 
 import rnp.ezvent.backend.models.Event;
 import rnp.ezvent.backend.utils.Constans.Constants;
+import rnp.ezvent.backend.utils.Constans.Table_Chat;
 import rnp.ezvent.backend.utils.Constans.Table_Details;
 import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
 import rnp.ezvent.backend.utils.Constans.Table_Tasks;
@@ -70,7 +71,7 @@ public class EventEndpoint {
                 MySQL_Util.insertAll(Table_Vote_Date.Table_Name, event.getId(), event.getVote_dates());
 
             ChatEndpoint chat = new ChatEndpoint();
-            chat.CreateByEvent("Chat_" + event.getId());
+            chat.CreateByEvent(Table_Chat.Table_Name + event.getId());
 
             // if the data is less then 4kb send all data now else send a notification to request a new event
             String data = Constants.New_Event + event.toString();
@@ -81,7 +82,7 @@ public class EventEndpoint {
                 message = data;
             }
 
-            for (int i = 0; i < event.getEvent_users().size() - 1; i++) {
+            for (int i = 0; i < event.getEvent_users().size(); i++) {
                 if (!userId.equals(event.getEvent_users().get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]))
                     msg.sendMessage(message, event.getEvent_users().get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]);
             }
@@ -139,6 +140,8 @@ public class EventEndpoint {
             MySQL_Util.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID}, new String[]{event_id}, null);
             // get vote location from sql
             MySQL_Util.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID}, new String[]{event_id}, null);
+            //delete chat
+            MySQL_Util.deleteTable(Table_Chat.Table_Name + event_id);
         } catch (Exception e) {
             addToLog(e);
         }

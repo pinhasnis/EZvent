@@ -1,7 +1,13 @@
 package rnp.ezvent.backend.utils;
 
 import rnp.ezvent.backend.utils.Constans.Constants;
+import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
+import rnp.ezvent.backend.utils.Constans.Table_Tasks;
+import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
+import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
+
 import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
+import com.google.common.collect.Table;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -23,6 +29,23 @@ public class MySQL_Util {
         }
         return conn;
     }
+
+    public static String[] getCulmnsName(String table){
+        switch(table){
+
+            case Table_Events_Users.Table_Name:
+                return Table_Events_Users.getAllFields();
+            case Table_Tasks.Table_Name:
+                return Table_Tasks.getAllFields();
+            case Table_Vote_Location.Table_Name:
+                return Table_Vote_Location.getAllFields();
+            case Table_Vote_Date.Table_Name:
+                return Table_Vote_Date.getAllFields();
+        }
+
+        return null;
+    }
+
 
     public static void update(String table_name, String[] set_columns, String[] set_values, String[] where_columns, String[] where_values) throws Exception {
         clean(set_values);
@@ -109,44 +132,7 @@ public class MySQL_Util {
             e1.printStackTrace();
         }
     }
-/*
-    public static void insertAll(String table_name, ArrayList<String[]> values ) throws Exception {
-        String query = "insert into `" + table_name + "` values('";
-        for (int j = 0; j < values.size(); j++) {
-            clean(values.get(j));
-            int end = values.get(0).length - 2;
-            for (int i = 0; i < end; i++) {
-                query += values.get(j)[i] + "','";
-            }
-            query += values.get(j)[end];
-            query += "'),";
-        }
-        query = query.substring(0, query.length() - 1);
-        query += ";";
 
-
-        LocalDateTime now = LocalDateTime.now();
-        try {
-            int year = now.getYear();
-            int month = now.getMonthOfYear();
-            int day = now.getDayOfMonth();
-            int hour = now.getHourOfDay();
-            int minute = now.getMinuteOfHour();
-            int second = now.getSecondOfMinute();
-            int millis = now.getMillisOfSecond();
-            String date = day + "/" + month + "/" + year;
-            String time = hour + ":" + minute + ":" + second + ":" + millis;
-            MySQL_Util.insert("Logs", new String[]{query, date, time});
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-
-
-
-        Connection conn = getConnection();
-        conn.createStatement().execute(query);
-    }
-*/
     public static void insertAll(String table_name,String value,ArrayList<String[]> values) throws Exception {
         value = value.replaceAll("\'", "\'\'");
         String query = "insert into `" + table_name + "` values";
@@ -166,6 +152,27 @@ public class MySQL_Util {
         Connection conn = getConnection();
         conn.createStatement().execute(query);
     }
+
+    public static void deleteAll(String table,String value,ArrayList<String[]> values) throws Exception {
+        value = value.replaceAll("\'", "\'\'");
+        String query = "delete from `" + table + "` in ";
+        for (int j = 0; j < values.size(); j++) {
+            query += "('"+value + "','";
+            clean(values.get(j));
+            int end = values.get(0).length - 1;
+            for (int i = 0; i < end; i++) {
+                query += values.get(j)[i] + "','";
+            }
+            query += values.get(j)[end];
+            query += "'),";
+        }
+        query = query.substring(0, query.length() - 1);
+        query += ";";
+
+        Connection conn = getConnection();
+        conn.createStatement().execute(query);
+    }
+
 
     public static void delete(String table, String[] where_columns, String[] where_values, int[] limit) throws Exception {
         clean(where_values);

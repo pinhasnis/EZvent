@@ -56,6 +56,11 @@ public final class Constants {
     public static final String cloudPassword = "notasecret";
     public static final String imageSaveLocation = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Brings/images";
 
+    public final static int update_event_not_change = 0;
+    public final static int update_event_new = 1;
+    public final static int update_event_delete = 2;
+    public final static int update_event_update = 3;
+
     /**
      * Default constructor, never called.
      */
