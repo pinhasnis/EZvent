@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_login_name"
+        android:id="@+id/tv_login_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="72dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_login_password"
+        android:id="@+id/tv_login_password"
+        android:layout_marginTop="81dp"
+        android:layout_below="@+id/tv_login_name"
+        android:layout_alignLeft="@+id/tv_login_name"
+        android:layout_alignStart="@+id/tv_login_name" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_login_name"
+        android:layout_alignBottom="@+id/tv_login_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/et_login_password"
+        android:layout_alignStart="@+id/et_login_password"
+        android:inputType="phone" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/et_login_password"
+        android:layout_alignBottom="@+id/tv_login_password"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <FrameLayout
+        android:id="@+id/permissionSuccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#139611"
+        android:elevation="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="Permission(s) has been granted!"
+            android:textColor="#ffffff"/>
+
+    </FrameLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/b_login_login"
+        android:id="@+id/b_login_login"
+        android:onClick="signIn"
+        android:layout_above="@+id/b_login_register"
+        android:layout_alignLeft="@+id/b_login_register"
+        android:layout_alignStart="@+id/b_login_register"
+        android:layout_marginBottom="66dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/b_login_register"
+        android:id="@+id/b_login_register"
+        android:onClick="register"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="62dp" />
+
+</RelativeLayout>

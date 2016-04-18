@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_user" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
+            android:layout_toEndOf="@+id/user_image"
+            android:text="Dani Cohen"
+            android:textColor="@color/baseColor" />
+
+        <TextView
+            android:id="@+id/textView_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_below="@+id/textView"
+            android:textSize="12sp"
+            android:text="054-97254684"
+            android:textColor="@color/secondaryText_icons" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/checkBox"
+            android:entries="@array/permission"
+            android:scrollbarSize="30dp"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <include
+        layout="@layout/line"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="50dp" />
+
+</LinearLayout>

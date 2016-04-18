@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">EZvent</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_profile">profile</string>
+    <string name="action_about">about</string>
+    <string name="action_maps">maps</string>
+    <string name="action_add">Add</string>
+
+    <string name="gcmRegistrationError">An error occurred during
+        registration. Trying again later</string>
+    <string name="gcmRegistrationSuccess">Device registered, registrationID= %1s</string>
+
+    <string name="tv_your_name_title">Name</string>
+    <string name="tv_phone_title">Phone</string>
+    <string name="tv_password_title">Password</string>
+    <string name="tv_confirm_password_title">Confirm \nPassword</string>
+    <string name="bt_register_title">Register</string>
+
+    <string name="b_login_login">Log In</string>
+    <string name="b_login_register">Register</string>
+    <string name="tv_login_password">Password</string>
+    <string name="tv_login_name">Phone</string>
+
+    <string-array name="permission">
+        <item>Participate</item>
+        <item>Owner</item>
+    </string-array>
+
+    <string-array name="main_views">
+        <item>normal</item>
+        <item>list</item>
+    </string-array>
+
+    <string name="press_for_vote">Press for vote</string>
+    <string name="date_not_set">Date not set yet</string>
+    <string name="location_not_set">Location not set yet</string>
+    <string name="event_name">Event Name</string>
+    <string name="title_activity_vote">Vote</string>
+
+</resources>

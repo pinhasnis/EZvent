@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="58dp">
+
+    <TextView
+        android:id="@+id/option"
+        style="@style/event_secondary_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="4dp"
+        android:text="Option 1" />
+
+    <TextView
+        android:id="@+id/date1"
+        style="@style/event_secondary_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/option"
+        android:padding="4dp"
+        android:text="dd/mm/yyyy" />
+
+    <TextView
+        android:id="@+id/time1"
+        style="@style/event_secondary_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/date1"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/date1"
+        android:padding="4dp"
+        android:text="hh:mm" />
+
+    <TextView
+        android:id="@+id/date2"
+        style="@style/event_secondary_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/date1"
+        android:layout_below="@+id/date1"
+        android:padding="4dp"
+        android:text="dd/mm/yyyy" />
+
+    <TextView
+        android:id="@+id/time2"
+        style="@style/event_secondary_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/time1"
+        android:layout_below="@+id/time1"
+        android:padding="4dp"
+        android:text="hh:mm" />
+
+
+    <Switch
+        android:id="@+id/all_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/cancel"
+        android:thumb="@drawable/switch_thumb"
+        android:track="@drawable/switch_bg"
+        android:switchMinWidth="46dp"
+        android:textOn=""
+        android:textOff=""/>
+
+
+    <ImageButton
+        android:id="@+id/cancel"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_cancel_gray" />
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/date2"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="5dp"
+        android:background="@color/divider" />
+
+
+</RelativeLayout>
+

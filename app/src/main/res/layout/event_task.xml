@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <include layout="@layout/line" />
+
+    <RelativeLayout
+        style="@style/padding_event_detail2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_group_gray1" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/imageView"
+            android:text="Shopping"
+            android:textColor="@color/baseColor"
+            android:textSize="18dp" />
+
+
+        <TextView
+            android:id="@+id/user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_toStartOf="@+id/checkBox"
+            android:text=""
+            android:textColor="@color/secondaryText_icons"
+            android:textSize="17dp" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/expand_arrow" />
+
+
+        <TextView
+            android:id="@+id/type"
+            style="@style/event_secondary_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/description"
+            android:layout_below="@id/description"
+            android:layout_marginTop="1dp"
+            android:text="Shared Task"
+            android:textSize="12dp"
+            android:textColor="@color/secondaryText_icons" />
+
+
+
+        <include layout="@layout/arrow_expand" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

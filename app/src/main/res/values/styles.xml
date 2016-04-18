@@ -1,0 +1,65 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="padding_event_detail">
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
+    <style name="padding_event_detail2">
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+    </style>
+
+    <style name="activity_title">
+        <item name="android:textColor">@color/colorTab</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="event_main_text_color">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="event_secondary_text_color">
+        <item name="android:textColor">@color/secondaryText_icons</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+
+    <style name="toolbar_icons">
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="event_main_text_color_2">
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="card_view_Event_details">
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:elevation">10dp</item>
+        <item name="android:gravity">top</item>
+    </style>
+</resources>

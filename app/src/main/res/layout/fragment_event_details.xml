@@ -1,0 +1,556 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_main_background"
+    android:padding="4dp"
+    tools:context="com.example.ravid.myapplication.Event$PlaceholderFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/CardView_description"
+            style="@style/card_view_Event_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="@dimen/card_radius_event_details">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageView_description"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_comments_gray" />
+
+                    <TextView
+                        style="@style/event_main_text_color_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/imageView_description"
+                        android:text="Event details" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line" />
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/description"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            style="@style/card_view_Event_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="@dimen/card_radius_event_details">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageView_date"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_time" />
+
+                    <TextView
+                        style="@style/event_main_text_color_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/imageView_date"
+                        android:layout_toRightOf="@+id/imageView_date"
+                        android:text="Date " />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/line" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout_date"
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+
+                    <TextView
+                        android:id="@+id/date"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="22/05/2016, 19:00-23:00" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout_date_titles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/title_options_date"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"
+                        android:padding="4dp"
+                        android:text="Options" />
+
+                    <TextView
+                        android:id="@+id/title_date"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:layout_toEndOf="@+id/title_options_date"
+                        android:padding="4dp"
+                        android:text="Date" />
+
+                    <TextView
+                        android:id="@+id/title_votes_date"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="53dp"
+                        android:layout_toEndOf="@+id/title_date"
+                        android:padding="4dp"
+                        android:text="Votes" />
+
+                    <TextView
+                        android:id="@+id/title_vote_date"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_toEndOf="@+id/title_votes_date"
+                        android:padding="4dp"
+                        android:text="Vote" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView_date"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <!--include layout="@layout/line" /-->
+
+                <!--RelativeLayout
+                    android:id="@+id/relativeLayout_date_vote"
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/date_vote"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Open for Voting" />
+
+                    <Switch
+                        android:id="@+id/switcher_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:thumb="@drawable/switch_thumb"
+                        android:track="@drawable/switch_bg"
+                        android:switchMinWidth="46dp"
+                        android:textOn=""
+                        android:textOff=""/>
+
+                </RelativeLayout-->
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            style="@style/card_view_Event_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="@dimen/card_radius_event_details">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageView_location"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_location" />
+
+                    <TextView
+                        style="@style/event_main_text_color_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/imageView_location"
+                        android:layout_toRightOf="@id/imageView_location"
+                        android:text="Location" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/line" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout_location"
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/location"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Tel Aviv, Ben Yehuda 150" />
+
+                    <ImageView
+                        android:id="@+id/imageView_nevigate"
+                        android:layout_width="25dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_navigate_gray"
+                        android:visibility="gone" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout_location_titles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/title_options_location"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"
+                        android:padding="4dp"
+                        android:text="Options" />
+
+                    <TextView
+                        android:id="@+id/title_location"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_toEndOf="@+id/title_options_location"
+                        android:padding="4dp"
+                        android:text="Location" />
+
+                    <TextView
+                        android:id="@+id/title_votes_location"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="53dp"
+                        android:layout_toEndOf="@+id/title_location"
+                        android:padding="4dp"
+                        android:text="Votes" />
+
+                    <TextView
+                        android:id="@+id/title_vote_location"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/title_votes_location"
+                        android:padding="4dp"
+                        android:text="Vote" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView_location"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <!--include layout="@layout/line" /-->
+
+                <!--RelativeLayout
+                    android:id="@+id/relativeLayout_location_vote"
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/location_vote"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Open for Voting" />
+
+                    <Switch
+                        android:id="@+id/switcher_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:thumb="@drawable/switch_thumb"
+                        android:track="@drawable/switch_bg"
+                        android:switchMinWidth="46dp"
+                        android:textOn=""
+                        android:textOff=""
+                        />
+
+                </RelativeLayout-->
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            style="@style/card_view_Event_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            card_view:cardCornerRadius="@dimen/card_radius_event_details">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageView_attending"
+                        android:layout_width="35dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_group_gray1" />
+
+                    <TextView
+                        style="@style/event_main_text_color_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/imageView_attending"
+                        android:layout_toRightOf="@id/imageView_attending"
+                        android:text="Attending" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/going"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="2 Going" />
+
+                    <include layout="@layout/arrow_expand" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/user_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="2dp"
+                        android:src="@mipmap/ic_user" />
+
+                    <TextView
+                        android:id="@+id/attending_details"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/user_image"
+                        android:layout_toRightOf="@id/user_image"
+                        android:text="Veronique" />
+
+
+                    <TextView
+                        android:id="@+id/attending_permission"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:text="owner" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    style="@style/padding_event_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/maybe"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="2 maybe" />
+
+                    <include layout="@layout/arrow_expand" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="134dp" />
+                <!--134 = 23+8.5*4 - parent height in dp-->
+
+                <include layout="@layout/line" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Arrival approval " />
+
+                    <RadioButton
+                        android:id="@+id/radioGroup_yes"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes" />
+
+                    <RadioButton
+                        android:id="@+id/radioGroup_maybe"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Maybe" />
+
+                    <RadioButton
+                        android:id="@+id/radioGroup_no"
+                        style="@style/event_secondary_text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

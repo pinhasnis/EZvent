@@ -1,0 +1,468 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ravid.myapplication.New_Event$PlaceholderFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image_event"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/view1" />
+
+            <EditText
+                android:id="@+id/editText_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/transparent"
+                android:hint="Please enter a name for the event"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_comments_gray"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/line" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView_description"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_comments_gray" />
+
+            <TextView
+                style="@style/event_main_text_color_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imageView_description"
+                android:background="@android:color/transparent"
+                android:maxLines="10"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:text="Description"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+                android:id="@+id/editText_description"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:hint="Click to add description"
+                android:maxLines="10"
+                android:padding="4dp"
+                android:paddingBottom="4dp"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/line" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView_date"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_time" />
+
+            <TextView
+                style="@style/event_main_text_color_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imageView_date"
+                android:background="@android:color/transparent"
+                android:maxLines="10"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:text="Date"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_all_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="4dp"
+                android:text="All day" />
+
+            <Switch
+                android:id="@+id/all_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_bg"
+                android:switchMinWidth="46dp"
+                android:textOn=""
+                android:textOff=""/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/start"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:padding="4dp"
+                android:text="Start" />
+
+            <TextView
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/date1"
+                android:padding="4dp"
+                android:text="End" />
+
+            <TextView
+                android:id="@+id/date1"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/start"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="130dp"
+                android:padding="4dp"
+                android:text="dd/mm/yyyy" />
+
+            <TextView
+                android:id="@+id/time1"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="30dp"
+                android:layout_toEndOf="@+id/date1"
+                android:padding="4dp"
+                android:text="hh:mm" />
+
+            <TextView
+                android:id="@+id/date2"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/date1"
+                android:layout_below="@+id/date1"
+                android:padding="4dp"
+                android:text="dd/mm/yyyy" />
+
+            <TextView
+                android:id="@+id/time2"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/time1"
+                android:layout_alignStart="@+id/time1"
+                android:layout_below="@+id/time1"
+                android:padding="4dp"
+                android:text="hh:mm" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_date_titles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/title_options_date"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:padding="4dp"
+                android:text="Options" />
+
+            <TextView
+                android:id="@+id/title_date"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_toEndOf="@+id/title_options_date"
+                android:padding="4dp"
+                android:text="Date" />
+
+            <TextView
+                android:id="@+id/title_time"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="53dp"
+                android:layout_toEndOf="@+id/title_date"
+                android:padding="4dp"
+                android:text="Time" />
+
+            <TextView
+                android:id="@+id/title_al_day"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/title_time"
+                android:padding="4dp"
+                android:text="All Day" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/vote_date"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imageView_vote_time"
+                android:padding="4dp"
+                android:text="Open for voting " />
+
+            <ImageView
+                android:id="@+id/imageView_vote_time"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_checkbox_gray2"
+                android:visibility="gone" />
+
+            <Switch
+                android:id="@+id/switcher_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_bg"
+                android:switchMinWidth="46dp"
+                android:textOn=""
+                android:textOff=""/>
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/line" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/imageView_location"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_location" />
+
+            <TextView
+                style="@style/event_main_text_color_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imageView_location"
+                android:background="@android:color/transparent"
+                android:maxLines="10"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:text="Location"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText_location"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:hint="Click to add location"
+                android:padding="4dp"
+                android:singleLine="true" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_location_titles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/title_options_location"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:padding="4dp"
+                android:text="Options" />
+
+            <TextView
+                android:id="@+id/title_location"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_toEndOf="@+id/title_options_location"
+                android:padding="4dp"
+                android:text="Location" />
+
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/vote_location"
+                style="@style/event_secondary_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imageView_vote_location"
+                android:padding="4dp"
+                android:text="Open for voting " />
+
+            <ImageView
+                android:id="@+id/imageView_vote_location"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_checkbox_gray2"
+                android:visibility="gone" />
+
+            <Switch
+                android:id="@+id/switcher_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_bg"
+                android:switchMinWidth="46dp"
+                android:textOn=""
+                android:textOff=""/>
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/line" />
+
+
+    </LinearLayout>
+
+</ScrollView>
+
+
+    <!--android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView-->

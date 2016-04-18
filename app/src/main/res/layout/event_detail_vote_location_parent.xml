@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="5dp"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="39.5dp">
+
+        <TextView
+            android:id="@+id/option"
+            style="@style/event_secondary_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingStart="4dp"
+            android:text="Option 1" />
+
+        <TextView
+            android:id="@+id/location"
+            style="@style/event_secondary_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/option"
+            android:text="Tel aviv, Rokah 18"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/count"
+            style="@style/event_secondary_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="35dp"
+            android:layout_toStartOf="@+id/checkBox"
+            android:text="0"
+            android:textSize="15dp" />
+
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="3dp"
+            android:layout_toStartOf="@+id/expand_arrow" />
+
+        <include layout="@layout/arrow_expand" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+
