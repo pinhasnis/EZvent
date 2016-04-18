@@ -82,5 +82,8 @@ public final class Constants {
     public final static int update_event_update = 3;
 
     public final static int index_object_sql_diff = 1;
+    public final static int False = 0;
+    public final static int True = 1;
+
     private Constants() { }
 }

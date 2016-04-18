@@ -8,7 +8,6 @@ import com.google.api.server.spi.config.ApiNamespace;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import rnp.ezvent.backend.models.Event;
 import rnp.ezvent.backend.models.UpdateEvent;
 import rnp.ezvent.backend.utils.Constans.Constants;
 import rnp.ezvent.backend.utils.Constans.Table_Details;
@@ -74,11 +73,11 @@ public class UpdateEventEndpoint {
             }
         }
 
-        private void handleRemovedUsers(UpdateEvent update_event) throws IOException{
+        private void handleRemovedUsers(UpdateEvent update_event) throws IOException {
             if (update_event.getEvent_users()[Constants.update_event_delete] != null) {
                 MessagingEndpoint msg = new MessagingEndpoint();
-                for (String user : update_event.getEvent_users()[Constants.update_event_delete].get(Table_Events_Users.User_ID_num- Constants.index_object_sql_diff)) {
-                    msg.sendMessage(Constants.Delete_Event+update_event.getId(), user);
+                for (String user : update_event.getEvent_users()[Constants.update_event_delete].get(Table_Events_Users.User_ID_num - Constants.index_object_sql_diff)) {
+                    msg.sendMessage(Constants.Delete_Event + update_event.getId(), user);
                 }
             }
         }
@@ -93,7 +92,7 @@ public class UpdateEventEndpoint {
 
         private void handleSQLUpdate(UpdateEvent update_event) throws Exception {
             //update details.
-            if (update_event.isDetails_changed())
+            if (update_event.isDetails_changed() == Constants.True)
                 MySQL_Util.update(Table_Details.Table_Name, Table_Details.getAllFields_Except_Event_ID(), update_event.getDetails(),
                         new String[]{Table_Details.Event_ID}, new String[]{update_event.getId()});
             update_sql_table(update_event.getEvent_users(), Table_Events_Users.Table_Name, update_event.getId());

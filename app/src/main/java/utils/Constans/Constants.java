@@ -127,4 +127,7 @@ public final class Constants {
     public final static String event = "Event";
     public final static String login = "Login";
     public final static String registration = "Registration";
+
+    public final static int False = 0;
+    public final static int True = 1;
 }
