@@ -181,6 +181,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
             @Override
             public void run() {
                 mViewPager.setEnabled(false);
+                mViewPager.setCurrentItem(0);
                 finish();
             }
         });
