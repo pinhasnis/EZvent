@@ -84,6 +84,17 @@ public final class Constants {
     public final static int index_object_sql_diff = 1;
     public final static int False = 0;
     public final static int True = 1;
+    public final static String UnCheck = "0";//"UnCheck";
 
-    private Constants() { }
+
+    public final static int Simple_Update_chat_insert = 0;
+    public final static int Simple_Update_chat_delete = 1;
+    public final static int Simple_Update_take_task = 2;
+    public final static int Simple_Update_vote_for_date = 3;
+    public final static int Simple_Update_vote_for_location = 4;
+    public final static int Simple_Update_attending = 5;
+
+
+    private Constants() {
+    }
 }

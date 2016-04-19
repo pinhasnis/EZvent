@@ -1,13 +1,6 @@
 package rnp.ezvent.backend.utils;
 
-import rnp.ezvent.backend.utils.Constans.Constants;
-import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
-import rnp.ezvent.backend.utils.Constans.Table_Tasks;
-import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
-import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
-
 import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
-import com.google.common.collect.Table;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,6 +8,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import rnp.ezvent.backend.utils.Constans.Constants;
+import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
+import rnp.ezvent.backend.utils.Constans.Table_Tasks;
+import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
+import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
 
 /**
  * Created by pinhas on 11/10/2015.
@@ -45,7 +44,6 @@ public class MySQL_Util {
 
         return null;
     }
-
 
     public static void update(String table_name, String[] set_columns, String[] set_values, String[] where_columns, String[] where_values) throws Exception {
         clean(set_values);
@@ -172,7 +170,6 @@ public class MySQL_Util {
         Connection conn = getConnection();
         conn.createStatement().execute(query);
     }
-
 
     public static void delete(String table, String[] where_columns, String[] where_values, int[] limit) throws Exception {
         clean(where_values);

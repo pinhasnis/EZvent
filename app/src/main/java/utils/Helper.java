@@ -1,12 +1,13 @@
 package utils;
 
 import android.content.Context;
-import rnp.backend.ezvent.model.Event;
+
 import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rnp.backend.ezvent.model.Event;
 import server.Chat.Chat_AsyncTask_delete;
 import server.Chat.Chat_AsyncTask_deleteByEvent;
 import server.Chat.Chat_AsyncTask_insert;
@@ -505,7 +506,6 @@ public class Helper {
                 new String[]{Event_ID, Vote_ID + "", User_ID}, new int[]{1});
     }
 
-
     public static Event Event_From_Helper(){
         Event event = new Event();
         // Set id
@@ -601,7 +601,6 @@ public class Helper {
 
         return event;
     }
-
 
     //----------------------------------------------Server SQL Functions----------------------------------------------
     public static void Create_Event_ServerSQL(Context context) {

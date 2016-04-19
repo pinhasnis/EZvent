@@ -13,14 +13,13 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>
-                rnp.ezvent.backend.apis.RegistrationEndpoint,
+            <param-value>rnp.ezvent.backend.apis.RegistrationEndpoint,
                 rnp.ezvent.backend.apis.MessagingEndpoint,
                 rnp.ezvent.backend.apis.EventEndpoint,
                 rnp.ezvent.backend.apis.UserEndpoint,
                 rnp.ezvent.backend.apis.apps_logs,
-                rnp.ezvent.backend.apis.ChatEndpoint,
-                </param-value>
+                rnp.ezvent.backend.apis.ChatEndpoint,,
+                rnp.ezvent.backend.apis.SimpleUpdateEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
