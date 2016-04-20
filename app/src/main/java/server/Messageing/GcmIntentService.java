@@ -129,11 +129,11 @@ public class GcmIntentService extends GcmListenerService {
                 String Chat_Table_Name = details.split("\\^")[0];
                 String Message = details.split("\\^")[1];
                 String[] Chat = Message.split("\\|");
-                String Event_ID = Chat_Table_Name.substring(Table_Chat.Table_Name.length());
-                ArrayList<String>[] event = sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{Event_ID}, new int[]{1});
                 if (sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
                         new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null)[0].isEmpty()) {
                     sqlHelper.insert(Chat_Table_Name, Chat);
+                    String Event_ID = Chat_Table_Name.substring(Table_Chat.Table_Name.length());
+                    ArrayList<String>[] event = sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{Event_ID}, new int[]{1});
                     String event_name = event[Table_Events.Name_num].get(0);
                     if (event_name.length() == 0) event_name = "Event Name";
                     String sender = Contacts_List.contacts.get(Chat[Table_Chat.User_ID_num]);

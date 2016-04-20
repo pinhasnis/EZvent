@@ -235,7 +235,7 @@ public class Helper {
         //get all user id's of the event.
         ArrayList<String> user_ids = new ArrayList<>();
         for (String user_id : Event_Helper.friends.keySet())
-            if (user_id.equals(Constants.MY_User_ID)) {
+            if (!user_id.equals(Constants.MY_User_ID)) {
                 user_ids.add(user_id);
             }
         SimpleUpdate simpleUpdate =  new SimpleUpdate();

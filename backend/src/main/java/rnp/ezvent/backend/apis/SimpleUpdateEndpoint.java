@@ -109,7 +109,7 @@ public class SimpleUpdateEndpoint {
                 String str_simple_update = simpleUpdate.getAction() + "";
                 //add chat table name if neccery.
                 if (simpleUpdate.getAction().equals(Constants.New_Chat_Message) || simpleUpdate.getAction().equals(Constants.Delete_Chat_Message))
-                    str_simple_update += simpleUpdate + simpleUpdate.getChat_Table_name() + "^";
+                    str_simple_update += simpleUpdate.getChat_Table_name() + "^";
                 //add fileds.
                 for (String str : simpleUpdate.getValues())
                     str_simple_update += str + "|";
