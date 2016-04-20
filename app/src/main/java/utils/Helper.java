@@ -5,9 +5,11 @@ import android.content.Context;
 import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import rnp.backend.ezvent.model.Event;
+import rnp.backend.ezvent.model.SimpleUpdate;
 import server.Chat.Chat_AsyncTask_delete;
 import server.Chat.Chat_AsyncTask_deleteByEvent;
 import server.Chat.Chat_AsyncTask_insert;
@@ -21,6 +23,7 @@ import server.Event_User.EventUser_AsyncTask_delete;
 import server.Event_User.EventUser_AsyncTask_delete_by_event;
 import server.Event_User.EventUser_AsyncTask_insert;
 import server.Messageing.SendMessage_AsyncTask;
+import server.SimpleUpdate.SimpleUpdate_AsyncTask_update;
 import server.Task.Task_AsyncTask_deleteByEvent;
 import server.Task.Task_AsyncTask_delete_Task;
 import server.Task.Task_AsyncTask_delete_subTask;
@@ -68,12 +71,12 @@ public class Helper {
 
     public static String create_event(Context context) {
         //Generate Event_ID.
-        String time = ""+System.currentTimeMillis();
-        String Event_ID = Constants.MY_User_ID +time;
+        String time = "" + System.currentTimeMillis();
+        String Event_ID = Constants.MY_User_ID + time;
 
 
         Event_Helper.details[Table_Events.Event_ID_num] = Event_ID;
-       // Date time = Calendar.getInstance().getTime();
+        // Date time = Calendar.getInstance().getTime();
         Event_Helper.details[Table_Events.Update_Time_num] = time;
         //Create event in app sql + server sql.
         Create_Event_MySQL();
@@ -152,7 +155,7 @@ public class Helper {
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_Helper.details[Table_Events.Event_ID_num], message);
     }
 
-    public static void update_Event_details_field(Context context, String Event_ID, String field_name, String update){
+    public static void update_Event_details_field(Context context, String Event_ID, String field_name, String update) {
         update_Event_details_field_MySQL(Event_ID, field_name, update);
         update_Event_details_field_ServerSQL(context, Event_ID, field_name, update);
         //Send message to all users.
@@ -194,6 +197,55 @@ public class Helper {
         //Send message to all users.
         String message = Constants.Delete_Vote_Location + "|" + Event_ID + "^" + Vote_ID + "^" + User_ID;
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_ID, message);
+    }
+
+    public static void simple_update(Context context, String action, String[] values) {
+        //update my SQL.
+        String Chat_Table_Name = null;
+        switch (action) {
+            case Constants.New_Chat_Message: {
+                Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
+                sqlHelper.insert(Chat_Table_Name, values);
+                break;
+            }
+            case Constants.Delete_Chat_Message: {
+                Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
+                sqlHelper.delete(Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}, new String[]{values[Table_Chat.Message_ID_num],
+                        Constants.MY_User_ID}, new int[]{1});
+                break;
+            }
+            case Constants.Take_Task:
+                sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.MY_User_ID},
+                        new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                        new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
+                break;
+            case Constants.Vote_For_Date:
+                sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.MY_User_ID},
+                        new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                        new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
+                break;
+            case Constants.Vote_For_Location:
+                sqlHelper.insert(Table_Vote_Date.Table_Name, values);
+                break;
+            case Constants.Update_Attending:
+                sqlHelper.insert(Table_Vote_Location.Table_Name, values);
+                break;
+        }
+        //update server and useres
+        //get all user id's of the event.
+        ArrayList<String> user_ids = new ArrayList<>();
+        for (String user_id : Event_Helper.friends.keySet())
+            if (user_id.equals(Constants.MY_User_ID)) {
+                user_ids.add(user_id);
+            }
+        SimpleUpdate simpleUpdate =  new SimpleUpdate();
+        simpleUpdate.setAction(action);
+        simpleUpdate.setChatTableName(Chat_Table_Name);
+        simpleUpdate.setValues( new ArrayList<>(Arrays.asList(values)));
+        simpleUpdate.setUsersID(user_ids);
+        new SimpleUpdate_AsyncTask_update(context).execute(simpleUpdate);
+
+
     }
 
     //----------------------------------------------My SQL Functions------------------------------------------------
@@ -506,7 +558,7 @@ public class Helper {
                 new String[]{Event_ID, Vote_ID + "", User_ID}, new int[]{1});
     }
 
-    public static Event Event_From_Helper(){
+    public static Event Event_From_Helper() {
         Event event = new Event();
         // Set id
         event.setId(Event_Helper.details[Table_Events.Event_ID_num]);
@@ -559,7 +611,7 @@ public class Helper {
             for (int subTask_id : task_helper.getSubTasks().keySet()) {
                 list = new ArrayList<>();
                 list.add(task_id + "");
-                list.add(subTask_id+"");
+                list.add(subTask_id + "");
                 list.add(task_helper.getType());
                 list.add(task_helper.getSubTasks().get(subTask_id)[0]);
                 list.add(task_helper.getUser_ID());
@@ -650,13 +702,13 @@ public class Helper {
 
     private static void addUserIfNotExist(Event event) {
         boolean exist = false;
-        for (int i = 0; i < event.getEventUsers().size()&&!false; i++) {
-            for (int j = 0; j < event.getEventUsers().get(i).size()&&!false; j++) {
-                if(event.getEventUsers().get(i).get(j).equals(Constants.MY_User_ID))
+        for (int i = 0; i < event.getEventUsers().size() && !false; i++) {
+            for (int j = 0; j < event.getEventUsers().get(i).size() && !false; j++) {
+                if (event.getEventUsers().get(i).get(j).equals(Constants.MY_User_ID))
                     exist = true;
             }
         }
-        if(!exist){
+        if (!exist) {
             List<String> list = new ArrayList<>();
             list.add(Constants.MY_User_ID);
             list.add(Constants.Yes);
@@ -887,7 +939,7 @@ public class Helper {
     public static String getMyPermission(String Event_ID) {
         ArrayList<String>[] dbResult = sqlHelper.select(null, Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
                 new String[]{Event_ID, Constants.MY_User_ID}, null);
-        if(dbResult[Table_Events_Users.Permission_num].size() == 0)return Constants.Owner;
+        if (dbResult[Table_Events_Users.Permission_num].size() == 0) return Constants.Owner;
         return dbResult[Table_Events_Users.Permission_num].get(0);
     }
 
@@ -973,7 +1025,7 @@ public class Helper {
 
     public static String format_date(String date) {
         String[] a_date = date.split("\\/");
-        if(a_date.length == 1)return "dd/mm/yyyy";
+        if (a_date.length == 1) return "dd/mm/yyyy";
         String day = a_date[0];
         String month = a_date[1];
         String year = a_date[2];
@@ -998,7 +1050,7 @@ public class Helper {
 
     public static String format_time(String time) {
         String[] a_time = time.split(":");
-        if(a_time.length == 1)return "hh:mm";
+        if (a_time.length == 1) return "hh:mm";
         String hour = a_time[0];
         String minute = a_time[1];
         if (hour.length() == 1)

@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -441,17 +440,17 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     final ArrayList<String>[] dbChat = sqlHelper.select(null, Chat_ID, null, null, null);
 
                     final List<ExpandableListAdapter_Event_Chat.Item> data = new ArrayList<>();
-                    if(dbChat != null && dbChat[0] != null)
-                    for (int i = 0; i < dbChat[0].size(); i++) {
-                        if (dbChat[Table_Chat.User_ID_num].get(i).equals(Constants.MY_User_ID)) {
-                            data.add(new ExpandableListAdapter_Event_Chat.Item(ExpandableListAdapter_Event_Chat.Chat_My, dbChat[Table_Chat.Message_ID_num].get(i),
-                                    dbChat[Table_Chat.User_ID_num].get(i), dbChat[Table_Chat.Message_num].get(i), dbChat[Table_Chat.Date_num].get(i), dbChat[Table_Chat.Time_num].get(i)));
-                        } else {
-                            data.add(new ExpandableListAdapter_Event_Chat.Item(ExpandableListAdapter_Event_Chat.Chat_Friend, dbChat[Table_Chat.Message_ID_num].get(i),
-                                    dbChat[Table_Chat.User_ID_num].get(i), dbChat[Table_Chat.Message_num].get(i), dbChat[Table_Chat.Date_num].get(i), dbChat[Table_Chat.Time_num].get(i)));
-                        }
+                    if (dbChat != null && dbChat[0] != null)
+                        for (int i = 0; i < dbChat[0].size(); i++) {
+                            if (dbChat[Table_Chat.User_ID_num].get(i).equals(Constants.MY_User_ID)) {
+                                data.add(new ExpandableListAdapter_Event_Chat.Item(ExpandableListAdapter_Event_Chat.Chat_My, dbChat[Table_Chat.Message_ID_num].get(i),
+                                        dbChat[Table_Chat.User_ID_num].get(i), dbChat[Table_Chat.Message_num].get(i), dbChat[Table_Chat.Date_num].get(i), dbChat[Table_Chat.Time_num].get(i)));
+                            } else {
+                                data.add(new ExpandableListAdapter_Event_Chat.Item(ExpandableListAdapter_Event_Chat.Chat_Friend, dbChat[Table_Chat.Message_ID_num].get(i),
+                                        dbChat[Table_Chat.User_ID_num].get(i), dbChat[Table_Chat.Message_num].get(i), dbChat[Table_Chat.Date_num].get(i), dbChat[Table_Chat.Time_num].get(i)));
+                            }
 
-                    }
+                        }
                     final ExpandableListAdapter_Event_Chat expandableListAdapter_event_chat = new ExpandableListAdapter_Event_Chat(data, dbChat, Chat_ID);
                     recyclerview.setAdapter(expandableListAdapter_event_chat);
                     recyclerview.scrollToPosition(data.size() - 1);
@@ -478,7 +477,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                                 String chat[] = new String[]{message_id, Constants.MY_User_ID, message, date, time};
-                                sqlHelper.insert(Chat_ID, chat);
+                                //sqlHelper.insert(Chat_ID, chat);
                                 //Update the dcChat and the adapter.
                                 dbChat[Table_Chat.Message_ID_num].add(message_id);
                                 dbChat[Table_Chat.User_ID_num].add(Constants.MY_User_ID);
@@ -488,8 +487,9 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                                 data.add(new ExpandableListAdapter_Event_Chat.Item(ExpandableListAdapter_Event_Chat.Chat_My, message_id, Constants.MY_User_ID, message, date, time));
                                 expandableListAdapter_event_chat.notifyDataSetChanged();
                                 recyclerview.scrollToPosition(data.size() - 1);
-                                //Send to all users.
-                                Helper.Send_Chat_Message_ServerSQL(getContext(), Chat_ID, chat);
+                                //Send to all users and update my sql.
+                                //Helper.Send_Chat_Message_ServerSQL(getContext(), Chat_ID, chat);
+                                Helper.simple_update(getContext(), Constants.New_Chat_Message, chat);
                             }
                         }
                     });

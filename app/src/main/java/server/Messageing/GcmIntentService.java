@@ -10,11 +10,6 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
-import rnp.backend.ezvent.model.Chat;
-import rnp.backend.ezvent.model.ChatCollection;
-import rnp.backend.ezvent.model.Event;
-import rnp.backend.ezvent.Ezvent;
-
 import com.google.android.gms.gcm.GcmListenerService;
 
 import java.io.IOException;
@@ -23,6 +18,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import rnp.backend.ezvent.Ezvent;
+import rnp.backend.ezvent.model.Chat;
+import rnp.backend.ezvent.model.ChatCollection;
+import rnp.backend.ezvent.model.Event;
 import rnp.ezvent.MainActivity;
 import rnp.ezvent.R;
 import server.CloudEndpointBuilderHelper;
@@ -57,7 +56,7 @@ public class GcmIntentService extends GcmListenerService {
         super.onMessageReceived(from, data);
         Logger.getLogger("GCM_RECEIVED").log(Level.INFO, data.toString());
         String details = data.getString(Constants.Message).substring(1);
-        String action = data.getString(Constants.Message).substring(0,1);
+        String action = data.getString(Constants.Message).substring(0, 1);
         switch (action) {
             case Constants.New_Event: {
                 try {
@@ -127,19 +126,18 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
             case Constants.New_Chat_Message: {
-                String Chat_ID = details.split("\\^")[0];
-                String Message_ID = details.split("\\^")[1];
-                String User_ID = details.split("\\^")[2];
-                String[] chat = getChat(Chat_ID, Message_ID, User_ID);
-                String Event_ID = Chat_ID.substring("Chat_".length()).replace("_", " - ");
-                ArrayList<String>[] event = sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID},
-                        new String[]{Event_ID}, new int[]{1});
-                if (sqlHelper.select(null, Chat_ID, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}, new String[]{Message_ID, User_ID}, null)[0].isEmpty()) {
-                    sqlHelper.insert(Chat_ID, chat);
+                String Chat_Table_Name = details.split("\\^")[0];
+                String Message = details.split("\\^")[1];
+                String[] Chat = Message.split("\\|");
+                String Event_ID = Chat_Table_Name.substring(Table_Chat.Table_Name.length());
+                ArrayList<String>[] event = sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{Event_ID}, new int[]{1});
+                if (sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
+                        new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null)[0].isEmpty()) {
+                    sqlHelper.insert(Chat_Table_Name, Chat);
                     String event_name = event[Table_Events.Name_num].get(0);
                     if (event_name.length() == 0) event_name = "Event Name";
-                    String sender = Contacts_List.contacts.get(chat[1]);
-                    addNotification("New Message - " + event_name, sender + ": \n" + chat[2]);
+                    String sender = Contacts_List.contacts.get(Chat[Table_Chat.User_ID_num]);
+                    addNotification("New Message - " + event_name, sender + ": \n" + Chat[Table_Chat.Message_num]);
                 }
                 break;
             }// commit

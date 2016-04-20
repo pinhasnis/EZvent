@@ -1,12 +1,14 @@
 package rnp.ezvent.backend.utils;
 
-import rnp.ezvent.backend.models.Chat;
-import rnp.ezvent.backend.models.Event;
-import rnp.ezvent.backend.models.RegistrationRecord;
-import rnp.ezvent.backend.models.User;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+
+import rnp.ezvent.backend.models.Chat;
+import rnp.ezvent.backend.models.Event;
+import rnp.ezvent.backend.models.RegistrationRecord;
+import rnp.ezvent.backend.models.SimpleUpdate;
+import rnp.ezvent.backend.models.User;
 
 /**
  * Objectify service wrapper so we can statically register our persistence classes
@@ -21,7 +23,8 @@ public class OfyService {
         ObjectifyService.register(User.class);
       //  ObjectifyService.register(Task.class);
         ObjectifyService.register(Chat.class);
-      //  ObjectifyService.register(Vote_Date.class);
+        ObjectifyService.register(SimpleUpdate.class);
+        //  ObjectifyService.register(Vote_Date.class);
       //  ObjectifyService.register(Vote_Location.class);
     }
 

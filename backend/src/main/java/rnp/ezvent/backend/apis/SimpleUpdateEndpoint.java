@@ -39,7 +39,7 @@ import static rnp.ezvent.backend.utils.MySQL_Util.addToLog;
 )
 public class SimpleUpdateEndpoint {
 
-    @ApiMethod(name = "updateEvent", path = "updateEvent")
+    @ApiMethod(name = "simpleUpdate", path = "simpleUpdate")
     public void Update(SimpleUpdate simpleUpdate) {
         try {
             //update sql
@@ -47,14 +47,14 @@ public class SimpleUpdateEndpoint {
             String[] values = simpleUpdate.getValues();
             MessagingEndpoint msg = new MessagingEndpoint();
             switch (simpleUpdate.getAction()) {
-                case Constants.Simple_Update_chat_insert: {
+                case Constants.New_Chat_Message: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}
                             , new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
                     if (resultSet != null)
                         MySQL_Util.insert(simpleUpdate.getChat_Table_name(), simpleUpdate.getValues());
                     break;
                 }
-                case Constants.Simple_Update_chat_delete: {
+                case Constants.Delete_Chat_Message: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}
                             , new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
                     if (resultSet != null)
@@ -62,7 +62,7 @@ public class SimpleUpdateEndpoint {
                                 new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
                     break;
                 }
-                case Constants.Simple_Update_take_task: {
+                case Constants.Take_Task: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number,
                             Table_Tasks.subTask_ID_Number}, new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num],
                             values[Table_Tasks.subTask_ID_Number_num]}, new int[]{1});
@@ -82,14 +82,14 @@ public class SimpleUpdateEndpoint {
                     }
                     break;
                 }
-                case Constants.Simple_Update_vote_for_date: {
+                case Constants.Vote_For_Date: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID}
                             , new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
                     if (resultSet != null)
                         MySQL_Util.insert(Table_Vote_Date.Table_Name, values);
                     break;
                 }
-                case Constants.Simple_Update_vote_for_location: {
+                case Constants.Vote_For_Location: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID,
                             Table_Vote_Location.User_ID}, new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num],
                             values[Table_Vote_Location.User_ID_num]}, new int[]{1});
@@ -97,9 +97,9 @@ public class SimpleUpdateEndpoint {
                         MySQL_Util.insert(Table_Vote_Location.Table_Name, values);
                     break;
                 }
-                case Constants.Simple_Update_attending: {//0 - Event_ID, 1 - User_ID, 2 - Attending.
+                case Constants.Update_Attending: {//0 - Event_ID, 1 - User_ID, 2 - Attending.
                     MySQL_Util.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{values[Table_Events_Users.Attending_num]},
-                            new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, new String[]{values[Table_Events_Users.Event_ID_num],values[Table_Events_Users.User_ID_num]});
+                            new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, new String[]{values[Table_Events_Users.Event_ID_num], values[Table_Events_Users.User_ID_num]});
                     break;
                 }
             }
@@ -107,8 +107,15 @@ public class SimpleUpdateEndpoint {
             //update users
             if (take_task) {
                 String str_simple_update = simpleUpdate.getAction() + "";
+                //add chat table name if neccery.
+                if (simpleUpdate.getAction().equals(Constants.New_Chat_Message) || simpleUpdate.getAction().equals(Constants.Delete_Chat_Message))
+                    str_simple_update += simpleUpdate + simpleUpdate.getChat_Table_name() + "^";
+                //add fileds.
                 for (String str : simpleUpdate.getValues())
-                    str_simple_update += "|" + str;
+                    str_simple_update += str + "|";
+                //delete the last seperator.
+                str_simple_update = str_simple_update.substring(0, str_simple_update.length() - 1);
+                //send the massage.
                 for (int i = 0; i < simpleUpdate.getUsers_ID().size(); i++) {
                     msg.sendMessage(str_simple_update, simpleUpdate.getUsers_ID().get(i));
                 }
@@ -119,4 +126,3 @@ public class SimpleUpdateEndpoint {
     }
 
 }
-

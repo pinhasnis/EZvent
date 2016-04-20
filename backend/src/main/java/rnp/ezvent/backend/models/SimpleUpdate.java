@@ -12,18 +12,19 @@ import java.util.ArrayList;
 public class SimpleUpdate {
 
     @Id
-    private int action;
+    private String action;
     private String Chat_Table_name;
     private String[] values;
     private ArrayList<String> Users_ID;
 
-    public SimpleUpdate() {}
+    public SimpleUpdate() {
+    }
 
-    public int getAction() {
+    public String getAction() {
         return action;
     }
 
-    public void setAction(int action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
