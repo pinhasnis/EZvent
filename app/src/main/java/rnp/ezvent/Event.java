@@ -40,6 +40,10 @@ import server.ServerAsyncResponse;
 import utils.Constans.Constants;
 import utils.Constans.Table_Chat;
 import utils.Constans.Table_Events;
+import utils.Constans.Table_Events_Users;
+import utils.Constans.Table_Tasks;
+import utils.Constans.Table_Vote_Date;
+import utils.Constans.Table_Vote_Location;
 import utils.Event_Helper_Package.Contacts_List;
 import utils.Event_Helper_Package.Event_Helper;
 import utils.Event_Helper_Package.Task_Helper;
@@ -373,26 +377,30 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            String[] Event_User = new String[Table_Events_Users.Size()];
+                            Event_User[Table_Events_Users.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
+                            Event_User[Table_Events_Users.User_ID_num] = Constants.MY_User_ID;
                             switch (checkedId) {
                                 case R.id.radioGroup_yes: {
                                     Event_Helper.friends.get(Constants.MY_User_ID).setAttending(Constants.Yes);
-                                    Helper.update_attending(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Constants.MY_User_ID, Constants.Yes);
+                                    Event_User[Table_Events_Users.Attending_num] = Constants.Yes;
                                     create_attending_list(expandableListAdapter_friends, recyclerview);
                                     break;
                                 }
                                 case R.id.radioGroup_maybe: {
                                     Event_Helper.friends.get(Constants.MY_User_ID).setAttending(Constants.Maybe);
-                                    Helper.update_attending(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Constants.MY_User_ID, Constants.Maybe);
+                                    Event_User[Table_Events_Users.Attending_num] = Constants.Maybe;
                                     create_attending_list(expandableListAdapter_friends, recyclerview);
                                     break;
                                 }
                                 case R.id.radioGroup_no: {
                                     Event_Helper.friends.get(Constants.MY_User_ID).setAttending(Constants.No);
-                                    Helper.update_attending(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Constants.MY_User_ID, Constants.No);
+                                    Event_User[Table_Events_Users.Attending_num] = Constants.No;
                                     create_attending_list(expandableListAdapter_friends, recyclerview);
                                     break;
                                 }
                             }
+                            Helper.simple_update(getContext(), Constants.Update_Attending, Event_User);
                             expandableListAdapter_friends.notifyDataSetChanged();
                             int recyclerView_height_px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, getResources().getDisplayMetrics());
                             recyclerview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, recyclerView_height_px));
@@ -697,10 +705,14 @@ class ExpandableListAdapter_Event_Vote_Date extends RecyclerView.Adapter<Recycle
                     @Override
                     public void onClick(View v) {
                         Vote_ID = itemController.refferalItem.Vote_ID;
+                        String[] vote_date = new String[Table_Vote_Date.Size()];
+                        vote_date[Table_Vote_Date.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
+                        vote_date[Table_Vote_Date.Vote_ID_num] = Vote_ID + "";
+                        vote_date[Table_Vote_Date.User_ID_num] = Constants.MY_User_ID;
                         int pos = data.indexOf(itemController.refferalItem);
                         if (itemController.checkBox.isChecked()) {
                             Event_Helper.vote_date.get(Vote_ID).getVotes().put(Constants.MY_User_ID, Constants.MY_User_ID);
-                            Helper.add_vote_date_User_ID(v.getContext(), Vote_ID, Constants.MY_User_ID);
+                            Helper.simple_update(v.getContext(), Constants.Vote_For_Date, vote_date);
                             if (itemController.refferalItem.invisibleChildren == null) {
                                 itemController.refferalItem.invisibleChildren = new ArrayList<>();
                                 itemController.refferalItem.invisibleChildren.add(new ExpandableListAdapter_Event_Vote_Date.Item(Vote_Date_Child, Vote_ID, Constants.MY_User_ID));
@@ -713,7 +725,7 @@ class ExpandableListAdapter_Event_Vote_Date extends RecyclerView.Adapter<Recycle
                             }
                         } else {
                             Event_Helper.vote_date.get(Vote_ID).getVotes().remove(Constants.MY_User_ID);
-                            Helper.delete_vote_date_User_ID(v.getContext(), Vote_ID, Constants.MY_User_ID);
+                            Helper.simple_update(v.getContext(), Constants.UnVote_For_Date, vote_date);
                             if (itemController.refferalItem.invisibleChildren == null) {
                                 int i = 0;
                                 while (!data.get(pos + i).User_ID.equals(Constants.MY_User_ID))
@@ -929,10 +941,14 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
                     @Override
                     public void onClick(View v) {
                         Vote_ID = itemController.refferalItem.Vote_ID;
+                        String[] vote_location = new String[Table_Vote_Location.Size()];
+                        vote_location[Table_Vote_Location.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
+                        vote_location[Table_Vote_Location.Vote_ID_num] = Vote_ID + "";
+                        vote_location[Table_Vote_Location.User_ID_num] = Constants.MY_User_ID;
                         int pos = data.indexOf(itemController.refferalItem);
                         if (itemController.checkBox.isChecked()) {
                             Event_Helper.vote_location.get(Vote_ID).getVotes().put(Constants.MY_User_ID, Constants.MY_User_ID);
-                            Helper.add_vote_location_User_ID(v.getContext(), Vote_ID, Constants.MY_User_ID);
+                            Helper.simple_update(v.getContext(), Constants.Vote_For_Location, vote_location);
                             if (itemController.refferalItem.invisibleChildren == null) {
                                 itemController.refferalItem.invisibleChildren = new ArrayList<>();
                                 itemController.refferalItem.invisibleChildren.add(new ExpandableListAdapter_Event_Vote_Location.Item(Vote_Location_Child, Vote_ID, Constants.MY_User_ID));
@@ -945,7 +961,7 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
                             }
                         } else {
                             Event_Helper.vote_location.get(Vote_ID).getVotes().remove(Constants.MY_User_ID);
-                            Helper.delete_vote_location_User_ID(v.getContext(), Vote_ID, Constants.MY_User_ID);
+                            Helper.simple_update(v.getContext(), Constants.UnVote_For_Location, vote_location);
                             if (itemController.refferalItem.invisibleChildren == null) {
                                 int i = 0;
                                 while (!data.get(pos + i).User_ID.equals(Constants.MY_User_ID))
@@ -1441,9 +1457,14 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
                             int pos = data.indexOf(itemController.refferalItem);
                             //Sign for the task.
                             task_id = itemController.refferalItem.task_id;
+                            String[] Task = new String[Table_Tasks.Size()];
+                            Task[Table_Tasks.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
+                            Task[Table_Tasks.Task_ID_Number_num] = task_id + "";
+                            Task[Table_Tasks.subTask_ID_Number_num] = 0 + "";
                             if (Event_Helper.task.get(itemController.refferalItem.task_id).getUser_ID().equals(Constants.UnCheck)) {
                                 Event_Helper.task.get(itemController.refferalItem.task_id).setUser_ID(Constants.MY_User_ID);
-                                Helper.set_task_user_ID(v.getContext(), Event_Helper.details[Table_Events.Event_ID_num], task_id, Constants.MY_User_ID);
+                                Task[Table_Tasks.User_ID_num] = Constants.MY_User_ID;
+                                Helper.simple_update(v.getContext(), Constants.Take_Task, Task);
                                 itemController.user_nickname.setText("Me");
                                 itemController.imageView.setImageResource(R.mipmap.ic_group_green);
                                 itemController.checkBox.setVisibility(View.VISIBLE);
@@ -1451,7 +1472,8 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
                             } else {//UnSign for the task (check first that the task was sign by the user).
                                 if (Event_Helper.task.get(itemController.refferalItem.task_id).getUser_ID().equals(Constants.MY_User_ID)) {
                                     Event_Helper.task.get(itemController.refferalItem.task_id).setUser_ID(Constants.UnCheck);
-                                    Helper.set_task_user_ID(v.getContext(), Event_Helper.details[Table_Events.Event_ID_num], task_id, Constants.UnCheck);
+                                    Task[Table_Tasks.User_ID_num] = Constants.UnCheck;
+                                    Helper.simple_update(v.getContext(), Constants.Take_Task, Task);
                                     itemController.user_nickname.setText("");
                                     itemController.imageView.setImageResource(R.mipmap.ic_group_gray1);
                                     itemController.checkBox.setVisibility(View.GONE);
@@ -1663,7 +1685,11 @@ class ExpandableListAdapter_Event_Chat extends RecyclerView.Adapter<RecyclerView
                                         data.remove(itemController.refferalItem);
                                         notifyItemRemoved(pos);
                                         //Remove from MySql + ServerSql;
-                                        Helper.delete_chat_message(v.getContext(), Chat_ID, Message_ID, Constants.MY_User_ID);
+                                        String chat[] = new String[Table_Chat.Size()];
+                                        chat[Table_Chat.Message_ID_num] = Message_ID;
+                                        chat[Table_Chat.User_ID_num] = Constants.MY_User_ID;
+                                        Helper.simple_update(v.getContext(), Constants.Delete_Chat_Message, chat);
+
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

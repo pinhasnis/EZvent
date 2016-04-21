@@ -74,14 +74,15 @@ public final class Constants {
     public final static String New_Event = "A";
     public final static String Update_Event = "B";
     public final static String Delete_Event = "C";
-    public final static String Chat_Message = "D";
-    public final static String Request_New_Event = "E";
-    public final static String New_Chat_Message = "F";
-    public final static String Delete_Chat_Message = "G";
-    public final static String Take_Task = "H";
-    public final static String Vote_For_Date = "I";
+    public final static String Request_New_Event = "D";
+    public final static String New_Chat_Message = "E";
+    public final static String Delete_Chat_Message = "F";
+    public final static String Take_Task = "G";
+    public final static String Vote_For_Date = "H";
+    public final static String UnVote_For_Date = "I";
     public final static String Vote_For_Location = "J";
-    public final static String Update_Attending = "K";
+    public final static String UnVote_For_Location = "K";
+    public final static String Update_Attending = "L";
 
     public final static int update_event_not_change = 0;
     public final static int update_event_new = 1;

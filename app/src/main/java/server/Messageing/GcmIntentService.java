@@ -91,40 +91,7 @@ public class GcmIntentService extends GcmListenerService {
 
                 break;
             }
-            case Constants.Delete_User: {
-                String Event_ID = details.split("\\^")[0];
-                String USer_ID = details.split("\\^")[1];
-                if (USer_ID.equals(Constants.MY_User_ID)) {
-                    Helper.Delete_Event_MySQL(Event_ID);
-                } else {
-                    sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
-                            new String[]{Event_ID, USer_ID}, new int[]{1});
-                }
-                break;
-            }
-            case Constants.Update_User_Attending: {
-                String Event_ID = details.split("\\^")[0];
-                String USer_ID = details.split("\\^")[1];
-                String attend = details.split("\\^")[2];
-                sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{attend},
-                        new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, new String[]{Event_ID, USer_ID});
-                break;
-            }
-            case Constants.Delete_Task: {
-                String Event_ID = details.split("\\^")[0];
-                String Task_ID_Number = details.split("\\^")[1];
-                sqlHelper.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number},
-                        new String[]{Event_ID, Task_ID_Number}, new int[]{1});
-                break;
-            }
-            case Constants.Update_Task_User_ID: {
-                String Event_ID = details.split("\\^")[0];
-                String Task_ID_Number = details.split("\\^")[1];
-                String User_ID = details.split("\\^")[2];
-                sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{User_ID},
-                        new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number}, new String[]{Event_ID, Task_ID_Number, 0 + ""});
-                break;
-            }
+            //simple update.
             case Constants.New_Chat_Message: {
                 String Chat_Table_Name = details.split("\\^")[0];
                 String Message = details.split("\\^")[1];
@@ -140,15 +107,74 @@ public class GcmIntentService extends GcmListenerService {
                     addNotification("New Message - " + event_name, sender + ": \n" + Chat[Table_Chat.Message_num]);
                 }
                 break;
-            }// commit
+            }
             case Constants.Delete_Chat_Message: {
-                String Chat_ID = details.split("\\^")[0];
-                String Message_ID = details.split("\\^")[1];
-                String User_ID = details.split("\\^")[2];
-                sqlHelper.delete(Chat_ID, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
-                        new String[]{Message_ID, User_ID}, new int[]{1});
+                String Chat_Table_Name = details.split("\\^")[0];
+                String Message = details.split("\\^")[1];
+                String[] Chat = Message.split("\\|");
+                if (!sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
+                        new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null)[0].isEmpty())
+                    sqlHelper.delete(Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
+                            new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, new int[]{1});
                 break;
             }
+            case Constants.Take_Task: {
+                String Message = details.split("\\^")[1];
+                String[] Task = Message.split("\\|");
+                if (!sqlHelper.select(null, Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                        new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]}, null)[0].isEmpty())
+                    sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Task[Table_Tasks.User_ID_num]},
+                            new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                            new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]});
+                break;
+            }
+            case Constants.Vote_For_Date: {
+                String Message = details.split("\\^")[1];
+                String[] Vote = Message.split("\\|");
+                if (sqlHelper.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
+                        new String[]{Vote[Table_Vote_Date.Event_ID_num], Vote[Table_Vote_Date.Vote_ID_num], Vote[Table_Vote_Date.User_ID_num]}, null)[0].isEmpty())
+                    sqlHelper.insert(Table_Vote_Date.Table_Name, Vote);
+                break;
+            }
+            case Constants.UnVote_For_Date: {
+                String Message = details.split("\\^")[1];
+                String[] Vote = Message.split("\\|");
+                if (!sqlHelper.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
+                        new String[]{Vote[Table_Vote_Date.Event_ID_num], Vote[Table_Vote_Date.Vote_ID_num], Vote[Table_Vote_Date.User_ID_num]}, null)[0].isEmpty())
+                    sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
+                            new String[]{Vote[Table_Vote_Date.Event_ID_num], Vote[Table_Vote_Date.Vote_ID_num], Vote[Table_Vote_Date.User_ID_num]}, new int[]{1});
+                break;
+            }
+            case Constants.Vote_For_Location: {
+                String Message = details.split("\\^")[1];
+                String[] Vote = Message.split("\\|");
+                if (sqlHelper.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
+                        new String[]{Vote[Table_Vote_Location.Event_ID_num], Vote[Table_Vote_Location.Vote_ID_num], Vote[Table_Vote_Location.User_ID_num]}, null)[0].isEmpty())
+                    sqlHelper.insert(Table_Vote_Location.Table_Name, Vote);
+                break;
+            }
+            case Constants.UnVote_For_Location: {
+                String Message = details.split("\\^")[1];
+                String[] Vote = Message.split("\\|");
+                if (!sqlHelper.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
+                        new String[]{Vote[Table_Vote_Location.Event_ID_num], Vote[Table_Vote_Location.Vote_ID_num], Vote[Table_Vote_Location.User_ID_num]}, null)[0].isEmpty())
+                    sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
+                            new String[]{Vote[Table_Vote_Location.Event_ID_num], Vote[Table_Vote_Location.Vote_ID_num], Vote[Table_Vote_Location.User_ID_num]}, new int[]{1});
+                break;
+            }
+            case Constants.Update_Attending: {
+                String Message = details.split("\\^")[1];
+                String[] Event_User = Message.split("\\|");
+                if (!sqlHelper.select(null, Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
+                        new String[]{Event_User[Table_Events_Users.Event_ID_num], Event_User[Table_Events_Users.User_ID_num]}, null)[0].isEmpty())
+                    sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{Event_User[Table_Events_Users.Attending_num]},
+                            new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
+                            new String[]{Event_User[Table_Events_Users.Event_ID_num], Event_User[Table_Events_Users.User_ID_num]});
+                break;
+            }
+
+
+            //old
             case Constants.Update_Event_Details_Filed: {
                 String EventID = details.split("\\^")[0];
                 String Filed = details.split("\\^")[1];
@@ -156,34 +182,25 @@ public class GcmIntentService extends GcmListenerService {
                 Helper.update_Event_details_field_MySQL(EventID, Filed, Update);
                 break;
             }
-            case Constants.Insert_Vote_Date: {
-                String EventID = details.split("\\^")[0];
-                int Vote_ID = Integer.parseInt(details.split("\\^")[1]);
-                String User_ID = details.split("\\^")[2];
-                Helper.add_vote_date_User_ID_MySQL(EventID, Vote_ID, User_ID);
+            case Constants.Delete_User: {
+                String Event_ID = details.split("\\^")[0];
+                String USer_ID = details.split("\\^")[1];
+                if (USer_ID.equals(Constants.MY_User_ID)) {
+                    Helper.Delete_Event_MySQL(Event_ID);
+                } else {
+                    sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
+                            new String[]{Event_ID, USer_ID}, new int[]{1});
+                }
                 break;
             }
-            case Constants.Delete_Vote_Date: {
-                String EventID = details.split("\\^")[0];
-                int Vote_ID = Integer.parseInt(details.split("\\^")[1]);
-                String User_ID = details.split("\\^")[2];
-                Helper.delete_vote_date_User_ID_MySQL(EventID, Vote_ID, User_ID);
+            case Constants.Delete_Task: {
+                String Event_ID = details.split("\\^")[0];
+                String Task_ID_Number = details.split("\\^")[1];
+                sqlHelper.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number},
+                        new String[]{Event_ID, Task_ID_Number}, new int[]{1});
                 break;
             }
-            case Constants.Insert_Vote_Location: {
-                String EventID = details.split("\\^")[0];
-                int Vote_ID = Integer.parseInt(details.split("\\^")[1]);
-                String User_ID = details.split("\\^")[2];
-                Helper.add_vote_location_User_ID_MySQL(EventID, Vote_ID, User_ID);
-                break;
-            }
-            case Constants.Delete_Vote_Location: {
-                String EventID = details.split("\\^")[0];
-                int Vote_ID = Integer.parseInt(details.split("\\^")[1]);
-                String User_ID = details.split("\\^")[2];
-                Helper.delete_vote_location_User_ID_MySQL(EventID, Vote_ID, User_ID);
-                break;
-            }
+
             default: {
                 showToast(data.getString("message"));
                 break;

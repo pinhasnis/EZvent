@@ -85,16 +85,32 @@ public class SimpleUpdateEndpoint {
                 case Constants.Vote_For_Date: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID}
                             , new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
-                    if (resultSet != null)
+                    if (resultSet == null)
                         MySQL_Util.insert(Table_Vote_Date.Table_Name, values);
+                    break;
+                }
+                case Constants.UnVote_For_Date: {
+                    java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID}
+                            , new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
+                    if (resultSet != null)
+                        MySQL_Util.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
+                                new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
                     break;
                 }
                 case Constants.Vote_For_Location: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID,
                             Table_Vote_Location.User_ID}, new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num],
                             values[Table_Vote_Location.User_ID_num]}, new int[]{1});
-                    if (resultSet != null)
+                    if (resultSet == null)
                         MySQL_Util.insert(Table_Vote_Location.Table_Name, values);
+                    break;
+                }
+                case Constants.UnVote_For_Location: {
+                    java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID}
+                            , new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num], values[Table_Vote_Location.User_ID_num]}, new int[]{1});
+                    if (resultSet != null)
+                        MySQL_Util.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
+                                new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num], values[Table_Vote_Location.User_ID_num]}, new int[]{1});
                     break;
                 }
                 case Constants.Update_Attending: {//0 - Event_ID, 1 - User_ID, 2 - Attending.
