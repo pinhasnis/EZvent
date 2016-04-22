@@ -705,7 +705,7 @@ class ExpandableListAdapter_Event_Vote_Date extends RecyclerView.Adapter<Recycle
                     @Override
                     public void onClick(View v) {
                         Vote_ID = itemController.refferalItem.Vote_ID;
-                        String[] vote_date = new String[Table_Vote_Date.Size()];
+                        String[] vote_date = Table_Vote_Date.getEmptyStringArray();
                         vote_date[Table_Vote_Date.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
                         vote_date[Table_Vote_Date.Vote_ID_num] = Vote_ID + "";
                         vote_date[Table_Vote_Date.User_ID_num] = Constants.MY_User_ID;
@@ -941,7 +941,7 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
                     @Override
                     public void onClick(View v) {
                         Vote_ID = itemController.refferalItem.Vote_ID;
-                        String[] vote_location = new String[Table_Vote_Location.Size()];
+                        String[] vote_location = Table_Vote_Location.getEmptyStringArray();
                         vote_location[Table_Vote_Location.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
                         vote_location[Table_Vote_Location.Vote_ID_num] = Vote_ID + "";
                         vote_location[Table_Vote_Location.User_ID_num] = Constants.MY_User_ID;
@@ -1457,13 +1457,13 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
                             int pos = data.indexOf(itemController.refferalItem);
                             //Sign for the task.
                             task_id = itemController.refferalItem.task_id;
-                            String[] Task = new String[Table_Tasks.Size()];
+                            String[] Task = Table_Tasks.getEmptyStringArray();
                             Task[Table_Tasks.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
                             Task[Table_Tasks.Task_ID_Number_num] = task_id + "";
                             Task[Table_Tasks.subTask_ID_Number_num] = 0 + "";
+                            Task[Table_Tasks.User_ID_num] = Constants.MY_User_ID;
                             if (Event_Helper.task.get(itemController.refferalItem.task_id).getUser_ID().equals(Constants.UnCheck)) {
                                 Event_Helper.task.get(itemController.refferalItem.task_id).setUser_ID(Constants.MY_User_ID);
-                                Task[Table_Tasks.User_ID_num] = Constants.MY_User_ID;
                                 Helper.simple_update(v.getContext(), Constants.Take_Task, Task);
                                 itemController.user_nickname.setText("Me");
                                 itemController.imageView.setImageResource(R.mipmap.ic_group_green);
@@ -1472,8 +1472,7 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
                             } else {//UnSign for the task (check first that the task was sign by the user).
                                 if (Event_Helper.task.get(itemController.refferalItem.task_id).getUser_ID().equals(Constants.MY_User_ID)) {
                                     Event_Helper.task.get(itemController.refferalItem.task_id).setUser_ID(Constants.UnCheck);
-                                    Task[Table_Tasks.User_ID_num] = Constants.UnCheck;
-                                    Helper.simple_update(v.getContext(), Constants.Take_Task, Task);
+                                    Helper.simple_update(v.getContext(), Constants.UnTake_Task, Task);
                                     itemController.user_nickname.setText("");
                                     itemController.imageView.setImageResource(R.mipmap.ic_group_gray1);
                                     itemController.checkBox.setVisibility(View.GONE);
@@ -1685,7 +1684,7 @@ class ExpandableListAdapter_Event_Chat extends RecyclerView.Adapter<RecyclerView
                                         data.remove(itemController.refferalItem);
                                         notifyItemRemoved(pos);
                                         //Remove from MySql + ServerSql;
-                                        String chat[] = new String[Table_Chat.Size()];
+                                        String chat[] = Table_Chat.getEmptyStringArray();
                                         chat[Table_Chat.Message_ID_num] = Message_ID;
                                         chat[Table_Chat.User_ID_num] = Constants.MY_User_ID;
                                         Helper.simple_update(v.getContext(), Constants.Delete_Chat_Message, chat);

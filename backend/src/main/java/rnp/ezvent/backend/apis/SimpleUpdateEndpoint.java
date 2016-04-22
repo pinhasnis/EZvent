@@ -43,23 +43,25 @@ public class SimpleUpdateEndpoint {
     public void Update(SimpleUpdate simpleUpdate) {
         try {
             //update sql
-            boolean take_task = true;
+            boolean pass_msg_to_all_users = true;
             String[] values = simpleUpdate.getValues();
             MessagingEndpoint msg = new MessagingEndpoint();
             switch (simpleUpdate.getAction()) {
                 case Constants.New_Chat_Message: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}
                             , new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
-                    if (resultSet != null)
+                    if (resultSet.next())
                         MySQL_Util.insert(simpleUpdate.getChat_Table_name(), simpleUpdate.getValues());
+                    resultSet.close();
                     break;
                 }
                 case Constants.Delete_Chat_Message: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}
                             , new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
-                    if (resultSet != null)
+                    if (resultSet.next())
                         MySQL_Util.delete(simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
                                 new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
+                    resultSet.close();
                     break;
                 }
                 case Constants.Take_Task: {
@@ -67,50 +69,74 @@ public class SimpleUpdateEndpoint {
                             Table_Tasks.subTask_ID_Number}, new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num],
                             values[Table_Tasks.subTask_ID_Number_num]}, new int[]{1});
                     //Check if the task is not signed.
-                    if (resultSet.getString(Table_Tasks.User_ID_num).equals(Constants.UnCheck))
-                        MySQL_Util.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{values[Table_Tasks.User_ID_num]},
-                                new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
-                                new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
-                    else {
-                        take_task = false;
-                        //update user that other user take the task
-                        if (!resultSet.getString(Table_Tasks.User_ID_num).equals(values[Table_Tasks.User_ID_num])) {
-                            String set_msg = simpleUpdate.getAction() + values[Table_Tasks.Event_ID_num] + "|" + values[Table_Tasks.Task_ID_Number_num] +
-                                    "|" + values[Table_Tasks.subTask_ID_Number_num] + "|" + resultSet.getString(Table_Tasks.User_ID_num);//action|Event_ID|Task_ID|subTask_ID|User_ID.
-                            msg.sendMessage(set_msg, values[Table_Tasks.User_ID_num]);
+                    if (resultSet.next()) {
+                        if (resultSet.getString(Table_Tasks.User_ID).equals(Constants.UnCheck))
+                            MySQL_Util.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{values[Table_Tasks.User_ID_num]},
+                                    new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                                    new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
+                        else {
+                            pass_msg_to_all_users = false;
+                            //update user that other user take the task. check before that the task is not signed by the user.
+                            if (!resultSet.getString(Table_Tasks.User_ID).equals(values[Table_Tasks.User_ID_num])) {
+                                String set_msg = simpleUpdate.getAction() + values[Table_Tasks.Event_ID_num] + "|" + values[Table_Tasks.Task_ID_Number_num] +
+                                        "|" + values[Table_Tasks.subTask_ID_Number_num] + "|" + resultSet.getString(Table_Tasks.User_ID);//action|Event_ID|Task_ID|subTask_ID|User_ID.
+                                msg.sendMessage(set_msg, values[Table_Tasks.User_ID_num]);
+                            }
                         }
                     }
+                    resultSet.close();
+                    break;
+                }
+                case Constants.UnTake_Task: {
+                    java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number,
+                            Table_Tasks.subTask_ID_Number}, new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num],
+                            values[Table_Tasks.subTask_ID_Number_num]}, new int[]{1});
+                    //Check if the task is not signed.
+                    if (resultSet.next()) {
+                        if (resultSet.getString(Table_Tasks.User_ID).equals(values[Table_Tasks.Task_ID_Number_num]))
+                            MySQL_Util.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.UnCheck},
+                                    new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                                    new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
+                        else {
+                            pass_msg_to_all_users = false;
+                        }
+                    }
+                    resultSet.close();
                     break;
                 }
                 case Constants.Vote_For_Date: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID}
                             , new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
-                    if (resultSet == null)
+                    if (resultSet.next())
                         MySQL_Util.insert(Table_Vote_Date.Table_Name, values);
+                    resultSet.close();
                     break;
                 }
                 case Constants.UnVote_For_Date: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID}
                             , new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
-                    if (resultSet != null)
+                    if (resultSet.next())
                         MySQL_Util.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
                                 new String[]{values[Table_Vote_Date.Event_ID_num], values[Table_Vote_Date.Vote_ID_num], values[Table_Vote_Date.User_ID_num]}, new int[]{1});
+                    resultSet.close();
                     break;
                 }
                 case Constants.Vote_For_Location: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID,
                             Table_Vote_Location.User_ID}, new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num],
                             values[Table_Vote_Location.User_ID_num]}, new int[]{1});
-                    if (resultSet == null)
+                    if (resultSet.next())
                         MySQL_Util.insert(Table_Vote_Location.Table_Name, values);
+                    resultSet.close();
                     break;
                 }
                 case Constants.UnVote_For_Location: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID}
                             , new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num], values[Table_Vote_Location.User_ID_num]}, new int[]{1});
-                    if (resultSet != null)
+                    if (resultSet.next())
                         MySQL_Util.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
                                 new String[]{values[Table_Vote_Location.Event_ID_num], values[Table_Vote_Location.Vote_ID_num], values[Table_Vote_Location.User_ID_num]}, new int[]{1});
+                    resultSet.close();
                     break;
                 }
                 case Constants.Update_Attending: {//0 - Event_ID, 1 - User_ID, 2 - Attending.
@@ -121,7 +147,7 @@ public class SimpleUpdateEndpoint {
             }
 
             //update users
-            if (take_task) {
+            if (pass_msg_to_all_users) {
                 String str_simple_update = simpleUpdate.getAction() + "";
                 //add chat table name if neccery.
                 if (simpleUpdate.getAction().equals(Constants.New_Chat_Message) || simpleUpdate.getAction().equals(Constants.Delete_Chat_Message))

@@ -25,9 +25,10 @@ public final class Table_Tasks {
         return new String[]{Event_ID, Task_ID_Number, subTask_ID_Number, Task_Type, Description, User_ID};
     }
 
-    public static int Size(){
+    public static int Size() {
         return getAllFields().length;
     }
+
 
 }
 

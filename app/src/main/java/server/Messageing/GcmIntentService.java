@@ -128,6 +128,16 @@ public class GcmIntentService extends GcmListenerService {
                             new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]});
                 break;
             }
+            case Constants.UnTake_Task: {
+                String Message = details.split("\\^")[1];
+                String[] Task = Message.split("\\|");
+                if (!sqlHelper.select(null, Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                        new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]}, null)[0].isEmpty())
+                    sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.UnCheck},
+                            new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
+                            new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]});
+                break;
+            }
             case Constants.Vote_For_Date: {
                 String Message = details.split("\\^")[1];
                 String[] Vote = Message.split("\\|");

@@ -45,4 +45,11 @@ public class Table_Vote_Date {
     public static int Size() {
         return getAllFields().length;
     }
+
+    public static String[] getEmptyStringArray() {
+        String[] empty = new String[Size()];
+        for (int i = 0; i < empty.length; i++)
+            empty[i] = "";
+        return empty;
+    }
 }
