@@ -119,8 +119,7 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
             case Constants.Take_Task: {
-                String Message = details.split("\\^")[1];
-                String[] Task = Message.split("\\|");
+                String[] Task = details.split("\\|");
                 if (!sqlHelper.select(null, Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                         new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]}, null)[0].isEmpty())
                     sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Task[Table_Tasks.User_ID_num]},
@@ -129,8 +128,7 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
             case Constants.UnTake_Task: {
-                String Message = details.split("\\^")[1];
-                String[] Task = Message.split("\\|");
+                String[] Task = details.split("\\|");
                 if (!sqlHelper.select(null, Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                         new String[]{Task[Table_Tasks.Event_ID_num], Task[Table_Tasks.Task_ID_Number_num], Task[Table_Tasks.subTask_ID_Number_num]}, null)[0].isEmpty())
                     sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.UnCheck},
@@ -139,16 +137,14 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
             case Constants.Vote_For_Date: {
-                String Message = details.split("\\^")[1];
-                String[] Vote = Message.split("\\|");
+                String[] Vote = details.split("\\|");
                 if (sqlHelper.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
                         new String[]{Vote[Table_Vote_Date.Event_ID_num], Vote[Table_Vote_Date.Vote_ID_num], Vote[Table_Vote_Date.User_ID_num]}, null)[0].isEmpty())
                     sqlHelper.insert(Table_Vote_Date.Table_Name, Vote);
                 break;
             }
             case Constants.UnVote_For_Date: {
-                String Message = details.split("\\^")[1];
-                String[] Vote = Message.split("\\|");
+                String[] Vote = details.split("\\|");
                 if (!sqlHelper.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
                         new String[]{Vote[Table_Vote_Date.Event_ID_num], Vote[Table_Vote_Date.Vote_ID_num], Vote[Table_Vote_Date.User_ID_num]}, null)[0].isEmpty())
                     sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
@@ -156,16 +152,14 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
             case Constants.Vote_For_Location: {
-                String Message = details.split("\\^")[1];
-                String[] Vote = Message.split("\\|");
+                String[] Vote = details.split("\\|");
                 if (sqlHelper.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
                         new String[]{Vote[Table_Vote_Location.Event_ID_num], Vote[Table_Vote_Location.Vote_ID_num], Vote[Table_Vote_Location.User_ID_num]}, null)[0].isEmpty())
                     sqlHelper.insert(Table_Vote_Location.Table_Name, Vote);
                 break;
             }
             case Constants.UnVote_For_Location: {
-                String Message = details.split("\\^")[1];
-                String[] Vote = Message.split("\\|");
+                String[] Vote = details.split("\\|");
                 if (!sqlHelper.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
                         new String[]{Vote[Table_Vote_Location.Event_ID_num], Vote[Table_Vote_Location.Vote_ID_num], Vote[Table_Vote_Location.User_ID_num]}, null)[0].isEmpty())
                     sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
@@ -173,8 +167,7 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
             case Constants.Update_Attending: {
-                String Message = details.split("\\^")[1];
-                String[] Event_User = Message.split("\\|");
+                String[] Event_User = details.split("\\|");
                 if (!sqlHelper.select(null, Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
                         new String[]{Event_User[Table_Events_Users.Event_ID_num], Event_User[Table_Events_Users.User_ID_num]}, null)[0].isEmpty())
                     sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{Event_User[Table_Events_Users.Attending_num]},
