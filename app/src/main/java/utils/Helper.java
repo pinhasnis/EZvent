@@ -228,7 +228,9 @@ public class Helper {
                 sqlHelper.insert(Table_Vote_Date.Table_Name, values);
                 break;
             case Constants.Update_Attending:
-                sqlHelper.insert(Table_Events_Users.Table_Name, values);
+                sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{values[Table_Events_Users.Attending_num]},
+                        new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
+                        new String[]{values[Table_Events_Users.Event_ID_num], values[Table_Events_Users.User_ID_num]});
                 break;
         }
         //update server and useres
