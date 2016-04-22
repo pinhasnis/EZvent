@@ -228,7 +228,7 @@ public class Helper {
                 sqlHelper.insert(Table_Vote_Date.Table_Name, values);
                 break;
             case Constants.Update_Attending:
-                sqlHelper.insert(Table_Vote_Location.Table_Name, values);
+                sqlHelper.insert(Table_Events_Users.Table_Name, values);
                 break;
         }
         //update server and useres
