@@ -93,7 +93,7 @@ public class SimpleUpdateEndpoint {
                             values[Table_Tasks.subTask_ID_Number_num]}, new int[]{1});
                     //Check if the task is not signed.
                     if (resultSet.next()) {
-                        if (resultSet.getString(Table_Tasks.User_ID).equals(values[Table_Tasks.Task_ID_Number_num]))
+                        if (resultSet.getString(Table_Tasks.User_ID).equals(values[Table_Tasks.User_ID_num]))
                             MySQL_Util.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.UnCheck},
                                     new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                                     new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
