@@ -219,13 +219,26 @@ public class Helper {
                         new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                         new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
                 break;
-            case Constants.Vote_For_Date:
-                sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.MY_User_ID},
+            case Constants.UnTake_Task:
+                sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.UnCheck},
                         new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                         new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
                 break;
+            case Constants.Vote_For_Date:
+                if (sqlHelper.select(null, Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), values, new int[]{1})[0].isEmpty())
+                    sqlHelper.insert(Table_Vote_Date.Table_Name, values);
+                break;
+            case Constants.UnVote_For_Date:
+                if (!sqlHelper.select(null, Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), values, new int[]{1})[0].isEmpty())
+                    sqlHelper.delete(Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), values, new int[]{1});
+                break;
             case Constants.Vote_For_Location:
-                sqlHelper.insert(Table_Vote_Date.Table_Name, values);
+                if (sqlHelper.select(null, Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), values, new int[]{1})[0].isEmpty())
+                    sqlHelper.insert(Table_Vote_Location.Table_Name, values);
+                break;
+            case Constants.UnVote_For_Location:
+                if (!sqlHelper.select(null, Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), values, new int[]{1})[0].isEmpty())
+                    sqlHelper.delete(Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), values, new int[]{1});
                 break;
             case Constants.Update_Attending:
                 sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{values[Table_Events_Users.Attending_num]},
@@ -240,10 +253,10 @@ public class Helper {
             if (!user_id.equals(Constants.MY_User_ID)) {
                 user_ids.add(user_id);
             }
-        SimpleUpdate simpleUpdate =  new SimpleUpdate();
+        SimpleUpdate simpleUpdate = new SimpleUpdate();
         simpleUpdate.setAction(action);
         simpleUpdate.setChatTableName(Chat_Table_Name);
-        simpleUpdate.setValues( new ArrayList<>(Arrays.asList(values)));
+        simpleUpdate.setValues(new ArrayList<>(Arrays.asList(values)));
         simpleUpdate.setUsersID(user_ids);
         new SimpleUpdate_AsyncTask_update(context).execute(simpleUpdate);
 

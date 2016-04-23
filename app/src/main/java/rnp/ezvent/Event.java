@@ -299,59 +299,9 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     }
                     //Set date.
                     setSwitcher_time_view(recyclerView_date, relativeLayout_date_titles, relativeLayout_date, date);
-                    /*if (Event_Helper.vote_date.size() == 0) {
-                        relativeLayout_date_vote.setVisibility(View.GONE);
-                    } else if (my_permission.equals(Constants.Owner)) {
-                        relativeLayout_date_vote.setVisibility(View.VISIBLE);
-                        if (Event_Helper.details[Table_Events.Vote_Time_num].equals(Constants.Yes))
-                            switcher_time.setChecked(true);
-                        else
-                            switcher_time.setChecked(false);
-                        switcher_time.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (switcher_time.isChecked()) {
-                                    Event_Helper.details[Table_Events.Vote_Time_num] = Constants.Yes;
-                                    Helper.update_Event_details_field(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Table_Events.Vote_Time, Constants.Yes);
-                                } else {
-                                    Event_Helper.details[Table_Events.Vote_Time_num] = Constants.No;
-                                    Helper.update_Event_details_field(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Table_Events.Vote_Time, Constants.No);
-                                }
-                                setSwitcher_time_view(recyclerView_date, relativeLayout_date_titles, relativeLayout_date, date);
-                            }
-                        });
-                    } else {
-                        relativeLayout_date_vote.setVisibility(View.GONE);
-                    }
-                    */
                     //Set location.
                     setSwitcher_location_view(recyclerView_location, relativeLayout_location_titles, relativeLayout_location, location);
-                    /*
-                    if (Event_Helper.vote_location.size() == 0) {
-                        relativeLayout_location_vote.setVisibility(View.GONE);
-                    } else if (my_permission.equals(Constants.Owner)) {
-                        relativeLayout_location_vote.setVisibility(View.VISIBLE);
-                        if (Event_Helper.details[Table_Events.Vote_Location_num].equals(Constants.Yes))
-                            switcher_location.setChecked(true);
-                        else
-                            switcher_location.setChecked(false);
-                        switcher_location.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (switcher_location.isChecked()) {
-                                    Event_Helper.details[Table_Events.Vote_Location_num] = Constants.Yes;
-                                    Helper.update_Event_details_field(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Table_Events.Vote_Location, Constants.Yes);
-                                } else {
-                                    Event_Helper.details[Table_Events.Vote_Location_num] = Constants.No;
-                                    Helper.update_Event_details_field(getContext(), Event_Helper.details[Table_Events.Event_ID_num], Table_Events.Vote_Location, Constants.No);
-                                }
-                                setSwitcher_location_view(recyclerView_location, relativeLayout_location_titles, relativeLayout_location, location);
-                            }
-                        });
-                    } else {
-                        relativeLayout_location_vote.setVisibility(View.GONE);
-                    }
-                    */
+
                     final RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
                     recyclerview.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
                     final ExpandableListAdapter_Event_Friends expandableListAdapter_friends = new ExpandableListAdapter_Event_Friends(null);
@@ -904,14 +854,12 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
             case Vote_Location_Parent: {
                 inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.event_detail_vote_location_parent, parent, false);
-                ViewHolder_Vote_Location_Parent viewHolder_vote_location_parent = new ViewHolder_Vote_Location_Parent(view);
-                return viewHolder_vote_location_parent;
+                return new ViewHolder_Vote_Location_Parent(view);
             }
             case Vote_Location_Child: {
                 inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.event_detail_vote_child, parent, false);
-                ViewHolder_Vote_Location_Child viewHolder_vote_location_child = new ViewHolder_Vote_Location_Child(view);
-                return viewHolder_vote_location_child;
+                return new ViewHolder_Vote_Location_Child(view);
             }
         }
 
