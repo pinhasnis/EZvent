@@ -203,6 +203,26 @@ public class Helper {
         //update my SQL.
         String Chat_Table_Name = null;
         switch (action) {
+            //delete event: 0 - event_id. leave event: 0 - event_id, 1 - user_id.
+            case Constants.Delete_Event:
+            case Constants.Leave_Event: {
+                Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
+                //Delete event.
+                sqlHelper.delete(Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{values[0]}, new int[]{1});
+                //Delete event_user.
+                sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID}, new String[]{values[0]}, null);
+                //Delete tasks.
+                sqlHelper.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID}, new String[]{values[0]}, null);
+                //Delete chat.
+                sqlHelper.Delete_Table(Chat_Table_Name);
+                //Delete vote_date.
+                sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID}, new String[]{values[0]}, null);
+                //Delete vote_location.
+                sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID}, new String[]{values[0]}, null);
+                if (action.equals(Constants.Leave_Event))
+                    Chat_Table_Name = null;
+                break;
+            }
             case Constants.New_Chat_Message: {
                 Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
                 sqlHelper.insert(Chat_Table_Name, values);
@@ -214,37 +234,44 @@ public class Helper {
                         Constants.MY_User_ID}, new int[]{1});
                 break;
             }
-            case Constants.Take_Task:
+            case Constants.Take_Task: {
                 sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.MY_User_ID},
                         new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                         new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
                 break;
-            case Constants.UnTake_Task:
+            }
+            case Constants.UnTake_Task: {
                 sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{Constants.UnCheck},
                         new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number},
                         new String[]{values[Table_Tasks.Event_ID_num], values[Table_Tasks.Task_ID_Number_num], values[Table_Tasks.subTask_ID_Number_num]});
                 break;
-            case Constants.Vote_For_Date:
+            }
+            case Constants.Vote_For_Date: {
                 if (sqlHelper.select(null, Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), values, new int[]{1})[0].isEmpty())
                     sqlHelper.insert(Table_Vote_Date.Table_Name, values);
                 break;
-            case Constants.UnVote_For_Date:
+            }
+            case Constants.UnVote_For_Date: {
                 if (!sqlHelper.select(null, Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), values, new int[]{1})[0].isEmpty())
                     sqlHelper.delete(Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), values, new int[]{1});
                 break;
-            case Constants.Vote_For_Location:
+            }
+            case Constants.Vote_For_Location: {
                 if (sqlHelper.select(null, Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), values, new int[]{1})[0].isEmpty())
                     sqlHelper.insert(Table_Vote_Location.Table_Name, values);
                 break;
-            case Constants.UnVote_For_Location:
+            }
+            case Constants.UnVote_For_Location: {
                 if (!sqlHelper.select(null, Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), values, new int[]{1})[0].isEmpty())
                     sqlHelper.delete(Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), values, new int[]{1});
                 break;
-            case Constants.Update_Attending:
+            }
+            case Constants.Update_Attending: {
                 sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Attending}, new String[]{values[Table_Events_Users.Attending_num]},
                         new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID},
                         new String[]{values[Table_Events_Users.Event_ID_num], values[Table_Events_Users.User_ID_num]});
                 break;
+            }
         }
         //update server and useres
         //get all user id's of the event.

@@ -8,6 +8,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import rnp.ezvent.backend.models.SimpleUpdate;
 import rnp.ezvent.backend.utils.Constans.Constants;
 import rnp.ezvent.backend.utils.Constans.Table_Chat;
+import rnp.ezvent.backend.utils.Constans.Table_Details;
 import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
 import rnp.ezvent.backend.utils.Constans.Table_Tasks;
 import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
@@ -47,6 +48,25 @@ public class SimpleUpdateEndpoint {
             String[] values = simpleUpdate.getValues();
             MessagingEndpoint msg = new MessagingEndpoint();
             switch (simpleUpdate.getAction()) {
+                //0 - event_id, 1 - user_id that leave the event.
+                case Constants.Delete_Event: {
+                    MySQL_Util.delete(Table_Details.Table_Name, new String[]{Table_Details.Event_ID}, new String[]{values[0]}, new int[]{1});
+                    //Delete event_user.
+                    MySQL_Util.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID}, new String[]{values[0]}, null);
+                    //Delete tasks.
+                    MySQL_Util.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID}, new String[]{values[0]}, null);
+                    //Delete chat.
+                    MySQL_Util.deleteTable(simpleUpdate.getChat_Table_name());
+                    //Delete vote_date.
+                    MySQL_Util.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID}, new String[]{values[0]}, null);
+                    //Delete vote_location.
+                    MySQL_Util.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID}, new String[]{values[0]}, null);
+                    break;
+                }
+                case Constants.Leave_Event: {
+                    MySQL_Util.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, values, new int[]{1});
+                    break;
+                }
                 case Constants.New_Chat_Message: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}
                             , new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});

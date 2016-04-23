@@ -42,50 +42,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.util.ArrayList;
 
-
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ThemedSpinnerAdapter;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-//import rnp.ezvent.backend
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import java.util.ArrayList;
-
 import server.CloudEndpointBuilderHelper;
 import server.Messageing.GcmIntentService;
 import server.ServerAsyncResponse;
@@ -96,6 +52,8 @@ import utils.Constans.Table_Tasks;
 import utils.Helper;
 import utils.bitmapHelper;
 import utils.sqlHelper;
+
+//import rnp.ezvent.backend
 
 public class MainActivity extends AppCompatActivity implements ServerAsyncResponse {
     @Override
@@ -712,7 +670,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
                             .setMessage("Are you sure you want to Delete/Leave this Event?")
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Helper.delete_event(v.getContext(), Event_ID);
+                                    Helper.simple_update(v.getContext(), Constants.Delete_Event, new String[]{Event_ID});
                                     //users_names.remove(position);
                                     //IDS.remove(position);
                                     //notifyItemRangeRemoved(position, 1);
@@ -722,7 +680,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
                             })
                             .setNeutralButton("Leave", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Helper.leave_event(v.getContext(), Event_ID, Constants.MY_User_ID);
+                                    Helper.simple_update(v.getContext(), Constants.Leave_Event, new String[]{Event_ID, Constants.MY_User_ID});
                                     //users_names.remove(position);
                                     //IDS.remove(position);
                                     //notifyItemRangeRemoved(position, 1);
@@ -744,7 +702,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
                             .setMessage("Are you sure you want to Leave this Event?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Helper.leave_event(v.getContext(), Event_ID, Constants.MY_User_ID);
+                                    Helper.simple_update(v.getContext(), Constants.Leave_Event, new String[]{Event_ID, Constants.MY_User_ID});
                                     //users_names.remove(position);
                                     //IDS.remove(position);
                                     Event_IDs.remove(Event_ID);

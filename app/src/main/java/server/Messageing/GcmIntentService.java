@@ -78,6 +78,7 @@ public class GcmIntentService extends GcmListenerService {
                 }
                 break;
             }
+            //simple update.
             case Constants.Delete_Event: {
                 boolean close_event = false;
                 if (delegate != null) {
@@ -87,11 +88,27 @@ public class GcmIntentService extends GcmListenerService {
                     }
                 }
                 if (close_event) delegate.closeActivity();
-                Helper.Delete_Event_MySQL(details);
-
+                String Chat_Table_Name = Table_Chat.Table_Name + details;
+                //Delete event.
+                sqlHelper.delete(Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{details}, new int[]{1});
+                //Delete event_user.
+                sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID}, new String[]{details}, null);
+                //Delete tasks.
+                sqlHelper.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID}, new String[]{details}, null);
+                //Delete chat.
+                sqlHelper.Delete_Table(Chat_Table_Name);
+                //Delete vote_date.
+                sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID}, new String[]{details}, null);
+                //Delete vote_location.
+                sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID}, new String[]{details}, null);
                 break;
             }
-            //simple update.
+            //0 - event_id, 1 - user_id that leave the event.
+            case Constants.Leave_Event: {
+                String[] leave = details.split("\\|");
+                sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, leave, new int[]{1});
+                break;
+            }
             case Constants.New_Chat_Message: {
                 String Chat_Table_Name = details.split("\\^")[0];
                 String Message = details.split("\\^")[1];
