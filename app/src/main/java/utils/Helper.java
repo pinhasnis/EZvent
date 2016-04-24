@@ -93,6 +93,7 @@ public class Helper {
         Update_Event_MySQL(Event_ID);
         Update_Event_ServerSQL(context, Event_ID);
         //Send message to all users to new/update/delete the event.
+        /*
         String message;
         for (String[] update_user : Update_Users) {
             if (update_user[1].equals(Constants.Update_Event)) {
@@ -103,6 +104,7 @@ public class Helper {
             }
             new SendMessage_AsyncTask(context).execute(Constants.MY_User_ID, message, update_user[0]);
         }
+        */
         //Update Event_Helper.
         Event_Helper.friends = Event_Helper.friends_tmp;
         Event_Helper.task = Event_Helper.task_tmp;
@@ -760,6 +762,8 @@ public class Helper {
     }
 
     private static void Update_Event_ServerSQL(Context context, String Event_ID) {
+        //Create Update Event object.
+        Updatee
         //Update event (delete and then insert).
         new Event_AsyncTask_update(context).execute(Event_Helper.details);
         //Update Friends list invention.

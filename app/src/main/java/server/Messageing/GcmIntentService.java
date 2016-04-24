@@ -107,6 +107,8 @@ public class GcmIntentService extends GcmListenerService {
             case Constants.Leave_Event: {
                 String[] leave = details.split("\\|");
                 sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, leave, new int[]{1});
+                sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.User_ID}, leave, null);
+                sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.User_ID}, leave, null);
                 break;
             }
             case Constants.New_Chat_Message: {

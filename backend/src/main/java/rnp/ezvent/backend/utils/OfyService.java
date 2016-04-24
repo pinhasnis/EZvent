@@ -8,6 +8,7 @@ import rnp.ezvent.backend.models.Chat;
 import rnp.ezvent.backend.models.Event;
 import rnp.ezvent.backend.models.RegistrationRecord;
 import rnp.ezvent.backend.models.SimpleUpdate;
+import rnp.ezvent.backend.models.UpdateEvent;
 import rnp.ezvent.backend.models.User;
 
 /**
@@ -19,7 +20,8 @@ public class OfyService {
     static {
         ObjectifyService.register(RegistrationRecord.class);
         ObjectifyService.register(Event.class);
-      //  ObjectifyService.register(Event_User.class);
+        ObjectifyService.register(UpdateEvent.class);
+        //  ObjectifyService.register(Event_User.class);
         ObjectifyService.register(User.class);
       //  ObjectifyService.register(Task.class);
         ObjectifyService.register(Chat.class);

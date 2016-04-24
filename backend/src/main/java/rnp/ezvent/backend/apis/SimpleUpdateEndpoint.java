@@ -65,6 +65,8 @@ public class SimpleUpdateEndpoint {
                 }
                 case Constants.Leave_Event: {
                     MySQL_Util.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, values, new int[]{1});
+                    MySQL_Util.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.User_ID}, values, null);
+                    MySQL_Util.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.User_ID}, values, null);
                     break;
                 }
                 case Constants.New_Chat_Message: {

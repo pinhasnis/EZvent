@@ -82,10 +82,10 @@ public class UpdateEventEndpoint {
     }
 
     private void handleExistUsers(UpdateEvent update_event) throws Exception {
-        update_event.clearUnchangedData();
         ArrayList<String[]> old_users = new ArrayList<>();
         old_users.addAll(update_event.getEvent_users()[Constants.update_event_not_change]);
         old_users.addAll(update_event.getEvent_users()[Constants.update_event_update]);
+        update_event.clearUnchangedData();
         sendToUsers(update_event, old_users);
     }
 
@@ -98,7 +98,6 @@ public class UpdateEventEndpoint {
         update_sql_table(update_event.getTasks(), Table_Tasks.Table_Name, update_event.getId());
         update_sql_table(update_event.getVote_dates(), Table_Vote_Date.Table_Name, update_event.getId());
         update_sql_table(update_event.getVote_locations(), Table_Vote_Location.Table_Name, update_event.getId());
-
 
     }
 
@@ -113,10 +112,14 @@ public class UpdateEventEndpoint {
             }
             if (update[Constants.update_event_delete] != null) {
                 delete.addAll(update[Constants.update_event_delete]);
-                MySQL_Util.deleteAll(table_name, event_id, delete);
             }
             if (update[Constants.update_event_new] != null) {
                 insert.addAll(update[Constants.update_event_new]);
+            }
+            if (delete.size() > 0) {
+                MySQL_Util.deleteAll(table_name, event_id, delete);
+            }
+            if (insert.size() > 0) {
                 MySQL_Util.insertAll(table_name, event_id, insert);
             }
         }

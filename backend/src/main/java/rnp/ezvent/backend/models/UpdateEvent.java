@@ -22,20 +22,16 @@ public class UpdateEvent {
     private ArrayList<String[]>[] vote_dates;
     private ArrayList<String[]>[] vote_locations;
 
-    public void clearUnchangedData() {
-        if (details_changed == Constants.False)
-            details = null;
-        if (event_users != null)
-            event_users[Constants.update_event_not_change] = null;
-        if (tasks != null)
-            tasks[Constants.update_event_not_change] = null;
-        if (vote_dates != null)
-            vote_dates[Constants.update_event_not_change] = null;
-        if (vote_locations != null)
-            vote_locations[Constants.update_event_not_change] = null;
+    public UpdateEvent() {
     }
 
-    public UpdateEvent() {
+    public void clearUnchangedData() {
+        if (details_changed == Constants.False)
+            details = new String[0];
+        event_users[Constants.update_event_not_change].clear();
+        tasks[Constants.update_event_not_change].clear();
+        vote_dates[Constants.update_event_not_change].clear();
+        vote_locations[Constants.update_event_not_change].clear();
     }
 
     public int isDetails_changed() {
