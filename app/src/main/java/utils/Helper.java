@@ -739,9 +739,20 @@ public class Helper {
         //Create Update Event object.
         UpdateEvent updateEvent = new UpdateEvent();
         updateEvent.setId(Event_ID);
-        //Update event details.
+        updateEvent.setUserId(Constants.MY_User_ID);
         updateEvent.setDetailsChanged(Constants.False);
         updateEvent.setDetails(new ArrayList<String>());
+        updateEvent.setEventUsers(new ArrayList<List<List<String>>>());
+        updateEvent.setTasks(new ArrayList<List<List<String>>>());
+        updateEvent.setVoteDates(new ArrayList<List<List<String>>>());
+        updateEvent.setVoteLocations(new ArrayList<List<List<String>>>());
+        for (int i = 0; i < 4; i++) {//create 4 array list. one for each update type.
+            updateEvent.getEventUsers().add(new ArrayList<List<String>>());
+            updateEvent.getTasks().add(new ArrayList<List<String>>());
+            updateEvent.getVoteDates().add(new ArrayList<List<String>>());
+            updateEvent.getVoteLocations().add(new ArrayList<List<String>>());
+        }
+        //Update event details.
         //Check if details changed.
         for (int i = 0; i < Event_Helper.details.length; i++) {
             if (!Event_Helper.details[i].equals(Event_Helper.details_tmp[i])) {
@@ -753,9 +764,6 @@ public class Helper {
             }
         }
         //Update Friends list invention.
-        updateEvent.setEventUsers(new ArrayList<List<List<String>>>());
-        for (int i = 0; i < 4; i++)//create 4 array list. one for each update type.
-            updateEvent.getEventUsers().add(new ArrayList<List<String>>());
         Friend_Helper friend_helper;
         String[] friend = new String[Table_Events_Users.Size() - Constants.index_object_sql_diff];
         for (String User_ID : Event_Helper.friends_tmp.keySet()) {
@@ -785,9 +793,6 @@ public class Helper {
         }
 
         //Update Tasks.
-        updateEvent.setTasks(new ArrayList<List<List<String>>>());
-        for (int i = 0; i < 4; i++)//create 4 array list. one for each update type.
-            updateEvent.getTasks().add(new ArrayList<List<String>>());
         boolean new_task, new_subTask;
         Task_Helper task_helper;
         String[] task = new String[Table_Tasks.Size() - (Constants.index_object_sql_diff + 1)];//no event_id and no mark filed.
