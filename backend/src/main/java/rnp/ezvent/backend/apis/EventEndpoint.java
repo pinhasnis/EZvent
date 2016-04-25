@@ -1,5 +1,13 @@
 package rnp.ezvent.backend.apis;
 
+import com.google.api.server.spi.config.Api;
+import com.google.api.server.spi.config.ApiClass;
+import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Named;
+
+import java.sql.ResultSet;
+
 import rnp.ezvent.backend.models.Event;
 import rnp.ezvent.backend.utils.Constans.Constants;
 import rnp.ezvent.backend.utils.Constans.Table_Chat;
@@ -9,13 +17,6 @@ import rnp.ezvent.backend.utils.Constans.Table_Tasks;
 import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
 import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
 import rnp.ezvent.backend.utils.MySQL_Util;
-import com.google.api.server.spi.config.Api;
-import com.google.api.server.spi.config.ApiClass;
-import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.config.ApiNamespace;
-import com.google.api.server.spi.config.Named;
-
-import java.sql.ResultSet;
 
 import static rnp.ezvent.backend.utils.EndpointUtil.byteSizeUTF8;
 import static rnp.ezvent.backend.utils.MySQL_Util.addToLog;
@@ -146,4 +147,5 @@ public class EventEndpoint {
             addToLog(e);
         }
     }
+
 }

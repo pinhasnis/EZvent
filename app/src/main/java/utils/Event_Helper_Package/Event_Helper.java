@@ -17,6 +17,7 @@ import utils.sqlHelper;
 public final class Event_Helper {
     public static String newEvent_edit_mode = Constants.New_Event;
     public static String[] details = new String[Table_Events.Size()];
+    public static String[] details_tmp = new String[Table_Events.Size()];
     public static HashMap<String, Friend_Helper> friends = new HashMap<>();//0-User_ID.
     public static HashMap<String, Friend_Helper> friends_tmp;//Use for edit event.
     public static HashMap<Integer, Task_Helper> task = new HashMap();//0-Task_ID
@@ -51,6 +52,8 @@ public final class Event_Helper {
     }
 
     public static void make_copy() {
+        for (int i = 0; i < details.length; i++)
+            details_tmp[i] = details[i];
         friends_tmp = new HashMap<>();
         task_tmp = new HashMap<>();
         vote_date_tmp = new HashMap<>();
@@ -78,7 +81,7 @@ public final class Event_Helper {
         //Load details.
         details[Table_Events.Event_ID_num] = event_id;
         ArrayList<String>[] dbSql = sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{event_id}, new int[]{1});
-        if(dbSql[Table_Events.Name_num].size() == 0) return -1;
+        if (dbSql[Table_Events.Name_num].size() == 0) return -1;
         details[Table_Events.Name_num] = dbSql[Table_Events.Name_num].get(0);
         details[Table_Events.Location_num] = dbSql[Table_Events.Location_num].get(0);
         details[Table_Events.Vote_Location_num] = dbSql[Table_Events.Vote_Location_num].get(0);

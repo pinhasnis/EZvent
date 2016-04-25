@@ -3,8 +3,6 @@ package server.Event;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import rnp.backend.ezvent.Ezvent;
-import rnp.backend.ezvent.model.Event;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
@@ -19,6 +17,8 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
+import rnp.backend.ezvent.Ezvent;
+import rnp.backend.ezvent.model.Event;
 import server.CloudEndpointBuilderHelper;
 
 /**

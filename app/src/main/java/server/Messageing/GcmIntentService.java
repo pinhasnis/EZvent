@@ -55,8 +55,8 @@ public class GcmIntentService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
         Logger.getLogger("GCM_RECEIVED").log(Level.INFO, data.toString());
-        String details = data.getString(Constants.Message).substring(1);
         String action = data.getString(Constants.Message).substring(0, 1);
+        String details = data.getString(Constants.Message).substring(1);
         switch (action) {
             case Constants.New_Event: {
                 try {
@@ -77,6 +77,9 @@ public class GcmIntentService extends GcmListenerService {
                     e.printStackTrace();
                 }
                 break;
+            }
+            case Constants.Update_Event:{
+
             }
             //simple update.
             case Constants.Delete_Event: {

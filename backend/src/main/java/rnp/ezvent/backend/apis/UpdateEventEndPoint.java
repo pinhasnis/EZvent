@@ -30,7 +30,7 @@ import static rnp.ezvent.backend.utils.MySQL_Util.addToLog;
                 packagePath = Constants.API_PACKAGE_PATH
         )
 )
-@ApiClass(resource = "update_event_endpoint",
+@ApiClass(resource = "update_event",
         clientIds = {
                 Constants.ANDROID_CLIENT_ID,
                 Constants.IOS_CLIENT_ID,
@@ -39,29 +39,11 @@ import static rnp.ezvent.backend.utils.MySQL_Util.addToLog;
 )
 public class UpdateEventEndpoint {
 
-    private void handleNewUsers(UpdateEvent update_event) throws IOException {
-        ArrayList<String[]> newUsers = update_event.getEvent_users()[Constants.update_event_new];
-        sendToUsers(update_event, newUsers);
-    }
-
-    private void sendToUsers(UpdateEvent update_event, ArrayList<String[]> users) throws IOException {
-        if (users != null) {
-            String str_event_update = update_event.toString();
-            int byteSize = byteSizeUTF8(str_event_update);
-            if (byteSize != -1 && byteSize < 4000) {// 4000 bytes = 4kb
-                str_event_update = Constants.Request_New_Event + update_event.getId();
-            }
-            MessagingEndpoint msg = new MessagingEndpoint();
-            for (int i = 0; i < users.size(); i++) {
-                msg.sendMessage(str_event_update, users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]);
-            }
-        }
-    }
-
     @ApiMethod(name = "updateEvent", path = "updateEvent")
     public void Update(UpdateEvent update_event) {
 
         try {
+            MySQL_Util.insert("Logs", new String[]{"yes", "", ""});
             String userId = update_event.getUser_id();
             handleSQLUpdate(update_event);
             handleNewUsers(update_event);
@@ -71,6 +53,13 @@ public class UpdateEventEndpoint {
             addToLog(e);
         }
     }
+
+
+    private void handleNewUsers(UpdateEvent update_event) throws IOException {
+        ArrayList<String[]> newUsers = update_event.getEvent_users()[Constants.update_event_new];
+        sendToUsers(update_event, newUsers);
+    }
+
 
     private void handleRemovedUsers(UpdateEvent update_event) throws IOException {
         if (update_event.getEvent_users()[Constants.update_event_delete] != null) {
@@ -89,11 +78,29 @@ public class UpdateEventEndpoint {
         sendToUsers(update_event, old_users);
     }
 
+    private void sendToUsers(UpdateEvent update_event, ArrayList<String[]> users) throws IOException {
+        if (users != null) {
+            String str_event_update = update_event.toString2();
+            int byteSize = byteSizeUTF8(str_event_update);
+            if (byteSize != -1 && byteSize < 4000) {// 4000 bytes = 4kb
+                str_event_update = Constants.Request_New_Event + update_event.getId();
+            }
+            MessagingEndpoint msg = new MessagingEndpoint();
+            for (int i = 0; i < users.size(); i++) {
+                msg.sendMessage(str_event_update, users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]);
+            }
+        }
+    }
+
+
     private void handleSQLUpdate(UpdateEvent update_event) throws Exception {
         //update details.
-        if (update_event.isDetails_changed() == Constants.True)
+        addToLog(update_event.getDetails()[0] + update_event.getId());
+        if (update_event.isDetails_changed() == Constants.True) {
             MySQL_Util.update(Table_Details.Table_Name, Table_Details.getAllFields_Except_Event_ID(), update_event.getDetails(),
                     new String[]{Table_Details.Event_ID}, new String[]{update_event.getId()});
+            addToLog(update_event.getDetails()[0] + update_event.getId());
+        }
         update_sql_table(update_event.getEvent_users(), Table_Events_Users.Table_Name, update_event.getId());
         update_sql_table(update_event.getTasks(), Table_Tasks.Table_Name, update_event.getId());
         update_sql_table(update_event.getVote_dates(), Table_Vote_Date.Table_Name, update_event.getId());

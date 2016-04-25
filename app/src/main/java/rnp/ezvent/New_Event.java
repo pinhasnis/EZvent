@@ -214,6 +214,11 @@ public class New_Event extends AppCompatActivity {
                             break;
                         }
                         case 2: {
+                            final String[] details_pointer;
+                            if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                                details_pointer = Event_Helper.details;
+                            else
+                                details_pointer = Event_Helper.details_tmp;
                             new AlertDialog.Builder(v.getContext())
                                     .setTitle("Save Event")
                                     .setMessage("Are you sure you want to Save this Event?")
@@ -223,7 +228,7 @@ public class New_Event extends AppCompatActivity {
                                             if (b.getString("Event_ID").equals(Constants.New_Event)) {
                                                 Event_ID = Helper.create_event(getApplicationContext());
                                             } else {
-                                                Event_ID = Event_Helper.details[Table_Events.Event_ID_num];
+                                                Event_ID = details_pointer[Table_Events.Event_ID_num];
                                                 Helper.update_event(getApplicationContext(), Event_ID);
                                             }
                                             Intent intent = new Intent(getApplicationContext(), Event.class);
@@ -309,14 +314,19 @@ public class New_Event extends AppCompatActivity {
     private boolean store_editText(int page) {
         switch (page) {
             case 0: {
+                final String[] details_pointer;
+                if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                    details_pointer = Event_Helper.details;
+                else
+                    details_pointer = Event_Helper.details_tmp;
                 //Fill name description and location.
                 EditText editText_name = (EditText) findViewById(R.id.editText_name);
                 EditText editText_description = (EditText) findViewById(R.id.editText_description);
                 EditText editText_location = (EditText) findViewById(R.id.editText_location);
                 if (editText_name != null) {
-                    Event_Helper.details[Table_Events.Name_num] = editText_name.getText().toString();
-                    Event_Helper.details[Table_Events.Description_num] = editText_description.getText().toString();
-                    Event_Helper.details[Table_Events.Location_num] = editText_location.getText().toString();
+                    details_pointer[Table_Events.Name_num] = editText_name.getText().toString();
+                    details_pointer[Table_Events.Description_num] = editText_description.getText().toString();
+                    details_pointer[Table_Events.Location_num] = editText_location.getText().toString();
                 }
                 //Set vote pointer.
                 HashMap<Integer, Vote_Date_Helper> vote_date_pointer;
@@ -344,10 +354,10 @@ public class New_Event extends AppCompatActivity {
                 boolean all_fill_time;
                 Switch switcher_vote_time = (Switch) findViewById(R.id.switcher_time);
                 //Check if vote option is on.
-                if (Event_Helper.details[Table_Events.Vote_Time_num].equals(Constants.Yes)) {
+                if (details_pointer[Table_Events.Vote_Time_num].equals(Constants.Yes)) {
                     //Close voting if there are 0 votes.
                     if (vote_date_pointer.size() == 0) {
-                        Event_Helper.details[Table_Events.Vote_Time_num] = Constants.No;
+                        details_pointer[Table_Events.Vote_Time_num] = Constants.No;
                         switcher_vote_time.setChecked(false);
                     } else
                         //Check that all vote_date are filled.
@@ -367,10 +377,10 @@ public class New_Event extends AppCompatActivity {
                 }
                 Switch switcher_vote_location = (Switch) findViewById(R.id.switcher_location);
                 //Check if vote option is on.
-                if (Event_Helper.details[Table_Events.Vote_Location_num].equals(Constants.Yes)) {
+                if (details_pointer[Table_Events.Vote_Location_num].equals(Constants.Yes)) {
                     //Close voting if there are 0 votes.
                     if (vote_location_pointer.size() == 0) {
-                        Event_Helper.details[Table_Events.Vote_Location_num] = Constants.No;
+                        details_pointer[Table_Events.Vote_Location_num] = Constants.No;
                         switcher_vote_location.setChecked(false);
                     } else
                         //Check that all vote_location are filled.
@@ -508,6 +518,11 @@ public class New_Event extends AppCompatActivity {
         }
 
         private void date(View v, final TextView date_view1, final TextView date_view2, final Boolean isStartDate) {
+            final String[] details_pointer;
+            if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                details_pointer = Event_Helper.details;
+            else
+                details_pointer = Event_Helper.details_tmp;
             final Dialog dialog = new Dialog(v.getContext());
             dialog.setContentView(R.layout.new_event_detail_date_dialog);
             dialog.setCancelable(true);
@@ -516,10 +531,10 @@ public class New_Event extends AppCompatActivity {
             //Set initial date by previous selection if exist or by the current date.
             String current_date;
             if (isStartDate) {
-                current_date = Event_Helper.details[Table_Events.Start_Date_num];
+                current_date = details_pointer[Table_Events.Start_Date_num];
                 date_view1.setText(current_date);
             } else {
-                current_date = Event_Helper.details[Table_Events.End_Date_num];
+                current_date = details_pointer[Table_Events.End_Date_num];
                 date_view2.setText(current_date);
             }
             if (!current_date.equals("dd/mm/yyyy")) {
@@ -535,17 +550,17 @@ public class New_Event extends AppCompatActivity {
                     boolean ok_date = !Helper.Is_date1_after_date2(Helper.getCurrentDate(), date);
                     if (ok_date) {
                         if (isStartDate) {
-                            Event_Helper.details[Table_Events.Start_Date_num] = date;
-                            Event_Helper.details[Table_Events.End_Date_num] = date;
+                            details_pointer[Table_Events.Start_Date_num] = date;
+                            details_pointer[Table_Events.End_Date_num] = date;
                             date_view1.setText(Helper.format_date(date));
                             date_view2.setText(Helper.format_date(date));
                             dialog.dismiss();
                         } else {
                             //Check end date is after start date.
-                            ok_date = !Helper.Is_date1_after_date2(Event_Helper.details[Table_Events.Start_Date_num], date);
-                            String[] start_date = Event_Helper.details[Table_Events.Start_Date_num].split("\\/");
+                            ok_date = !Helper.Is_date1_after_date2(details_pointer[Table_Events.Start_Date_num], date);
+                            String[] start_date = details_pointer[Table_Events.Start_Date_num].split("\\/");
                             if (ok_date) {
-                                Event_Helper.details[Table_Events.End_Date_num] = date;
+                                details_pointer[Table_Events.End_Date_num] = date;
                                 date_view2.setText(Helper.format_date(date));
                                 dialog.dismiss();
                             } else {
@@ -571,6 +586,11 @@ public class New_Event extends AppCompatActivity {
 
         @TargetApi(Build.VERSION_CODES.M)
         private void time(View v, final TextView time_view1, final TextView time_view2, final Boolean isStartTime) {
+            final String[] details_pointer;
+            if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                details_pointer = Event_Helper.details;
+            else
+                details_pointer = Event_Helper.details_tmp;
             final Dialog dialog = new Dialog(v.getContext());
             dialog.setContentView(R.layout.new_event_detail_time_dialog);
             dialog.setCancelable(true);
@@ -579,10 +599,10 @@ public class New_Event extends AppCompatActivity {
             //Set initial date by previous selection if exist or by the current date.
             String current_time;
             if (isStartTime) {
-                current_time = Event_Helper.details[Table_Events.Start_Time_num];
+                current_time = details_pointer[Table_Events.Start_Time_num];
                 time_view1.setText(Helper.format_time(current_time));
             } else {
-                current_time = Event_Helper.details[Table_Events.End_Time_num];
+                current_time = details_pointer[Table_Events.End_Time_num];
                 time_view2.setText(Helper.format_time(current_time));
             }
             if (!current_time.equals("hh:mm")) {
@@ -607,17 +627,17 @@ public class New_Event extends AppCompatActivity {
                         time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
                     }
                     if (isStartTime) {
-                        Event_Helper.details[Table_Events.Start_Time_num] = time;
-                        Event_Helper.details[Table_Events.End_Time_num] = time;
+                        details_pointer[Table_Events.Start_Time_num] = time;
+                        details_pointer[Table_Events.End_Time_num] = time;
                         time_view1.setText(Helper.format_time(time));
                         time_view2.setText(Helper.format_time(time));
                         dialog.dismiss();
                     } else {
                         //Check if start date is before end date.
-                        boolean ok_date = Helper.Is_date1_after_date2(Event_Helper.details[Table_Events.End_Date_num], Event_Helper.details[Table_Events.Start_Date_num]);
+                        boolean ok_date = Helper.Is_date1_after_date2(details_pointer[Table_Events.End_Date_num], details_pointer[Table_Events.Start_Date_num]);
                         //Check if start time is before end time.
-                        if (ok_date || !Helper.Is_time1_after_time2(Event_Helper.details[Table_Events.Start_Time_num], time)) {
-                            Event_Helper.details[Table_Events.End_Time_num] = time;
+                        if (ok_date || !Helper.Is_time1_after_time2(details_pointer[Table_Events.Start_Time_num], time)) {
+                            details_pointer[Table_Events.End_Time_num] = time;
                             time_view2.setText(Helper.format_time(time));
                             dialog.dismiss();
                         } else {
@@ -640,6 +660,11 @@ public class New_Event extends AppCompatActivity {
                 case 1: {
                     final View rootView = inflater.inflate(R.layout.fragment_new_event_details, container, false);
                     final LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
+                    final String[] details_pointer;
+                    if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                        details_pointer = Event_Helper.details;
+                    else
+                        details_pointer = Event_Helper.details_tmp;
                     EditText editText_name = (EditText) rootView.findViewById(R.id.editText_name);
                     EditText editText_description = (EditText) rootView.findViewById(R.id.editText_description);
                     final TextView date1 = (TextView) rootView.findViewById(R.id.date1);
@@ -658,19 +683,19 @@ public class New_Event extends AppCompatActivity {
                     final RelativeLayout relativeLayout_location = (RelativeLayout) rootView.findViewById(R.id.relativeLayout_location);
                     final RelativeLayout relativeLayout_location_titles = (RelativeLayout) rootView.findViewById(R.id.relativeLayout_location_titles);
                     //Set all values.
-                    editText_name.setText(Event_Helper.details[Table_Events.Name_num]);
-                    editText_description.setText(Event_Helper.details[Table_Events.Description_num]);
-                    if (Event_Helper.details[Table_Events.Vote_Time_num].equals(Constants.Yes))
+                    editText_name.setText(details_pointer[Table_Events.Name_num]);
+                    editText_description.setText(details_pointer[Table_Events.Description_num]);
+                    if (details_pointer[Table_Events.Vote_Time_num].equals(Constants.Yes))
                         switcher_vote_time.setChecked(true);
                     else
                         switcher_vote_time.setChecked(false);
                     setSwitcher_time_view(recyclerView_date, relativeLayout_date_titles, relativeLayout_date, relativeLayout_all_day, date1, date2, all_day, time1, time2);
-                    if (Event_Helper.details[Table_Events.Vote_Location_num].equals(Constants.Yes))
+                    if (details_pointer[Table_Events.Vote_Location_num].equals(Constants.Yes))
                         switcher_vote_location.setChecked(true);
                     else
                         switcher_vote_location.setChecked(false);
                     setSwitcher_location_view(recyclerView_location, relativeLayout_location_titles, relativeLayout_location, editText_location);
-                    //editText_location.setText(Event_Helper.details[Table_Events.Location_num]);
+                    //editText_location.setText(details_pointer[Table_Events.Location_num]);
                     linearLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -712,11 +737,11 @@ public class New_Event extends AppCompatActivity {
                             if (isChecked) {
                                 time1.setVisibility(View.GONE);
                                 time2.setVisibility(View.GONE);
-                                Event_Helper.details[Table_Events.All_Day_Time_num] = Constants.Yes;
+                                details_pointer[Table_Events.All_Day_Time_num] = Constants.Yes;
                             } else {
                                 time1.setVisibility(View.VISIBLE);
                                 time2.setVisibility(View.VISIBLE);
-                                Event_Helper.details[Table_Events.All_Day_Time_num] = Constants.No;
+                                details_pointer[Table_Events.All_Day_Time_num] = Constants.No;
                             }
                         }
                     });
@@ -724,9 +749,9 @@ public class New_Event extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             if (switcher_vote_time.isChecked())
-                                Event_Helper.details[Table_Events.Vote_Time_num] = Constants.Yes;
+                                details_pointer[Table_Events.Vote_Time_num] = Constants.Yes;
                             else
-                                Event_Helper.details[Table_Events.Vote_Time_num] = Constants.No;
+                                details_pointer[Table_Events.Vote_Time_num] = Constants.No;
                             setSwitcher_time_view(recyclerView_date, relativeLayout_date_titles, relativeLayout_date, relativeLayout_all_day, date1, date2, all_day, time1, time1);
                         }
                     });
@@ -735,9 +760,9 @@ public class New_Event extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             if (switcher_vote_location.isChecked())
-                                Event_Helper.details[Table_Events.Vote_Location_num] = Constants.Yes;
+                                details_pointer[Table_Events.Vote_Location_num] = Constants.Yes;
                             else
-                                Event_Helper.details[Table_Events.Vote_Location_num] = Constants.No;
+                                details_pointer[Table_Events.Vote_Location_num] = Constants.No;
                             setSwitcher_location_view(recyclerView_location, relativeLayout_location_titles, relativeLayout_location, editText_location);
                         }
                     });
@@ -850,14 +875,19 @@ public class New_Event extends AppCompatActivity {
 
         private void setSwitcher_time_view(RecyclerView recyclerView_date, RelativeLayout relativeLayout_date_titles, RelativeLayout relativeLayout_date, RelativeLayout relativeLayout_all_day
                 , TextView date1, TextView date2, Switch all_day, TextView time1, TextView time2) {
-            if (Event_Helper.details[Table_Events.Vote_Time_num].equals(Constants.Yes)) {
+            final String[] details_pointer;
+            if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                details_pointer = Event_Helper.details;
+            else
+                details_pointer = Event_Helper.details_tmp;
+            if (details_pointer[Table_Events.Vote_Time_num].equals(Constants.Yes)) {
                 final HashMap<Integer, Vote_Date_Helper> vote_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     vote_pointer = Event_Helper.vote_date;
                 } else {
                     vote_pointer = Event_Helper.vote_date_tmp;
                 }
-                Event_Helper.details[Table_Events.Vote_Time_num] = Constants.Yes;
+                details_pointer[Table_Events.Vote_Time_num] = Constants.Yes;
                 relativeLayout_date.setVisibility(View.GONE);
                 relativeLayout_all_day.setVisibility(View.GONE);
                 recyclerView_date.setVisibility(View.VISIBLE);
@@ -876,16 +906,16 @@ public class New_Event extends AppCompatActivity {
                 data.add(new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Add, 0));
                 recyclerView_date.setAdapter(new ExpandableListAdapter_New_Event_Vote_Date(data, recyclerView_date, getContext()));
             } else {
-                Event_Helper.details[Table_Events.Vote_Time_num] = Constants.No;
+                details_pointer[Table_Events.Vote_Time_num] = Constants.No;
                 recyclerView_date.setVisibility(View.GONE);
                 relativeLayout_date_titles.setVisibility(View.GONE);
                 relativeLayout_date.setVisibility(View.VISIBLE);
                 relativeLayout_all_day.setVisibility(View.VISIBLE);
-                date1.setText(Helper.format_date(Event_Helper.details[Table_Events.Start_Date_num]));
-                date2.setText(Helper.format_date(Event_Helper.details[Table_Events.End_Date_num]));
-                time1.setText(Helper.format_time(Event_Helper.details[Table_Events.Start_Time_num]));
-                time2.setText(Helper.format_time(Event_Helper.details[Table_Events.End_Time_num]));
-                if (Event_Helper.details[Table_Events.All_Day_Time_num].equals(Constants.Yes)) {
+                date1.setText(Helper.format_date(details_pointer[Table_Events.Start_Date_num]));
+                date2.setText(Helper.format_date(details_pointer[Table_Events.End_Date_num]));
+                time1.setText(Helper.format_time(details_pointer[Table_Events.Start_Time_num]));
+                time2.setText(Helper.format_time(details_pointer[Table_Events.End_Time_num]));
+                if (details_pointer[Table_Events.All_Day_Time_num].equals(Constants.Yes)) {
                     all_day.setChecked(true);
                     time1.setVisibility(View.GONE);
                     time2.setVisibility(View.GONE);
@@ -894,14 +924,19 @@ public class New_Event extends AppCompatActivity {
         }
 
         private void setSwitcher_location_view(RecyclerView recyclerView_location, RelativeLayout relativeLayout_location_titles, RelativeLayout relativeLayout_location, EditText editText_location) {
-            if (Event_Helper.details[Table_Events.Vote_Location_num].equals(Constants.Yes)) {
+            final String[] details_pointer;
+            if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event))
+                details_pointer = Event_Helper.details;
+            else
+                details_pointer = Event_Helper.details_tmp;
+            if (details_pointer[Table_Events.Vote_Location_num].equals(Constants.Yes)) {
                 final HashMap<Integer, Vote_Location_Helper> vote_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     vote_pointer = Event_Helper.vote_location;
                 } else {
                     vote_pointer = Event_Helper.vote_location_tmp;
                 }
-                Event_Helper.details[Table_Events.Vote_Location_num] = Constants.Yes;
+                details_pointer[Table_Events.Vote_Location_num] = Constants.Yes;
                 relativeLayout_location.setVisibility(View.GONE);
                 recyclerView_location.setVisibility(View.VISIBLE);
                 relativeLayout_location_titles.setVisibility(View.VISIBLE);
@@ -919,11 +954,11 @@ public class New_Event extends AppCompatActivity {
                 data.add(new ExpandableListAdapter_New_Event_Vote_Location.Item(ExpandableListAdapter_New_Event_Vote_Location.Vote_Add, 0));
                 recyclerView_location.setAdapter(new ExpandableListAdapter_New_Event_Vote_Location(data, recyclerView_location, getContext()));
             } else {
-                Event_Helper.details[Table_Events.Vote_Location_num] = Constants.No;
+                details_pointer[Table_Events.Vote_Location_num] = Constants.No;
                 recyclerView_location.setVisibility(View.GONE);
                 relativeLayout_location_titles.setVisibility(View.GONE);
                 relativeLayout_location.setVisibility(View.VISIBLE);
-                editText_location.setText(Event_Helper.details[Table_Events.Location_num]);
+                editText_location.setText(details_pointer[Table_Events.Location_num]);
             }
         }
     }

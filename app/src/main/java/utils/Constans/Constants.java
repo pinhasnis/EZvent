@@ -94,6 +94,7 @@ public final class Constants {
     public final static String Vote_For_Location = "L";
     public final static String UnVote_For_Location = "M";
     public final static String Update_Attending = "N";
+    public final static int index_object_sql_diff = 1;//We remove user_id from the Event and UpdateEvent objects to save space. because of that thier 1 place diff between the arrays.
 
 
 //    public final static String New_Event = "New_Event";

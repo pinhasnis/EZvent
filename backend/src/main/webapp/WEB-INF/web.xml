@@ -19,7 +19,8 @@
                 rnp.ezvent.backend.apis.UserEndpoint,
                 rnp.ezvent.backend.apis.apps_logs,
                 rnp.ezvent.backend.apis.ChatEndpoint,,
-                rnp.ezvent.backend.apis.SimpleUpdateEndpoint</param-value>
+                rnp.ezvent.backend.apis.SimpleUpdateEndpoint,,
+                rnp.ezvent.backend.apis.UpdateEventEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

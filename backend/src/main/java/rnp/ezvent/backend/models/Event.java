@@ -1,17 +1,18 @@
 package rnp.ezvent.backend.models;
 
-import rnp.ezvent.backend.utils.Constans.Constants;
-import rnp.ezvent.backend.utils.Constans.Table_Details;
-import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
-import rnp.ezvent.backend.utils.Constans.Table_Tasks;
-import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
-import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import rnp.ezvent.backend.utils.Constans.Constants;
+import rnp.ezvent.backend.utils.Constans.Table_Details;
+import rnp.ezvent.backend.utils.Constans.Table_Events_Users;
+import rnp.ezvent.backend.utils.Constans.Table_Tasks;
+import rnp.ezvent.backend.utils.Constans.Table_Vote_Date;
+import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
 
 /**
  * Created by Ravid on 25/09/2015.
@@ -52,7 +53,6 @@ public class Event {
     public void setVote_locations(ArrayList<String[]> vote_locations) {
         this.vote_locations = vote_locations;
     }
-
 
     public void setDetailsFromSql(ResultSet rs_details) throws SQLException {
         details = new String[Table_Details.Size - Constants.index_object_sql_diff];
