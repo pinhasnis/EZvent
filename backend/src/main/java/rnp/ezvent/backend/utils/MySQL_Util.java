@@ -153,12 +153,12 @@ public class MySQL_Util {
 
     public static void deleteAll(String table,String value,ArrayList<String[]> values,ArrayList<String> where) throws Exception {
         value = value.replaceAll("\'", "\'\'");
-        String query = "delete from `" + table +" WHERE (";
+        String query = "delete from `" + table +"` WHERE (";
         for (String col : where) {
             query += col+"','";
         }
         query = query.substring(0, query.length() - 1);
-        query +=+"col1"+","+"col2"+") ` in (";
+        query += ") in (";
         for (int j = 0; j < values.size(); j++) {
             query += "('"+value + "','";
             clean(values.get(j));
