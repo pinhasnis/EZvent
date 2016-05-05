@@ -155,7 +155,7 @@ public class MySQL_Util {
         value = value.replaceAll("\'", "\'\'");
         String query = "delete from `" + table +"` WHERE (";
         for (String col : where) {
-            query += col+"','";
+            query += col+",";
         }
         query = query.substring(0, query.length() - 1);
         query += ") in (";
