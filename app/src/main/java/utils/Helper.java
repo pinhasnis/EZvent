@@ -927,7 +927,7 @@ public class Helper {
         }
         //Delete Vote_location.
         for (int vote_id : Event_Helper.vote_location.keySet()) {
-            vote_location = new String[0];//only vote_id.
+            vote_location = new String[1];//only vote_id.
             vote_location[Table_Vote_Location.Vote_ID_num - Constants.index_object_sql_diff] = vote_id + "";
             if (Event_Helper.vote_location_tmp.get(vote_id) == null) {
                 updateEvent.getVoteLocations().get(Constants.update_event_delete).add(Arrays.asList(vote_location));
