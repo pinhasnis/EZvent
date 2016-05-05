@@ -813,32 +813,45 @@ public class Helper {
                 } else {
                     updateEvent.getTasks().get(Constants.update_event_not_change).add(Arrays.asList(task));
                 }
-                for (int subTask_id : task_helper.getSubTasks().keySet()) {
-                    task[Table_Tasks.subTask_ID_Number_num - Constants.index_object_sql_diff] = subTask_id + "";
-                    task[Table_Tasks.Description_num - Constants.index_object_sql_diff] = task_helper.getSubTasks().get(subTask_id)[0];
-                    new_subTask = (new_task || Event_Helper.task.get(task_id).getSubTasks().get(subTask_id) == null);
-                    if (new_subTask) {//Add new subTasks.
-                        updateEvent.getTasks().get(Constants.update_event_new).add(Arrays.asList(task));
-                    } else {//Update subTask description.
-                        if (!task_helper.getSubTasks().get(subTask_id)[0].equals(Event_Helper.task.get(task_id).getSubTasks().get(subTask_id)[0])) {
-                            updateEvent.getTasks().get(Constants.update_event_update).add(Arrays.asList(task));
-                        } else {
-                            updateEvent.getTasks().get(Constants.update_event_not_change).add(Arrays.asList(task));
-                        }
+            }
+            for (int subTask_id : task_helper.getSubTasks().keySet()) {
+                task = new String[Table_Tasks.Size() - (Constants.index_object_sql_diff + 1)];//no event_id and no mark filed.
+                task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
+                task[Table_Tasks.subTask_ID_Number_num - Constants.index_object_sql_diff] = subTask_id + "";
+                task[Table_Tasks.Task_Type_num - Constants.index_object_sql_diff] = task_helper.getType();
+                task[Table_Tasks.Description_num - Constants.index_object_sql_diff] = task_helper.getSubTasks().get(subTask_id)[0];
+                task[Table_Tasks.User_ID_num - Constants.index_object_sql_diff] = task_helper.getUser_ID();
+                new_subTask = (new_task || Event_Helper.task.get(task_id).getSubTasks().get(subTask_id) == null);
+                if (new_subTask) {//Add new subTasks.
+                    updateEvent.getTasks().get(Constants.update_event_new).add(Arrays.asList(task));
+                } else {//Update subTask description.
+                    if (!task_helper.getSubTasks().get(subTask_id)[0].equals(Event_Helper.task.get(task_id).getSubTasks().get(subTask_id)[0])) {
+                        updateEvent.getTasks().get(Constants.update_event_update).add(Arrays.asList(task));
+                    } else {
+                        updateEvent.getTasks().get(Constants.update_event_not_change).add(Arrays.asList(task));
                     }
                 }
             }
+
         }
         //Delete Tasks.
         for (int task_id : Event_Helper.task.keySet()) {
             task = new String[2];//only task_id and subTask_id.
             task_helper = Event_Helper.task.get(task_id);
+            task[Table_Tasks.subTask_ID_Number_num] = 0 + "";
             task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
-            task[Table_Tasks.subTask_ID_Number_num - Constants.index_object_sql_diff] = 0 + "";
             if (Event_Helper.task_tmp.get(task_id) == null) {
                 updateEvent.getTasks().get(Constants.update_event_delete).add(Arrays.asList(task));
+                for (int subTask_id : Event_Helper.task.get(task_id).getSubTasks().keySet()) {
+                    task = new String[2];//only task_id and subTask_id.
+                    task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
+                    task[Table_Tasks.subTask_ID_Number_num] = subTask_id + "";
+                    updateEvent.getTasks().get(Constants.update_event_delete).add(Arrays.asList(task));
+                }
             } else {
                 for (int subTask_id : task_helper.getSubTasks().keySet()) {
+                    task = new String[2];//only task_id and subTask_id.
+                    task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
                     task[Table_Tasks.subTask_ID_Number_num] = subTask_id + "";
                     if (Event_Helper.task_tmp.get(task_id).getSubTasks().get(subTask_id) == null) {
                         updateEvent.getTasks().get(Constants.update_event_delete).add(Arrays.asList(task));
