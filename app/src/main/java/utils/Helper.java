@@ -53,10 +53,10 @@ public class Helper {
 
     //private static ArrayList<String[]> Update_Users;//Use for send different message to each friend according to his status (New Event/Update Event/Delete Event). [0] - User_ID, [1] - message.
     //private static String[] update_section;//Use for determined what section have been updated (details/users/tasks).
-   // private static int details_num = 0;
+    // private static int details_num = 0;
     // static int users_num = 1;
-   // private static int tasks_num = 2;
-   // private static int vote_date_num = 3;
+    // private static int tasks_num = 2;
+    // private static int vote_date_num = 3;
     //private static int vote_location_num = 4;
 
 
@@ -333,10 +333,10 @@ public class Helper {
                 add_newFriend_MySQL(friend_helper, User_ID);
             } else {//Change permission.
                 if (!User_ID.equals(Constants.MY_User_ID))//No need to send update message to myself.
-                if (!friend_helper.getPermission().equals(Event_Helper.friends.get(User_ID).getPermission())) {
-                    sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Permission}, new String[]{friend_helper.getPermission()},
-                            new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, new String[]{Event_ID, User_ID});
-                }
+                    if (!friend_helper.getPermission().equals(Event_Helper.friends.get(User_ID).getPermission())) {
+                        sqlHelper.update(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Permission}, new String[]{friend_helper.getPermission()},
+                                new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, new String[]{Event_ID, User_ID});
+                    }
             }
         }
         //Delete friends.
@@ -795,8 +795,9 @@ public class Helper {
         //Update Tasks.
         boolean new_task, new_subTask;
         Task_Helper task_helper;
-        String[] task = new String[Table_Tasks.Size() - (Constants.index_object_sql_diff + 1)];//no event_id and no mark filed.
+        String[] task;
         for (int task_id : Event_Helper.task_tmp.keySet()) {
+            task = new String[Table_Tasks.Size() - (Constants.index_object_sql_diff + 1)];//no event_id and no mark filed.
             task_helper = Event_Helper.task_tmp.get(task_id);
             task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
             task[Table_Tasks.subTask_ID_Number_num - Constants.index_object_sql_diff] = 0 + "";
@@ -830,6 +831,7 @@ public class Helper {
         }
         //Delete Tasks.
         for (int task_id : Event_Helper.task.keySet()) {
+            task = new String[2];//only task_id and subTask_id.
             task_helper = Event_Helper.task.get(task_id);
             task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
             task[Table_Tasks.subTask_ID_Number_num - Constants.index_object_sql_diff] = 0 + "";
@@ -850,8 +852,9 @@ public class Helper {
         boolean new_vote_date;
         Vote_Date_Helper vote_date_helper_tmp;
         Vote_Date_Helper vote_date_helper;
-        String[] vote_date = new String[Table_Vote_Date.Size() - Constants.index_object_sql_diff];//no event_id.
+        String[] vote_date;
         for (int vote_id : Event_Helper.vote_date_tmp.keySet()) {
+            vote_date = new String[Table_Vote_Date.Size() - Constants.index_object_sql_diff];//no event_id.
             vote_date_helper_tmp = Event_Helper.vote_date_tmp.get(vote_id);
             vote_date_helper = Event_Helper.vote_date.get(vote_id);
             new_vote_date = vote_date_helper == null;
@@ -877,13 +880,8 @@ public class Helper {
         }
         //Delete Vote_date.
         for (int vote_id : Event_Helper.vote_date.keySet()) {
+            vote_date = new String[1];//only vote_id.
             vote_date[Table_Vote_Date.Vote_ID_num - Constants.index_object_sql_diff] = vote_id + "";
-            vote_date[Table_Vote_Date.Start_Date_num - Constants.index_object_sql_diff] = "";
-            vote_date[Table_Vote_Date.End_Date_num - Constants.index_object_sql_diff] = "";
-            vote_date[Table_Vote_Date.All_Day_Time_num - Constants.index_object_sql_diff] = "";
-            vote_date[Table_Vote_Date.Start_Time_num - Constants.index_object_sql_diff] = "";
-            vote_date[Table_Vote_Date.End_Time_num - Constants.index_object_sql_diff] = "";
-            vote_date[Table_Vote_Date.User_ID_num - Constants.index_object_sql_diff] = "";
             if (Event_Helper.vote_date_tmp.get(vote_id) == null) {
                 updateEvent.getVoteDates().get(Constants.update_event_delete).add(Arrays.asList(vote_date));
             }
@@ -894,8 +892,9 @@ public class Helper {
         boolean new_vote_location;
         Vote_Location_Helper vote_location_helper_tmp;
         Vote_Location_Helper vote_location_helper;
-        String[] vote_location = new String[Table_Vote_Location.Size() - Constants.index_object_sql_diff];//no event_id.
+        String[] vote_location;
         for (int vote_id : Event_Helper.vote_location_tmp.keySet()) {
+            vote_location = new String[Table_Vote_Location.Size() - Constants.index_object_sql_diff];//no event_id.
             vote_location_helper_tmp = Event_Helper.vote_location_tmp.get(vote_id);
             vote_location_helper = Event_Helper.vote_location.get(vote_id);
             new_vote_location = vote_location_helper == null;
@@ -909,13 +908,14 @@ public class Helper {
                 if (!vote_location_helper_tmp.getDescription().equals(vote_location_helper.getDescription())) {
                     //reset the votes users.
                     updateEvent.getVoteLocations().get(Constants.update_event_update).add(Arrays.asList(vote_location));
-                }else {
+                } else {
                     updateEvent.getVoteLocations().get(Constants.update_event_not_change).add(Arrays.asList(vote_location));
                 }
             }
         }
         //Delete Vote_location.
         for (int vote_id : Event_Helper.vote_location.keySet()) {
+            vote_location = new String[0];//only vote_id.
             vote_location[Table_Vote_Location.Event_ID_num] = Event_ID;
             vote_location[Table_Vote_Location.Vote_ID_num] = vote_id + "";
             vote_location[Table_Vote_Location.Description_num] = "";

@@ -29,8 +29,8 @@ public class MySQL_Util {
         return conn;
     }
 
-    public static String[] getCulmnsName(String table){
-        switch(table){
+    public static String[] getCulmnsName(String table) {
+        switch (table) {
 
             case Table_Events_Users.Table_Name:
                 return Table_Events_Users.getAllFields();
@@ -78,7 +78,7 @@ public class MySQL_Util {
         conn.createStatement().execute(query);
     }
 
-    public static void insert(String table_name, String value,String[] values) throws Exception {
+    public static void insert(String table_name, String value, String[] values) throws Exception {
         value = value.replaceAll("\'", "\'\'");
         clean(values);
         String query = "insert into `" + table_name + "` values('";
@@ -93,7 +93,7 @@ public class MySQL_Util {
         conn.createStatement().execute(query);
     }
 
-    public static void addToLog(Exception e){
+    public static void addToLog(Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         LocalDateTime now = LocalDateTime.now();
@@ -113,7 +113,7 @@ public class MySQL_Util {
         }
     }
 
-    public static void addToLog(String log){
+    public static void addToLog(String log) {
         LocalDateTime now = LocalDateTime.now();
         try {
             int year = now.getYear();
@@ -131,11 +131,11 @@ public class MySQL_Util {
         }
     }
 
-    public static void insertAll(String table_name,String value,ArrayList<String[]> values) throws Exception {
+    public static void insertAll(String table_name, String value, ArrayList<String[]> values) throws Exception {
         value = value.replaceAll("\'", "\'\'");
         String query = "insert into `" + table_name + "` values";
         for (int j = 0; j < values.size(); j++) {
-            query += "('"+value + "','";
+            query += "('" + value + "','";
             clean(values.get(j));
             int end = values.get(0).length - 1;
             for (int i = 0; i < end; i++) {
@@ -151,16 +151,16 @@ public class MySQL_Util {
         conn.createStatement().execute(query);
     }
 
-    public static void deleteAll(String table,String value,ArrayList<String[]> values,ArrayList<String> where) throws Exception {
+    public static void deleteAll(String table, String value, ArrayList<String[]> values, ArrayList<String> where) throws Exception {
         value = value.replaceAll("\'", "\'\'");
-        String query = "delete from `" + table +"` WHERE (";
+        String query = "delete from `" + table + "` WHERE (";
         for (String col : where) {
-            query += col+",";
+            query += col + ",";
         }
         query = query.substring(0, query.length() - 1);
         query += ") in (";
         for (int j = 0; j < values.size(); j++) {
-            query += "('"+value + "','";
+            query += "('" + value + "','";
             clean(values.get(j));
             int end = values.get(0).length - 1;
             for (int i = 0; i < end; i++) {
