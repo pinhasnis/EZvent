@@ -100,7 +100,7 @@ public class UpdateEvent {
 
     //"[" - separate between tables. "]" - separate between fileds. Thier is no spaciel sign between records.
     public String toString2() {
-        String str = id + "[" + details_changed;
+        String str = id + "[";
         for (int i = 0; i < details.length - 1; i++) {
             str += details[i] + "]";
         }
