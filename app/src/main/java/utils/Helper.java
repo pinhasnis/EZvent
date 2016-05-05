@@ -911,10 +911,10 @@ public class Helper {
             vote_location_helper_tmp = Event_Helper.vote_location_tmp.get(vote_id);
             vote_location_helper = Event_Helper.vote_location.get(vote_id);
             new_vote_location = vote_location_helper == null;
-            vote_location[Table_Vote_Location.Event_ID_num] = Event_ID;
-            vote_location[Table_Vote_Location.Vote_ID_num] = vote_id + "";
-            vote_location[Table_Vote_Location.Description_num] = vote_location_helper_tmp.getDescription();
-            vote_location[Table_Vote_Location.User_ID_num] = Constants.UnCheck;
+            vote_location[Table_Vote_Location.Event_ID_num - Constants.index_object_sql_diff] = Event_ID;
+            vote_location[Table_Vote_Location.Vote_ID_num - Constants.index_object_sql_diff] = vote_id + "";
+            vote_location[Table_Vote_Location.Description_num - Constants.index_object_sql_diff] = vote_location_helper_tmp.getDescription();
+            vote_location[Table_Vote_Location.User_ID_num - Constants.index_object_sql_diff] = Constants.UnCheck;
             if (new_vote_location) {//Add new vote.
                 updateEvent.getVoteLocations().get(Constants.update_event_new).add(Arrays.asList(vote_location));
             } else {//Update vote date.
@@ -929,10 +929,7 @@ public class Helper {
         //Delete Vote_location.
         for (int vote_id : Event_Helper.vote_location.keySet()) {
             vote_location = new String[0];//only vote_id.
-            vote_location[Table_Vote_Location.Event_ID_num] = Event_ID;
-            vote_location[Table_Vote_Location.Vote_ID_num] = vote_id + "";
-            vote_location[Table_Vote_Location.Description_num] = "";
-            vote_location[Table_Vote_Location.User_ID_num] = "";
+            vote_location[Table_Vote_Location.Vote_ID_num - Constants.index_object_sql_diff] = vote_id + "";
             if (Event_Helper.vote_location_tmp.get(vote_id) == null) {
                 updateEvent.getVoteLocations().get(Constants.update_event_delete).add(Arrays.asList(vote_location));
             }
