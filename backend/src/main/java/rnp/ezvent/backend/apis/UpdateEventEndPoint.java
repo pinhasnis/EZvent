@@ -107,6 +107,30 @@ public class UpdateEventEndpoint {
         if (update != null) {
             ArrayList<String[]> insert = new ArrayList<>();
             ArrayList<String[]> delete = new ArrayList<>();
+            ArrayList<String> where_delete = new ArrayList<>();
+            switch (table_name) {
+                case Table_Events_Users.Table_Name: {
+                    where_delete.add(Table_Events_Users.Event_ID);
+                    where_delete.add(where_delete.size(), Table_Events_Users.User_ID);
+                    break;
+                }
+                case Table_Tasks.Table_Name: {
+                    where_delete.add(Table_Tasks.Event_ID);
+                    where_delete.add(where_delete.size(), Table_Tasks.Task_ID_Number);
+                    where_delete.add(where_delete.size(), Table_Tasks.subTask_ID_Number);
+                    break;
+                }
+                case Table_Vote_Date.Table_Name: {
+                    where_delete.add(Table_Vote_Date.Event_ID);
+                    where_delete.add(where_delete.size(), Table_Vote_Date.Vote_ID);
+                    break;
+                }
+                case Table_Vote_Location.Table_Name: {
+                    where_delete.add(Table_Vote_Location.Event_ID);
+                    where_delete.add(where_delete.size(), Table_Vote_Location.Vote_ID);
+                    break;
+                }
+            }
 
             if (update[Constants.update_event_update].size() > 0) {
                 insert.addAll(update[Constants.update_event_update]);
@@ -119,7 +143,7 @@ public class UpdateEventEndpoint {
                 insert.addAll(update[Constants.update_event_new]);
             }
             if (delete.size() > 0) {
-                MySQL_Util.deleteAll(table_name, event_id, delete);
+                MySQL_Util.deleteAll(table_name, event_id, delete, where_delete);
             }
             if (insert.size() > 0) {
                 MySQL_Util.insertAll(table_name, event_id, insert);
@@ -128,4 +152,3 @@ public class UpdateEventEndpoint {
     }
 
 }
-
