@@ -67,11 +67,11 @@ public final class Event_Helper {
             task_tmp.put(task_id, task_helper);
         }
         for (Integer vote_id : vote_date.keySet()) {
-            Vote_Date_Helper vote_date_helper = vote_date.get(vote_id);
+            Vote_Date_Helper vote_date_helper = vote_date.get(vote_id).make_copy();
             vote_date_tmp.put(vote_id, vote_date_helper);
         }
         for (Integer vote_id : vote_location.keySet()) {
-            Vote_Location_Helper vote_location_helper = vote_location.get(vote_id);
+            Vote_Location_Helper vote_location_helper = vote_location.get(vote_id).make_copy();
             vote_location_tmp.put(vote_id, vote_location_helper);
         }
     }

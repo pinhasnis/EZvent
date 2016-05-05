@@ -30,4 +30,8 @@ public class Vote_Location_Helper {
     public void setVotes(HashMap<String, String> votes) {
         this.votes = votes;
     }
+
+    public Vote_Location_Helper make_copy() {
+        return new Vote_Location_Helper(Description);
+    }
 }
