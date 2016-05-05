@@ -111,23 +111,23 @@ public class UpdateEventEndPoint {
             switch (table_name) {
                 case Table_Events_Users.Table_Name: {
                     where_delete.add(Table_Events_Users.Event_ID);
-                    where_delete.add(where_delete.size(), Table_Events_Users.User_ID);
+                    where_delete.add(Table_Events_Users.User_ID);
                     break;
                 }
                 case Table_Tasks.Table_Name: {
                     where_delete.add(Table_Tasks.Event_ID);
-                    where_delete.add(where_delete.size(), Table_Tasks.Task_ID_Number);
-                    where_delete.add(where_delete.size(), Table_Tasks.subTask_ID_Number);
+                    where_delete.add(Table_Tasks.Task_ID_Number);
+                    where_delete.add(Table_Tasks.subTask_ID_Number);
                     break;
                 }
                 case Table_Vote_Date.Table_Name: {
                     where_delete.add(Table_Vote_Date.Event_ID);
-                    where_delete.add(where_delete.size(), Table_Vote_Date.Vote_ID);
+                    where_delete.add(Table_Vote_Date.Vote_ID);
                     break;
                 }
                 case Table_Vote_Location.Table_Name: {
                     where_delete.add(Table_Vote_Location.Event_ID);
-                    where_delete.add(where_delete.size(), Table_Vote_Location.Vote_ID);
+                    where_delete.add(Table_Vote_Location.Vote_ID);
                     break;
                 }
             }
