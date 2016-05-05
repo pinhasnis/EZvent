@@ -765,8 +765,9 @@ public class Helper {
         }
         //Update Friends list invention.
         Friend_Helper friend_helper;
-        String[] friend = new String[Table_Events_Users.Size() - Constants.index_object_sql_diff];
+        String[] friend;
         for (String User_ID : Event_Helper.friends_tmp.keySet()) {
+            friend = new String[Table_Events_Users.Size() - Constants.index_object_sql_diff];
             friend_helper = Event_Helper.friends_tmp.get(User_ID);
             friend[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff] = User_ID;
             friend[Table_Events_Users.Attending_num - Constants.index_object_sql_diff] = friend_helper.getAttending();
@@ -783,10 +784,9 @@ public class Helper {
         }
         //Delete friends.
         for (String User_ID : Event_Helper.friends.keySet()) {
+            friend = new String[1];//
             friend_helper = Event_Helper.friends.get(User_ID);
             friend[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff] = User_ID;
-            friend[Table_Events_Users.Attending_num - Constants.index_object_sql_diff] = "";
-            friend[Table_Events_Users.Permission_num - Constants.index_object_sql_diff] = "";
             if (Event_Helper.friends_tmp.get(User_ID) == null) {
                 updateEvent.getEventUsers().get(Constants.update_event_delete).add(Arrays.asList(friend));
             }
@@ -833,9 +833,6 @@ public class Helper {
             task_helper = Event_Helper.task.get(task_id);
             task[Table_Tasks.Task_ID_Number_num - Constants.index_object_sql_diff] = task_id + "";
             task[Table_Tasks.subTask_ID_Number_num - Constants.index_object_sql_diff] = 0 + "";
-            task[Table_Tasks.Task_Type_num - Constants.index_object_sql_diff] = "";
-            task[Table_Tasks.Description_num - Constants.index_object_sql_diff] = "";
-            task[Table_Tasks.User_ID_num - Constants.index_object_sql_diff] = "";
             if (Event_Helper.task_tmp.get(task_id) == null) {
                 updateEvent.getTasks().get(Constants.update_event_delete).add(Arrays.asList(task));
             } else {
@@ -1135,6 +1132,5 @@ public class Helper {
             minute = 0 + minute;
         return hour + ":" + minute;
     }
-
 
 }
