@@ -90,7 +90,7 @@ public class UpdateEventEndPoint {
 
     private void sendToUsers(UpdateEvent update_event, ArrayList<String[]> users, String user_id) throws IOException {
         if (users.size() > 0) {
-            String str_event_update = update_event.toString2();
+            String str_event_update = Constants.Update_Event + update_event.toString2();
             int byteSize = byteSizeUTF8(str_event_update);
             String message = Constants.Request_New_Event + update_event.getId();
             if (byteSize != -1 && byteSize < 4000) {// 4000 bytes = 4kb
