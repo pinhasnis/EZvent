@@ -97,7 +97,7 @@ public class UpdateEventEndpoint {
             }
             MessagingEndpoint msg = new MessagingEndpoint();
             for (int i = 0; i < users.size(); i++) {
-                if (!users.get(i).equals(user_id))
+                if (!users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff].equals(user_id))
                     msg.sendMessage(str_event_update, users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]);
             }
         }
