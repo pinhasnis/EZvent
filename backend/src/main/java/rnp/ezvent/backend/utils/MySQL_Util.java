@@ -171,7 +171,6 @@ public class MySQL_Util {
         }
         query = query.substring(0, query.length() - 1);
         query += ");";
-
         Connection conn = getConnection();
         conn.createStatement().execute(query);
     }

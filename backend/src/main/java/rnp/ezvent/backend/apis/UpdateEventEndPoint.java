@@ -136,8 +136,8 @@ public class UpdateEventEndPoint {
                 insert.addAll(update[Constants.update_event_update]);
                 ArrayList<String[]> vals = new ArrayList<>();
                 for (String[] arr: update[Constants.update_event_update]) {
-                    String[] newArr = new String[where_delete.size()];
-                    for (int j = 0; j < newArr.length-1; j++) { // minus one because of event-id!
+                    String[] newArr = new String[where_delete.size()-1]; // minus one because of event-id!
+                    for (int j = 0; j < newArr.length; j++) {
                         newArr[j] = arr[j];
                     }
                     vals.add(newArr);
