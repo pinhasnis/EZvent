@@ -134,7 +134,15 @@ public class UpdateEventEndPoint {
 
             if (update[Constants.update_event_update].size() > 0) {
                 insert.addAll(update[Constants.update_event_update]);
-                delete.addAll(update[Constants.update_event_update]);
+                ArrayList<String[]> vals = new ArrayList<>();
+                for (String[] arr: update[Constants.update_event_update]) {
+                    String[] newArr = new String[where_delete.size()];
+                    for (int j = 0; j < newArr.length; j++) {
+                        newArr[j] = arr[j];
+                    }
+                    vals.add(newArr);
+                }
+                delete.addAll(vals);
             }
             if (update[Constants.update_event_delete].size() > 0) {
                 delete.addAll(update[Constants.update_event_delete]);
