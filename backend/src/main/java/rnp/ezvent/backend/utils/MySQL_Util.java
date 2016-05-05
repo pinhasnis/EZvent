@@ -201,6 +201,7 @@ public class MySQL_Util {
     public static void deleteTable(String table) throws Exception {
         String query = "DROP TABLE " + table + ";";
         Connection conn = getConnection();
+        addToLog(query);
         conn.createStatement().execute(query);
 
     }
