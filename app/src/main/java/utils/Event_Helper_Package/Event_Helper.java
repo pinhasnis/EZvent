@@ -52,6 +52,7 @@ public final class Event_Helper {
     }
 
     public static void make_copy() {
+        details_tmp = new String[Table_Events.Size()];
         for (int i = 0; i < details.length; i++)
             details_tmp[i] = details[i];
         friends_tmp = new HashMap<>();

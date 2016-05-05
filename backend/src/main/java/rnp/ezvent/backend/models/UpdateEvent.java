@@ -104,7 +104,10 @@ public class UpdateEvent {
         for (int i = 0; i < details.length - 1; i++) {
             str += details[i] + "]";
         }
-        str += details[details.length - 1] + "[";
+        if (details_changed == Constants.True)
+            str += details[details.length - 1] + "[";
+        else
+            str += "[";
 
         for (ArrayList<String[]> users : event_users) {
             for (int i = 0; i < users.size(); i++) {
