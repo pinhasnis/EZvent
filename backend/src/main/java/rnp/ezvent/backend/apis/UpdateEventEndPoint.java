@@ -37,7 +37,7 @@ import static rnp.ezvent.backend.utils.MySQL_Util.addToLog;
                 Constants.WEB_CLIENT_ID},
         audiences = {Constants.AUDIENCE_ID}
 )
-public class UpdateEventEndpoint {
+public class UpdateEventEndPoint {
 
     @ApiMethod(name = "updateEvent", path = "updateEvent")
     public void Update(UpdateEvent update_event) {
