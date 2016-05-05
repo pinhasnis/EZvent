@@ -71,6 +71,20 @@ public class GcmIntentService extends GcmListenerService {
                 try {
                     Event event = myApiService.requestEvent(details).execute();
                     if (event != null) {
+                        //Check if the event is alredy exist. If it exist delete and insert.
+                        if (!sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID},
+                                new String[]{event.getId()}, new int[]{1})[0].isEmpty()){
+                            //Delete event.
+                            sqlHelper.delete(Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{details}, new int[]{1});
+                            //Delete event_user.
+                            sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID}, new String[]{details}, null);
+                            //Delete tasks.
+                            sqlHelper.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID}, new String[]{details}, null);
+                            //Delete vote_date.
+                            sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID}, new String[]{details}, null);
+                            //Delete vote_location.
+                            sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID}, new String[]{details}, null);
+                        }
                         addEventWithSafeSQL(event);
                     }
                 } catch (Exception e) {
