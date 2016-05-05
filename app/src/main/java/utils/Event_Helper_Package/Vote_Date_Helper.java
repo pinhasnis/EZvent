@@ -2,6 +2,8 @@ package utils.Event_Helper_Package;
 
 import java.util.HashMap;
 
+import server.Vote_Date.Vote_Date_AsyncTask_delete_vote_user_id;
+
 /**
  * Created by Ravid on 05/03/2016.
  */
@@ -24,6 +26,7 @@ public class Vote_Date_Helper {
         End_Time = end_Time;
         this.votes = new HashMap<>();
     }
+
 
     public String getAll_Day() {
         return All_Day;
@@ -71,5 +74,9 @@ public class Vote_Date_Helper {
 
     public void setVotes(HashMap<String, String> votes) {
         this.votes = votes;
+    }
+
+    public Vote_Date_Helper make_copy() {
+        return new Vote_Date_Helper(Start_Date, End_Date, All_Day, Start_Time, End_Time);
     }
 }
