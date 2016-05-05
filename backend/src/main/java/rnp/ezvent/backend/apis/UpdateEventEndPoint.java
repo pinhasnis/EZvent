@@ -92,13 +92,14 @@ public class UpdateEventEndPoint {
         if (users.size() > 0) {
             String str_event_update = update_event.toString2();
             int byteSize = byteSizeUTF8(str_event_update);
+            String message = Constants.Request_New_Event + update_event.getId();
             if (byteSize != -1 && byteSize < 4000) {// 4000 bytes = 4kb
-                str_event_update = Constants.Request_New_Event + update_event.getId();
+                message = str_event_update;
             }
             MessagingEndpoint msg = new MessagingEndpoint();
             for (int i = 0; i < users.size(); i++) {
                 if (!users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff].equals(user_id))
-                    msg.sendMessage(str_event_update, users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]);
+                    msg.sendMessage(message, users.get(i)[Table_Events_Users.User_ID_num - Constants.index_object_sql_diff]);
             }
         }
     }
