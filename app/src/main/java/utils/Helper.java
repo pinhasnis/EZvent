@@ -200,7 +200,10 @@ public class Helper {
         String Chat_Table_Name = null;
         switch (action) {
             //delete event: 0 - event_id. leave event: 0 - event_id, 1 - user_id.
-            case Constants.Delete_Event:
+            case Constants.Delete_Event:{
+                Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
+                break;
+            }
             case Constants.Leave_Event: {
                 Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
                 //Delete event.
@@ -324,7 +327,7 @@ public class Helper {
     private static void Update_Event_MySQL(String Event_ID) {
         //Update event (delete and then insert).
         sqlHelper.delete(Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{Event_ID}, new int[]{1});
-        sqlHelper.insert(Table_Events.Table_Name, Event_Helper.details);
+        sqlHelper.insert(Table_Events.Table_Name, Event_Helper.details_tmp);
         //Update Friends list invention.
         Friend_Helper friend_helper;
         for (String User_ID : Event_Helper.friends_tmp.keySet()) {
@@ -757,12 +760,13 @@ public class Helper {
         for (int i = 0; i < Event_Helper.details.length; i++) {
             if (!Event_Helper.details[i].equals(Event_Helper.details_tmp[i])) {
                 updateEvent.setDetailsChanged(Constants.True);
-                ArrayList<String> details = new ArrayList<>(Arrays.asList(Event_Helper.details_tmp));
-                details.remove(0);//remove event_id.
-                updateEvent.setDetails(details);
                 break;
             }
         }
+        ArrayList<String> details = new ArrayList<>(Arrays.asList(Event_Helper.details_tmp));
+        details.remove(0);//remove event_id.
+        updateEvent.setDetails(details);
+
         //Update Friends list invention.
         Friend_Helper friend_helper;
         String[] friend;

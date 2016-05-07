@@ -49,6 +49,7 @@ import utils.Constans.Constants;
 import utils.Constans.Table_Events;
 import utils.Constans.Table_Events_Users;
 import utils.Constans.Table_Tasks;
+import utils.Event_Helper_Package.Event_Helper;
 import utils.Helper;
 import utils.bitmapHelper;
 import utils.sqlHelper;
@@ -670,6 +671,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
                             .setMessage("Are you sure you want to Delete/Leave this Event?")
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    Event_Helper.load_event(Event_ID);
                                     Helper.simple_update(v.getContext(), Constants.Delete_Event, new String[]{Event_ID});
                                     //users_names.remove(position);
                                     //IDS.remove(position);
@@ -680,6 +682,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
                             })
                             .setNeutralButton("Leave", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    Event_Helper.load_event(Event_ID);
                                     Helper.simple_update(v.getContext(), Constants.Leave_Event, new String[]{Event_ID, Constants.MY_User_ID});
                                     //users_names.remove(position);
                                     //IDS.remove(position);

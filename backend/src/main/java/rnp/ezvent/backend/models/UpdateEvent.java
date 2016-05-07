@@ -104,7 +104,7 @@ public class UpdateEvent {
         for (int i = 0; i < details.length - 1; i++) {
             str += details[i] + "]";
         }
-        if (details_changed == Constants.True)
+        if (details.length > 0)
             str += details[details.length - 1] + "[";
         else
             str += "[";

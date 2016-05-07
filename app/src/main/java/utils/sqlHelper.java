@@ -42,6 +42,85 @@ public final class sqlHelper {
         return db;
     }
 
+    public static String[] getCulmnsName(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return Table_Events.getAllFields();
+            case Table_Events_Users.Table_Name:
+                return Table_Events_Users.getAllFields();
+            case Table_Tasks.Table_Name:
+                return Table_Tasks.getAllFields();
+            case Table_Vote_Location.Table_Name:
+                return Table_Vote_Location.getAllFields();
+            case Table_Vote_Date.Table_Name:
+                return Table_Vote_Date.getAllFields();
+        }
+
+        return null;
+    }
+
+    private static String getEventIDField(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return Table_Events.Event_ID;
+            case Table_Events_Users.Table_Name:
+                return Table_Events_Users.Event_ID;
+            case Table_Tasks.Table_Name:
+                return Table_Tasks.Event_ID;
+            case Table_Vote_Location.Table_Name:
+                return Table_Vote_Location.Event_ID;
+            case Table_Vote_Date.Table_Name:
+                return Table_Vote_Date.Event_ID;
+        }
+        return null;
+    }
+
+    public static void update(String table_name, String event_id, String[] set_values) {
+        try {
+            clean(set_values);
+            String set_columns[] = getCulmnsName(table_name);
+
+            String query = "update `" + table_name + "` set ";
+            int end = set_values.length - 1;
+            query += "`" + set_columns[0] + "` = '" + event_id + "',";
+            for (int i = 0; i < end; i++) {
+                query += "`" + set_columns[i+Constants.index_object_sql_diff] + "` = '" + set_values[i] + "',";
+            }
+            query += "`" + set_columns[end+Constants.index_object_sql_diff] + "` = '" + set_values[end] + "' ";
+            query += "where "+ getEventIDField(table_name) +" `= ' "+event_id+"';";
+
+            SQLiteDatabase db = getConnection();
+            db.execSQL(query);
+            db.close();
+        }catch(Exception e){
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            LocalDateTime now = LocalDateTime.now();
+            try {
+                int year = now.getYear();
+                int month = now.getMonthOfYear();
+                int day = now.getDayOfMonth();
+                int hour = now.getHourOfDay();
+                int minute = now.getMinuteOfHour();
+                int second = now.getSecondOfMinute();
+                int millis = now.getMillisOfSecond();
+                String date = day+"/"+month+"/"+year;
+                String time = hour+":"+minute+":"+second+":"+millis;
+                String eString = sw.toString();
+                if(eString.length() > 1000){
+                    eString = eString.substring(0,1000)+"...";
+                }
+                new add_logAsyncTask().execute(eString, date, time);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+        }
+    }
+
+
+
+
     public static void update(String table_name, String[] set_columns, String[] set_values, String[] where_columns, String[] where_values) {
         try {
             clean(set_values);
