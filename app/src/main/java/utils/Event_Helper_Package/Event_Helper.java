@@ -124,7 +124,7 @@ public final class Event_Helper {
         Vote_Date_Helper vote_date_helper;
         long vote_date_id;
         for (int i = 0; i < dbSql[0].size(); i++) {
-            vote_date_id = Integer.parseInt(dbSql[Table_Vote_Date.Vote_ID_num].get(i));
+            vote_date_id = Long.parseLong(dbSql[Table_Vote_Date.Vote_ID_num].get(i));
             if (dbSql[Table_Vote_Date.User_ID_num].get(i).equals(Constants.UnCheck)) {//Check if it's a location or user_id.
                 vote_date_helper = new Vote_Date_Helper(dbSql[Table_Vote_Date.Start_Date_num].get(i), dbSql[Table_Vote_Date.End_Date_num].get(i),
                         dbSql[Table_Vote_Date.All_Day_Time_num].get(i), dbSql[Table_Vote_Date.Start_Time_num].get(i), dbSql[Table_Vote_Date.End_Time_num].get(i));
