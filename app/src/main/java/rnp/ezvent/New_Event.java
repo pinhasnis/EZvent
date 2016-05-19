@@ -1037,6 +1037,10 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
                     itemController.all_day.setChecked(true);
                     itemController.time1.setVisibility(View.GONE);
                     itemController.time2.setVisibility(View.GONE);
+                }else{
+                    itemController.all_day.setChecked(false);
+                    itemController.time1.setVisibility(View.VISIBLE);
+                    itemController.time2.setVisibility(View.VISIBLE);
                 }
                 itemController.date1.setOnClickListener(new View.OnClickListener() {
                     @Override
