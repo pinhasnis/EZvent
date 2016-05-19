@@ -329,7 +329,7 @@ public class New_Event extends AppCompatActivity {
                     details_pointer[Table_Events.Location_num] = editText_location.getText().toString();
                 }
                 //Set vote pointer.
-                HashMap<Integer, Vote_Date_Helper> vote_date_pointer;
+                HashMap<Long, Vote_Date_Helper> vote_date_pointer;
                 HashMap<Integer, Vote_Location_Helper> vote_location_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     vote_date_pointer = Event_Helper.vote_date;
@@ -881,7 +881,7 @@ public class New_Event extends AppCompatActivity {
             else
                 details_pointer = Event_Helper.details_tmp;
             if (details_pointer[Table_Events.Vote_Time_num].equals(Constants.Yes)) {
-                final HashMap<Integer, Vote_Date_Helper> vote_pointer;
+                final HashMap<Long, Vote_Date_Helper> vote_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     vote_pointer = Event_Helper.vote_date;
                 } else {
@@ -895,11 +895,12 @@ public class New_Event extends AppCompatActivity {
                 recyclerView_date.setLayoutManager(new LinearLayoutManager(getContext()));
                 List<ExpandableListAdapter_New_Event_Vote_Date.Item> data = new ArrayList<>();
                 if (Event_Helper.vote_date.size() == 0) {
-                    data.add(new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, 1));
-                    vote_pointer.put(1, new Vote_Date_Helper("dd/mm/yyyy", "dd/mm/yyyy", Constants.No, "hh:mm", "hh:mm"));
+                    long Vote_ID = System.currentTimeMillis();
+                    data.add(new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, Vote_ID));
+                    vote_pointer.put(Vote_ID, new Vote_Date_Helper("dd/mm/yyyy", "dd/mm/yyyy", Constants.No, "hh:mm", "hh:mm"));
                     Event_Helper.vote_date_ID_generator++;
                 } else {
-                    for (int vote_id : Event_Helper.vote_date.keySet()) {
+                    for (long vote_id : Event_Helper.vote_date.keySet()) {
                         data.add(new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, vote_id));
                     }
                 }
@@ -971,10 +972,10 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
     private List<Item> data;
     private RecyclerView recyclerView;
     private int recyclerView_height_dp;
-    private HashMap<Integer, Vote_Date_Helper> vote_date_pointer;
+    private HashMap<Long, Vote_Date_Helper> vote_date_pointer;
     private final static boolean apk23 = Build.VERSION.SDK_INT >= 23;
 
-    private int Vote_ID;
+    private long Vote_ID;
     private int vote_height;
     private int add_height;
 
@@ -1103,7 +1104,7 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
                     @Override
                     public void onClick(View v) {
                         //Event_Helper.vote_date_ID_generator++;
-                        int Vote_ID = (int) System.currentTimeMillis();
+                        long Vote_ID = System.currentTimeMillis();
                         //data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, Event_Helper.vote_date_ID_generator));
                         //vote_date_pointer.put(Event_Helper.vote_date_ID_generator,
                         data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, Vote_ID));
@@ -1133,7 +1134,7 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
         return data.get(position).type;
     }
 
-    private void date(View v, final TextView date_view1, final TextView date_view2, final Boolean isStartDate, final int vote_id) {
+    private void date(View v, final TextView date_view1, final TextView date_view2, final Boolean isStartDate, final long vote_id) {
         final Dialog dialog = new Dialog(v.getContext());
         dialog.setContentView(R.layout.new_event_detail_date_dialog);
         dialog.setCancelable(true);
@@ -1173,7 +1174,7 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
         });
     }
 
-    private void time(View v, final TextView time_view1, final TextView time_view2, final Boolean isStartTime, final int vote_id) {
+    private void time(View v, final TextView time_view1, final TextView time_view2, final Boolean isStartTime, final long vote_id) {
         final Dialog dialog = new Dialog(v.getContext());
         dialog.setContentView(R.layout.new_event_detail_time_dialog);
         dialog.setCancelable(true);
@@ -1254,14 +1255,14 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
 
     public static class Item {
         public int type;
-        public int Vote_ID;
+        public long Vote_ID;
 
         public List<Item> invisibleChildren;
 
         public Item() {
         }
 
-        public Item(int type, int Vote_ID) {
+        public Item(int type, long Vote_ID) {
             this.type = type;
             this.Vote_ID = Vote_ID;
         }

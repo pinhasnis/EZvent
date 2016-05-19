@@ -327,7 +327,7 @@ public class Helper {
         String Chat_ID = Table_Chat.Table_Name + Helper.Clean_Event_ID(Event_Helper.details[Table_Events.Event_ID_num]);
         sqlHelper.Create_Table(Chat_ID, Table_Chat.getAllFields(), Table_Chat.getAllSqlParams());
         //Add vote_date.
-        for (int vote_id : Event_Helper.vote_date.keySet()) {
+        for (long vote_id : Event_Helper.vote_date.keySet()) {
             Vote_Date_Helper vote_date_helper = Event_Helper.vote_date.get(vote_id);
             add_newVote_Date_Option_MySQL(vote_date_helper, vote_id);
         }
@@ -409,7 +409,7 @@ public class Helper {
         boolean new_vote_date;
         Vote_Date_Helper vote_date_helper_tmp;
         Vote_Date_Helper vote_date_helper;
-        for (int vote_id : Event_Helper.vote_date_tmp.keySet()) {
+        for (long vote_id : Event_Helper.vote_date_tmp.keySet()) {
             vote_date_helper_tmp = Event_Helper.vote_date_tmp.get(vote_id);
             vote_date_helper = Event_Helper.vote_date.get(vote_id);
             new_vote_date = vote_date_helper == null;
@@ -426,7 +426,7 @@ public class Helper {
             }
         }
         //Delete Vote_date.
-        for (int vote_id : Event_Helper.vote_date.keySet()) {
+        for (long vote_id : Event_Helper.vote_date.keySet()) {
             vote_date_helper = Event_Helper.vote_date.get(vote_id);
             if (Event_Helper.vote_date_tmp.get(vote_id) == null) {
                 sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID}, new String[]{Event_ID, vote_id + ""}, null);
@@ -501,7 +501,7 @@ public class Helper {
         sqlHelper.insert(Table_Tasks.Table_Name, task);
     }
 
-    private static void add_newVote_Date_Option_MySQL(Vote_Date_Helper vote_date_helper, int vote_id) {
+    private static void add_newVote_Date_Option_MySQL(Vote_Date_Helper vote_date_helper, long vote_id) {
         String[] vote_date = new String[Table_Vote_Date.Size()];
         vote_date[Table_Vote_Date.Event_ID_num] = Event_Helper.details[Table_Events.Event_ID_num];
         vote_date[Table_Vote_Date.Vote_ID_num] = vote_id + "";
@@ -672,7 +672,7 @@ public class Helper {
         // set vote date
         ArrayList<List<String>> vote_date = new ArrayList<>();
 
-        for (int vote_id : Event_Helper.vote_date.keySet()) {
+        for (long vote_id : Event_Helper.vote_date.keySet()) {
             Vote_Date_Helper vote_date_helper = Event_Helper.vote_date.get(vote_id);
             List<String> list = new ArrayList<>();
             list.add(vote_id + "");
@@ -884,7 +884,7 @@ public class Helper {
         Vote_Date_Helper vote_date_helper_tmp;
         Vote_Date_Helper vote_date_helper;
         String[] vote_date;
-        for (int vote_id : Event_Helper.vote_date_tmp.keySet()) {
+        for (long vote_id : Event_Helper.vote_date_tmp.keySet()) {
             vote_date = new String[Table_Vote_Date.Size() - Constants.index_object_sql_diff];//no event_id.
             vote_date_helper_tmp = Event_Helper.vote_date_tmp.get(vote_id);
             vote_date_helper = Event_Helper.vote_date.get(vote_id);
@@ -910,7 +910,7 @@ public class Helper {
             }
         }
         //Delete Vote_date.
-        for (int vote_id : Event_Helper.vote_date.keySet()) {
+        for (long vote_id : Event_Helper.vote_date.keySet()) {
             vote_date = new String[1];//only vote_id.
             vote_date[Table_Vote_Date.Vote_ID_num - Constants.index_object_sql_diff] = vote_id + "";
             if (Event_Helper.vote_date_tmp.get(vote_id) == null) {

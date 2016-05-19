@@ -22,8 +22,8 @@ public final class Event_Helper {
     public static HashMap<String, Friend_Helper> friends_tmp;//Use for edit event.
     public static HashMap<Integer, Task_Helper> task = new HashMap();//0-Task_ID
     public static HashMap<Integer, Task_Helper> task_tmp;//Use for edit event.
-    public static HashMap<Integer, Vote_Date_Helper> vote_date = new HashMap();//0-Vote_ID
-    public static HashMap<Integer, Vote_Date_Helper> vote_date_tmp;//Use for edit event.
+    public static HashMap<Long, Vote_Date_Helper> vote_date = new HashMap();//0-Vote_ID
+    public static HashMap<Long, Vote_Date_Helper> vote_date_tmp;//Use for edit event.
     public static HashMap<Integer, Vote_Location_Helper> vote_location = new HashMap();//0-Vote_ID
     public static HashMap<Integer, Vote_Location_Helper> vote_location_tmp;//Use for edit event.
     public static int task_ID_generator = 0;//Store the last ID number that was in use.
@@ -67,7 +67,7 @@ public final class Event_Helper {
             Task_Helper task_helper = task.get(task_id).make_copy();
             task_tmp.put(task_id, task_helper);
         }
-        for (Integer vote_id : vote_date.keySet()) {
+        for (Long vote_id : vote_date.keySet()) {
             Vote_Date_Helper vote_date_helper = vote_date.get(vote_id).make_copy();
             vote_date_tmp.put(vote_id, vote_date_helper);
         }
@@ -122,14 +122,14 @@ public final class Event_Helper {
         //Load vote_date.
         dbSql = sqlHelper.select(null, Table_Vote_Date.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{event_id}, null);
         Vote_Date_Helper vote_date_helper;
-        int vote_date_id;
+        long vote_date_id;
         for (int i = 0; i < dbSql[0].size(); i++) {
             vote_date_id = Integer.parseInt(dbSql[Table_Vote_Date.Vote_ID_num].get(i));
             if (dbSql[Table_Vote_Date.User_ID_num].get(i).equals(Constants.UnCheck)) {//Check if it's a location or user_id.
                 vote_date_helper = new Vote_Date_Helper(dbSql[Table_Vote_Date.Start_Date_num].get(i), dbSql[Table_Vote_Date.End_Date_num].get(i),
                         dbSql[Table_Vote_Date.All_Day_Time_num].get(i), dbSql[Table_Vote_Date.Start_Time_num].get(i), dbSql[Table_Vote_Date.End_Time_num].get(i));
                 vote_date.put(vote_date_id, vote_date_helper);
-                vote_date_ID_generator = Math.max(vote_date_ID_generator, vote_date_id);
+                //vote_date_ID_generator = Math.max(vote_date_ID_generator, vote_date_id);
             } else {
                 String User_ID = dbSql[Table_Vote_Date.User_ID_num].get(i);
                 vote_date.get(vote_date_id).getVotes().put(User_ID, User_ID);

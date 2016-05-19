@@ -469,7 +469,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                 recyclerView_date.setLayoutManager(new LinearLayoutManager(getContext()));
                 List<ExpandableListAdapter_Event_Vote_Date.Item> data = new ArrayList<>();
                 ExpandableListAdapter_Event_Vote_Date.Item vote;
-                for (int vote_id : Event_Helper.vote_date.keySet()) {
+                for (long vote_id : Event_Helper.vote_date.keySet()) {
                     vote = new ExpandableListAdapter_Event_Vote_Date.Item(ExpandableListAdapter_Event_Vote_Date.Vote_Date_Parent, vote_id, Constants.UnCheck);
                     Vote_Date_Helper vote_date_helper = Event_Helper.vote_date.get(vote_id);
                     for (String User_ID : vote_date_helper.getVotes().keySet()) {
@@ -586,7 +586,7 @@ class ExpandableListAdapter_Event_Vote_Date extends RecyclerView.Adapter<Recycle
     private List<Item> data;
     private RecyclerView recyclerView;
 
-    private int Vote_ID;
+    private long Vote_ID;
     private String User_ID;
 
     public List<Item> getData() {
@@ -802,7 +802,7 @@ class ExpandableListAdapter_Event_Vote_Date extends RecyclerView.Adapter<Recycle
 
     public static class Item {
         public int type;
-        public int Vote_ID;
+        public long Vote_ID;
         public String User_ID;
 
         public List<Item> invisibleChildren;
@@ -810,7 +810,7 @@ class ExpandableListAdapter_Event_Vote_Date extends RecyclerView.Adapter<Recycle
         public Item() {
         }
 
-        public Item(int type, int Vote_ID, String User_ID) {
+        public Item(int type, long Vote_ID, String User_ID) {
             this.type = type;
             this.Vote_ID = Vote_ID;
             this.User_ID = User_ID;
