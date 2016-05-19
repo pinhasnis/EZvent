@@ -1102,9 +1102,12 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
                 itemController.imageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Event_Helper.vote_date_ID_generator++;
-                        data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, Event_Helper.vote_date_ID_generator));
-                        vote_date_pointer.put(Event_Helper.vote_date_ID_generator,
+                        //Event_Helper.vote_date_ID_generator++;
+                        int Vote_ID = (int) System.currentTimeMillis();
+                        //data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, Event_Helper.vote_date_ID_generator));
+                        //vote_date_pointer.put(Event_Helper.vote_date_ID_generator,
+                        data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Date.Item(ExpandableListAdapter_New_Event_Vote_Date.Vote_Date, Vote_ID));
+                        vote_date_pointer.put(Vote_ID,
                                 new Vote_Date_Helper("dd/mm/yyyy", "dd/mm/yyyy", Constants.No, "hh:mm", "hh:mm"));
                         notifyDataSetChanged();
                         //notifyItemInserted(data.size() - 1);
