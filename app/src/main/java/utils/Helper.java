@@ -560,7 +560,7 @@ public class Helper {
                 new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID}, new String[]{Event_ID, User_ID});
     }
 
-    public static void set_task_user_ID_MySQL(String Event_ID, int task_id, String user_id) {
+    public static void set_task_user_ID_MySQL(String Event_ID, long task_id, String user_id) {
         sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.User_ID}, new String[]{user_id},
                 new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number}, new String[]{Event_ID, task_id + "", 0 + ""});
     }
@@ -583,12 +583,12 @@ public class Helper {
                 new String[]{Table_Events.Event_ID}, new String[]{Event_ID});
     }
 
-    public static void delete_vote_date_User_ID_MySQL(String Event_ID, int Vote_ID, String User_ID) {
+    public static void delete_vote_date_User_ID_MySQL(String Event_ID, long Vote_ID, String User_ID) {
         sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID, Table_Vote_Date.User_ID},
                 new String[]{Event_ID, Vote_ID + "", User_ID}, new int[]{1});
     }
 
-    public static void delete_vote_location_User_ID_MySQL(String Event_ID, int Vote_ID, String User_ID) {
+    public static void delete_vote_location_User_ID_MySQL(String Event_ID, long Vote_ID, String User_ID) {
         sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID, Table_Vote_Location.User_ID},
                 new String[]{Event_ID, Vote_ID + "", User_ID}, new int[]{1});
     }
@@ -974,7 +974,7 @@ public class Helper {
         new EventUser_AsyncTask_UpdateAttending(context).execute(Event_ID, User_ID, attending);
     }
 
-    public static void set_task_user_ID_ServerSQL(Context context, String Event_ID, int task_id, String user_id) {
+    public static void set_task_user_ID_ServerSQL(Context context, String Event_ID, long task_id, String user_id) {
         new Task_AsyncTask_update_User_ID(context).execute(Event_ID, task_id + "", 0 + "", user_id);
     }
 
@@ -1000,21 +1000,21 @@ public class Helper {
         new Event_AsyncTask_update_field(context).execute(Event_ID, field_name, update);
     }
 
-    private static void add_vote_date_User_ID_ServerSQL(Context context, String Event_ID, int Vote_ID, String User_ID) {
+    private static void add_vote_date_User_ID_ServerSQL(Context context, String Event_ID, long Vote_ID, String User_ID) {
         new Vote_Date_AsyncTask_insert(context).execute(Event_ID, Vote_ID + "", "", "", "", "", "", User_ID);
     }
 
-    private static void add_vote_location_User_ID_ServerSQL(Context context, String Event_ID, int Vote_ID, String User_ID) {
+    private static void add_vote_location_User_ID_ServerSQL(Context context, String Event_ID, long Vote_ID, String User_ID) {
         new Vote_Location_AsyncTask_insert(context).execute(Event_ID, Vote_ID + "", User_ID);
     }
 
-    private static void delete_vote_date_User_ID_ServerSQL(Context context, String Event_ID, int Vote_ID, String User_ID) {
+    private static void delete_vote_date_User_ID_ServerSQL(Context context, String Event_ID, long Vote_ID, String User_ID) {
         new Vote_Date_AsyncTask_delete_vote_user_id(context).execute(Event_ID, Vote_ID + "", User_ID);
 
 
     }
 
-    private static void delete_vote_location_User_ID_ServerSQL(Context context, String Event_ID, int Vote_ID, String User_ID) {
+    private static void delete_vote_location_User_ID_ServerSQL(Context context, String Event_ID, long Vote_ID, String User_ID) {
         new Vote_Location_AsyncTask_delete_vote_user_id(context).execute(Event_ID, Vote_ID + "", User_ID);
 
 
