@@ -1772,6 +1772,10 @@ class ExpandableListAdapter_New_Event_Tasks extends RecyclerView.Adapter<Recycle
             case Task: {
                 final ViewHolder_Task itemController = (ViewHolder_Task) holder;
                 itemController.refferalItem = item;
+                task_pointer.get(task_ID_num).setDescription(itemController.editText.getText().toString());
+                if (task_pointer.get(task_ID_num) != null) {
+                    task_pointer.get(task_ID_num).setDescription(itemController.editText.getText().toString());
+                }
                 if (item.invisibleChildren == null) {
                     itemController.expand_arrow.setImageResource(R.mipmap.ic_collapse_arrow);
                 } else {
