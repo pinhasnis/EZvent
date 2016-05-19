@@ -20,12 +20,12 @@ public final class Event_Helper {
     public static String[] details_tmp = new String[Table_Events.Size()];
     public static HashMap<String, Friend_Helper> friends = new HashMap<>();//0-User_ID.
     public static HashMap<String, Friend_Helper> friends_tmp;//Use for edit event.
-    public static HashMap<Integer, Task_Helper> task = new HashMap();//0-Task_ID
-    public static HashMap<Integer, Task_Helper> task_tmp;//Use for edit event.
+    public static HashMap<Long, Task_Helper> task = new HashMap();//0-Task_ID
+    public static HashMap<Long, Task_Helper> task_tmp;//Use for edit event.
     public static HashMap<Long, Vote_Date_Helper> vote_date = new HashMap();//0-Vote_ID
     public static HashMap<Long, Vote_Date_Helper> vote_date_tmp;//Use for edit event.
-    public static HashMap<Integer, Vote_Location_Helper> vote_location = new HashMap();//0-Vote_ID
-    public static HashMap<Integer, Vote_Location_Helper> vote_location_tmp;//Use for edit event.
+    public static HashMap<Long, Vote_Location_Helper> vote_location = new HashMap();//0-Vote_ID
+    public static HashMap<Long, Vote_Location_Helper> vote_location_tmp;//Use for edit event.
     public static int task_ID_generator = 0;//Store the last ID number that was in use.
     public static int vote_date_ID_generator = 0;//Store the last ID number that was in use.
     public static int vote_location_ID_generator = 0;//Store the last ID number that was in use.
@@ -63,7 +63,7 @@ public final class Event_Helper {
             Friend_Helper friend_helper = friends.get(friend).make_copy();
             friends_tmp.put(friend, friend_helper);
         }
-        for (Integer task_id : task.keySet()) {
+        for (Long task_id : task.keySet()) {
             Task_Helper task_helper = task.get(task_id).make_copy();
             task_tmp.put(task_id, task_helper);
         }
@@ -71,7 +71,7 @@ public final class Event_Helper {
             Vote_Date_Helper vote_date_helper = vote_date.get(vote_id).make_copy();
             vote_date_tmp.put(vote_id, vote_date_helper);
         }
-        for (Integer vote_id : vote_location.keySet()) {
+        for (Long vote_id : vote_location.keySet()) {
             Vote_Location_Helper vote_location_helper = vote_location.get(vote_id).make_copy();
             vote_location_tmp.put(vote_id, vote_location_helper);
         }
@@ -105,18 +105,18 @@ public final class Event_Helper {
         //Load Tasks.
         dbSql = sqlHelper.select(null, Table_Tasks.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{event_id}, null);
         Task_Helper task_helper;
-        int task_id, subTask_id;
+        long task_id, subTask_id;
         for (int i = 0; i < dbSql[0].size(); i++) {
-            task_id = Integer.parseInt(dbSql[Table_Tasks.Task_ID_Number_num].get(i));
-            subTask_id = Integer.parseInt(dbSql[Table_Tasks.subTask_ID_Number_num].get(i));
+            task_id = Long.parseLong(dbSql[Table_Tasks.Task_ID_Number_num].get(i));
+            subTask_id = Long.parseLong(dbSql[Table_Tasks.subTask_ID_Number_num].get(i));
             if (subTask_id == 0) {//Check if it's a task or subTask.
                 task_helper = new Task_Helper(dbSql[Table_Tasks.Task_Type_num].get(i), dbSql[Table_Tasks.Description_num].get(i),
                         dbSql[Table_Tasks.User_ID_num].get(i), dbSql[Table_Tasks.Mark_num].get(i));
                 task.put(task_id, task_helper);
-                task_ID_generator = Math.max(task_ID_generator, task_id + 1);
+                //task_ID_generator = Math.max(task_ID_generator, task_id + 1);
             } else {
                 task.get(task_id).getSubTasks().put(subTask_id, new String[]{dbSql[Table_Tasks.Description_num].get(i), dbSql[Table_Tasks.Mark_num].get(i)});
-                task.get(task_id).setSubTask_ID_generator(Math.max(task.get(task_id).getSubTask_ID_generator(), subTask_id + 1));
+                //task.get(task_id).setSubTask_ID_generator(Math.max(task.get(task_id).getSubTask_ID_generator(), subTask_id + 1));
             }
         }
         //Load vote_date.
@@ -138,13 +138,13 @@ public final class Event_Helper {
         //Load vote_location.
         dbSql = sqlHelper.select(null, Table_Vote_Location.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{event_id}, null);
         Vote_Location_Helper vote_location_helper;
-        int vote_location_id;
+        long vote_location_id;
         for (int i = 0; i < dbSql[0].size(); i++) {
-            vote_location_id = Integer.parseInt(dbSql[Table_Vote_Location.Vote_ID_num].get(i));
+            vote_location_id = Long.parseLong(dbSql[Table_Vote_Location.Vote_ID_num].get(i));
             if (dbSql[Table_Vote_Location.User_ID_num].get(i).equals(Constants.UnCheck)) {//Check if it's a location or user_id.
                 vote_location_helper = new Vote_Location_Helper(dbSql[Table_Vote_Location.Description_num].get(i));
                 vote_location.put(vote_location_id, vote_location_helper);
-                vote_location_ID_generator = Math.max(vote_location_ID_generator, vote_location_id);
+                //vote_location_ID_generator = Math.max(vote_location_ID_generator, vote_location_id);
             } else {
                 String User_ID = dbSql[Table_Vote_Location.User_ID_num].get(i);
                 vote_location.get(vote_location_id).getVotes().put(User_ID, User_ID);

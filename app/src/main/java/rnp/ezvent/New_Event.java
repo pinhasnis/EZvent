@@ -330,7 +330,7 @@ public class New_Event extends AppCompatActivity {
                 }
                 //Set vote pointer.
                 HashMap<Long, Vote_Date_Helper> vote_date_pointer;
-                HashMap<Integer, Vote_Location_Helper> vote_location_pointer;
+                HashMap<Long, Vote_Location_Helper> vote_location_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     vote_date_pointer = Event_Helper.vote_date;
                     vote_location_pointer = Event_Helper.vote_location;
@@ -343,7 +343,7 @@ public class New_Event extends AppCompatActivity {
                 RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_location);
                 ExpandableListAdapter_New_Event_Vote_Location expandableListAdapter_new_event_vote_location = (ExpandableListAdapter_New_Event_Vote_Location) recyclerView.getAdapter();
                 if (expandableListAdapter_new_event_vote_location != null) {
-                    int vote_id = expandableListAdapter_new_event_vote_location.getVote_ID_num_has_focus();
+                    long vote_id = expandableListAdapter_new_event_vote_location.getVote_ID_num_has_focus();
                     View view = getCurrentFocus();
                     if (view instanceof EditText) {
                         EditText editText = (EditText) view;
@@ -399,7 +399,7 @@ public class New_Event extends AppCompatActivity {
                 break;
             }
             case 2: {
-                HashMap<Integer, Task_Helper> task_pointer;
+                HashMap<Long, Task_Helper> task_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     task_pointer = Event_Helper.task;
                 } else {
@@ -408,8 +408,8 @@ public class New_Event extends AppCompatActivity {
                 RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView4);
                 if (recyclerView != null) {
                     ExpandableListAdapter_New_Event_Tasks expandableListAdapter_new_event_tasks = (ExpandableListAdapter_New_Event_Tasks) recyclerView.getAdapter();
-                    int task_id = expandableListAdapter_new_event_tasks.getTask_ID_num_has_focus();
-                    int subTask_id = expandableListAdapter_new_event_tasks.getSubTask_ID_num_has_focus();
+                    long task_id = expandableListAdapter_new_event_tasks.getTask_ID_num_has_focus();
+                    long subTask_id = expandableListAdapter_new_event_tasks.getSubTask_ID_num_has_focus();
                     View view = getCurrentFocus();
                     if (view instanceof EditText) {
                         EditText editText = (EditText) view;
@@ -830,7 +830,7 @@ public class New_Event extends AppCompatActivity {
 
                     recyclerview4.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
                     final List<ExpandableListAdapter_New_Event_Tasks.Item> data = new ArrayList<>();
-                    final HashMap<Integer, Task_Helper> task_pointer;
+                    final HashMap<Long, Task_Helper> task_pointer;
                     if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                         task_pointer = Event_Helper.task;
                     } else {
@@ -838,10 +838,10 @@ public class New_Event extends AppCompatActivity {
                     }
 
                     //Update list for refresh fragment.
-                    for (Integer task_ID_num : task_pointer.keySet()) {
+                    for (Long task_ID_num : task_pointer.keySet()) {
                         ExpandableListAdapter_New_Event_Tasks.Item task = new ExpandableListAdapter_New_Event_Tasks.Item(ExpandableListAdapter_New_Event_Tasks.Task, task_ID_num, 0);
                         task.invisibleChildren = new ArrayList<>();
-                        for (Integer subTask_ID_num : task_pointer.get(task_ID_num).getSubTasks().keySet()) {
+                        for (Long subTask_ID_num : task_pointer.get(task_ID_num).getSubTasks().keySet()) {
                             task.invisibleChildren.add(new ExpandableListAdapter_New_Event_Tasks.Item(ExpandableListAdapter_New_Event_Tasks.Task_Child, task_ID_num, subTask_ID_num));
                         }
                         task.invisibleChildren.add(new ExpandableListAdapter_New_Event_Tasks.Item(ExpandableListAdapter_New_Event_Tasks.Add_Tasks_Child_Buttons, task_ID_num, 0));
@@ -852,7 +852,8 @@ public class New_Event extends AppCompatActivity {
                     fab_task.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            int task_ID_num = Event_Helper.task_ID_generator++;
+                            //long task_ID_num = Event_Helper.task_ID_generator++;
+                            long task_ID_num = System.currentTimeMillis();
                             ExpandableListAdapter_New_Event_Tasks.Item new_task = new ExpandableListAdapter_New_Event_Tasks.Item(ExpandableListAdapter_New_Event_Tasks.Task, task_ID_num, 0);
                             //new_task.invisibleChildren = new ArrayList<ExpandableListAdapter_New_Event_Tasks.Item>();
                             //new_task.invisibleChildren.add(new ExpandableListAdapter_New_Event_Tasks.Item(ExpandableListAdapter_New_Event_Tasks.Add_Tasks_Child_Buttons, task_ID_num, 0));
@@ -931,7 +932,7 @@ public class New_Event extends AppCompatActivity {
             else
                 details_pointer = Event_Helper.details_tmp;
             if (details_pointer[Table_Events.Vote_Location_num].equals(Constants.Yes)) {
-                final HashMap<Integer, Vote_Location_Helper> vote_pointer;
+                final HashMap<Long, Vote_Location_Helper> vote_pointer;
                 if (Event_Helper.newEvent_edit_mode.equals(Constants.New_Event)) {
                     vote_pointer = Event_Helper.vote_location;
                 } else {
@@ -944,11 +945,12 @@ public class New_Event extends AppCompatActivity {
                 recyclerView_location.setLayoutManager(new LinearLayoutManager(getContext()));
                 List<ExpandableListAdapter_New_Event_Vote_Location.Item> data = new ArrayList<>();
                 if (Event_Helper.vote_location.size() == 0) {
-                    data.add(new ExpandableListAdapter_New_Event_Vote_Location.Item(ExpandableListAdapter_New_Event_Vote_Location.Vote_Location, 1));
-                    vote_pointer.put(1, new Vote_Location_Helper(""));
+                    long Vote_ID = System.currentTimeMillis();
+                    data.add(new ExpandableListAdapter_New_Event_Vote_Location.Item(ExpandableListAdapter_New_Event_Vote_Location.Vote_Location, Vote_ID));
+                    vote_pointer.put(Vote_ID, new Vote_Location_Helper(""));
                     Event_Helper.vote_location_ID_generator++;
                 } else {
-                    for (int vote_id : Event_Helper.vote_location.keySet()) {
+                    for (long vote_id : Event_Helper.vote_location.keySet()) {
                         data.add(new ExpandableListAdapter_New_Event_Vote_Location.Item(ExpandableListAdapter_New_Event_Vote_Location.Vote_Location, vote_id));
                     }
                 }
@@ -1282,16 +1284,16 @@ class ExpandableListAdapter_New_Event_Vote_Location extends RecyclerView.Adapter
     private int recyclerView_height_dp;
     private int vote_height;
     private int add_height;
-    private HashMap<Integer, Vote_Location_Helper> vote_location_pointer;
+    private HashMap<Long, Vote_Location_Helper> vote_location_pointer;
 
-    private int Vote_ID;
-    private int Vote_ID_num_has_focus;
+    private long Vote_ID;
+    private long Vote_ID_num_has_focus;
 
     public List<Item> getData() {
         return data;
     }
 
-    public int getVote_ID_num_has_focus() {
+    public long getVote_ID_num_has_focus() {
         return Vote_ID_num_has_focus;
     }
 
@@ -1376,9 +1378,10 @@ class ExpandableListAdapter_New_Event_Vote_Location extends RecyclerView.Adapter
                 itemController.imageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Event_Helper.vote_location_ID_generator++;
-                        data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Location.Item(ExpandableListAdapter_New_Event_Vote_Location.Vote_Location, Event_Helper.vote_location_ID_generator));
-                        vote_location_pointer.put(Event_Helper.vote_location_ID_generator, new Vote_Location_Helper(""));
+                        //Event_Helper.vote_location_ID_generator++;
+                        long Vote_ID = System.currentTimeMillis();
+                        data.add(data.size() - 1, new ExpandableListAdapter_New_Event_Vote_Location.Item(ExpandableListAdapter_New_Event_Vote_Location.Vote_Location, Vote_ID));
+                        vote_location_pointer.put(Vote_ID, new Vote_Location_Helper(""));
                         //notifyItemInserted(data.size() - 1);
                         notifyDataSetChanged();
                         recyclerView_height_dp += vote_height;
@@ -1430,14 +1433,14 @@ class ExpandableListAdapter_New_Event_Vote_Location extends RecyclerView.Adapter
 
     public static class Item {
         public int type;
-        public int Vote_ID;
+        public long Vote_ID;
 
         public List<Item> invisibleChildren;
 
         public Item() {
         }
 
-        public Item(int type, int Vote_ID) {
+        public Item(int type, long Vote_ID) {
             this.type = type;
             this.Vote_ID = Vote_ID;
         }
@@ -1664,22 +1667,22 @@ class ExpandableListAdapter_New_Event_Tasks extends RecyclerView.Adapter<Recycle
 
     private List<Item> data;
     int pos;
-    int task_ID_num;
-    int subTask_ID_num;
-    int task_ID_num_has_focus;
-    int subTask_ID_num_has_focus;
+    long task_ID_num;
+    long subTask_ID_num;
+    long task_ID_num_has_focus;
+    long subTask_ID_num_has_focus;
     private ViewHolder_Task temp_viewHolder_task;
-    private HashMap<Integer, Task_Helper> task_pointer;
+    private HashMap<Long, Task_Helper> task_pointer;
 
     public List<Item> getData() {
         return data;
     }
 
-    public int getSubTask_ID_num_has_focus() {
+    public long getSubTask_ID_num_has_focus() {
         return subTask_ID_num_has_focus;
     }
 
-    public int getTask_ID_num_has_focus() {
+    public long getTask_ID_num_has_focus() {
         return task_ID_num_has_focus;
     }
 
@@ -1848,8 +1851,9 @@ class ExpandableListAdapter_New_Event_Tasks extends RecyclerView.Adapter<Recycle
                     @Override
                     public void onClick(View v) {
                         refresh_values(itemController.refferalItem);
-                        subTask_ID_num = task_pointer.get(task_ID_num).getSubTask_ID_generator() + 1;
-                        task_pointer.get(task_ID_num).setSubTask_ID_generator(subTask_ID_num);
+                        //subTask_ID_num = task_pointer.get(task_ID_num).getSubTask_ID_generator() + 1;
+                        subTask_ID_num = System.currentTimeMillis();
+                        //task_pointer.get(task_ID_num).setSubTask_ID_generator(subTask_ID_num);
                         data.add(pos, new Item(Task_Child, task_ID_num, subTask_ID_num));
                         notifyItemRangeInserted(pos, 1);
                         task_pointer.get(task_ID_num).getSubTasks().put(subTask_ID_num, new String[]{"", Constants.No});
@@ -1956,13 +1960,13 @@ class ExpandableListAdapter_New_Event_Tasks extends RecyclerView.Adapter<Recycle
     public static class Item {
         public int type;
         public List<Item> invisibleChildren;
-        public int task_ID_num;
-        public int subTask_ID_num;
+        public long task_ID_num;
+        public long subTask_ID_num;
 
         public Item() {
         }
 
-        public Item(int type, int task_ID_num, int subTask_ID_num) {
+        public Item(int type, long task_ID_num, long subTask_ID_num) {
             this.type = type;
             this.task_ID_num = task_ID_num;
             this.subTask_ID_num = subTask_ID_num;

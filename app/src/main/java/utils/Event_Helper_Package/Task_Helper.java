@@ -12,7 +12,7 @@ public class Task_Helper {
     private String description;
     private String User_ID;
     private String mark;//For self marking tasks.
-    private HashMap<Integer, String[]> subTasks;//string[0]-description, string[1]-mark.
+    private HashMap<Long, String[]> subTasks;//string[0]-description, string[1]-mark.
     private int subTask_ID_generator;//Store the last ID number that was in use.
 
     public Task_Helper(String type, String description) {
@@ -38,7 +38,7 @@ public class Task_Helper {
         this.description = description;
         this.User_ID = User_ID;
         this.mark = mark;
-        this.subTasks = (HashMap<Integer, String[]>) subTasks;
+        this.subTasks = (HashMap<Long, String[]>) subTasks;
         subTask_ID_generator = subTask_id_generator;
     }
 
@@ -75,11 +75,11 @@ public class Task_Helper {
         this.mark = mark;
     }
 
-    public HashMap<Integer, String[]> getSubTasks() {
+    public HashMap<Long, String[]> getSubTasks() {
         return subTasks;
     }
 
-    public void setSubTasks(HashMap<Integer, String[]> subTasks) {
+    public void setSubTasks(HashMap<Long, String[]> subTasks) {
         this.subTasks = subTasks;
     }
 
