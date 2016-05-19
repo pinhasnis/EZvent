@@ -202,6 +202,20 @@ public class Helper {
             //delete event: 0 - event_id. leave event: 0 - event_id, 1 - user_id.
             case Constants.Delete_Event:{
                 Chat_Table_Name = Table_Chat.Table_Name + Event_Helper.details[Table_Events.Event_ID_num];
+                //Delete event.
+                sqlHelper.delete(Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{values[0]}, new int[]{1});
+                //Delete event_user.
+                sqlHelper.delete(Table_Events_Users.Table_Name, new String[]{Table_Events_Users.Event_ID}, new String[]{values[0]}, null);
+                //Delete tasks.
+                sqlHelper.delete(Table_Tasks.Table_Name, new String[]{Table_Tasks.Event_ID}, new String[]{values[0]}, null);
+                //Delete chat.
+                sqlHelper.Delete_Table(Chat_Table_Name);
+                //Delete vote_date.
+                sqlHelper.delete(Table_Vote_Date.Table_Name, new String[]{Table_Vote_Date.Event_ID}, new String[]{values[0]}, null);
+                //Delete vote_location.
+                sqlHelper.delete(Table_Vote_Location.Table_Name, new String[]{Table_Vote_Location.Event_ID}, new String[]{values[0]}, null);
+                if (action.equals(Constants.Leave_Event))
+                    Chat_Table_Name = null;
                 break;
             }
             case Constants.Leave_Event: {

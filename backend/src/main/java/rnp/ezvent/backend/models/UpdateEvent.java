@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import rnp.ezvent.backend.utils.Constans.Constants;
 
+import static rnp.ezvent.backend.utils.MySQL_Util.addToLog;
+
 /**
  * Created by Pinhas on 4/18/2016.
  */
@@ -141,18 +143,23 @@ public class UpdateEvent {
                 str = str.substring(0, str.length() - 1);
             str += "[";
         }
-
+        String bug = "";
         for (ArrayList<String[]> location : vote_locations) {
 
             for (int i = 0; i < location.size(); i++) {
                 for (int j = 0; j < location.get(0).length; j++) {
+                    bug += location.get(i)[j] + "]";
                     str += location.get(i)[j] + "]";
                 }
             }
-            if (str.charAt(str.length() - 1) == ']')
+            if (str.charAt(str.length() - 1) == ']') {
                 str = str.substring(0, str.length() - 1);
+                bug = bug.substring(0, bug.length() - 1);
+            }
+            bug += "[";
             str += "[";
         }
+        addToLog(bug);
         str = str.substring(0, str.length() - 1);
         return str;
     }

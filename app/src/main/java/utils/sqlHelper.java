@@ -42,23 +42,6 @@ public final class sqlHelper {
         return db;
     }
 
-    public static String[] getCulmnsName(String table) {
-        switch (table) {
-            case Table_Events.Table_Name:
-                return Table_Events.getAllFields();
-            case Table_Events_Users.Table_Name:
-                return Table_Events_Users.getAllFields();
-            case Table_Tasks.Table_Name:
-                return Table_Tasks.getAllFields();
-            case Table_Vote_Location.Table_Name:
-                return Table_Vote_Location.getAllFields();
-            case Table_Vote_Date.Table_Name:
-                return Table_Vote_Date.getAllFields();
-        }
-
-        return null;
-    }
-
     private static String getEventIDField(String table) {
         switch (table) {
             case Table_Events.Table_Name:
@@ -78,7 +61,7 @@ public final class sqlHelper {
     public static void update(String table_name, String event_id, String[] set_values) {
         try {
             clean(set_values);
-            String set_columns[] = getCulmnsName(table_name);
+            String set_columns[] = getAllFields(table_name);
 
             String query = "update `" + table_name + "` set ";
             int end = set_values.length - 1;
@@ -87,37 +70,41 @@ public final class sqlHelper {
                 query += "`" + set_columns[i+Constants.index_object_sql_diff] + "` = '" + set_values[i] + "',";
             }
             query += "`" + set_columns[end+Constants.index_object_sql_diff] + "` = '" + set_values[end] + "' ";
-            query += "where "+ getEventIDField(table_name) +" `= ' "+event_id+"';";
+            query += "where `"+ getEventIDField(table_name) +"` = '"+event_id+"';";
 
             SQLiteDatabase db = getConnection();
             db.execSQL(query);
             db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
+    public static void updateAll(String table_name,String event_id,List<List<String>> values) {
+        try {
+            event_id = event_id.replaceAll("\'", "\'\'");
+            String set_columns[] = getAllFields(table_name);
+            String query ="";
+            for (List<String> val_list : values) {
+
+                query += "update `" + table_name + "` set ";
+                query += "`" + set_columns[0] + "` = '" + event_id + "',";
+                String[] vals = val_list.toArray(new String[0]);
+                int end = vals.length - 1;
+                clean(vals);
+                for (int i = 0; i < end; i++) {
+                    query += "`" + set_columns[i + Constants.index_object_sql_diff] + "` = '" + vals[i] + "',";
+                }
+                query += "`" + set_columns[end + Constants.index_object_sql_diff] + "` = '" + vals[end] + "' ";
+                query += "where `" + getEventIDField(table_name) + "` = '" + event_id + "';\n";
+            }
+            SQLiteDatabase db = getConnection();
+            db.execSQL(query);
+            db.close();
+        }catch(Exception e){
+            addToLog(e);
+        }
+    }
 
 
 
@@ -142,28 +129,7 @@ public final class sqlHelper {
             db.execSQL(query);
             db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
@@ -183,28 +149,7 @@ public final class sqlHelper {
             db.execSQL(query);
             db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
@@ -223,28 +168,7 @@ public final class sqlHelper {
         db.execSQL(query);
         db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
@@ -270,32 +194,64 @@ public final class sqlHelper {
             db.close();
 
         }catch (Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
 
     }
 
+
+    public static void deleteAll(String table_name,String value,List<List<String>> values) {
+        try {
+            value = value.replaceAll("\'", "\'\'");
+
+            String query = "delete from `" + table_name + "` WHERE (";
+            String [] where = getAllFields(table_name);
+            for (String col : where) {
+                query += col + ",";
+            }
+            query = query.substring(0, query.length() - 1);
+            query += ") in (";
+
+            for (int j = 0; j < values.size(); j++) {
+                query += "('" + value + "','";
+                String[] vals = values.get(j).toArray(new String[0]);
+                clean(vals);
+                int end = vals.length - 1;
+                for (int i = 0; i < end; i++) {
+                    query += vals[i] + "','";
+                }
+                query += vals[end];
+                query += "'),";
+            }
+            query = query.substring(0, query.length() - 1);
+            query += ");";
+
+
+            SQLiteDatabase db = getConnection();
+            db.execSQL(query);
+            db.close();
+
+        }catch (Exception e){
+            addToLog(e);
+        }
+
+    }
+
+    private static String[] getAllFields(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return Table_Events.getAllFields();
+            case Table_Events_Users.Table_Name:
+                return Table_Events_Users.getAllFields();
+            case Table_Tasks.Table_Name:
+                return Table_Tasks.getAllFields();
+            case Table_Vote_Location.Table_Name:
+                return Table_Vote_Location.getAllFields();
+            case Table_Vote_Date.Table_Name:
+                return Table_Vote_Date.getAllFields();
+        }
+        return null;
+    }
 
     public static void delete(String table, String[] where_columns, String[] where_values, int[] limit) {
         try{
@@ -320,28 +276,7 @@ public final class sqlHelper {
         db.execSQL(query);
         db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
@@ -400,28 +335,7 @@ public final class sqlHelper {
         db.close();
         return result;
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
         return null;
     }
@@ -439,28 +353,7 @@ public final class sqlHelper {
                     //+Constants.Table_Chat_Fields[2]+" varchar NOT NULL,"+Constants.Table_Chat_Fields[3]+" varchar NOT NULL,"+Constants.Table_Chat_Fields[4]+" varchar NOT NULL)");
             db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
@@ -470,28 +363,7 @@ public final class sqlHelper {
             db.execSQL("DROP TABLE IF EXISTS "+table_name);
             db.close();
         }catch(Exception e){
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            LocalDateTime now = LocalDateTime.now();
-            try {
-                int year = now.getYear();
-                int month = now.getMonthOfYear();
-                int day = now.getDayOfMonth();
-                int hour = now.getHourOfDay();
-                int minute = now.getMinuteOfHour();
-                int second = now.getSecondOfMinute();
-                int millis = now.getMillisOfSecond();
-                String date = day+"/"+month+"/"+year;
-                String time = hour+":"+minute+":"+second+":"+millis;
-                String eString = sw.toString();
-                if(eString.length() > 1000){
-                    eString = eString.substring(0,1000)+"...";
-                }
-                new add_logAsyncTask().execute(eString, date, time);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-
+            addToLog(e);
         }
     }
 
@@ -511,6 +383,53 @@ public final class sqlHelper {
         Create_Table(Table_Users.Table_Name, Table_Users.getAllFields(), Table_Users.getAllSqlParams());
         Create_Table(Table_Vote_Date.Table_Name, Table_Vote_Date.getAllFields(), Table_Vote_Date.getAllSqlParams());
         Create_Table(Table_Vote_Location.Table_Name, Table_Vote_Location.getAllFields(), Table_Vote_Location.getAllSqlParams());
+
+    }
+
+    public static void addToLog(String eString){
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            int year = now.getYear();
+            int month = now.getMonthOfYear();
+            int day = now.getDayOfMonth();
+            int hour = now.getHourOfDay();
+            int minute = now.getMinuteOfHour();
+            int second = now.getSecondOfMinute();
+            int millis = now.getMillisOfSecond();
+            String date = day+"/"+month+"/"+year;
+            String time = hour+":"+minute+":"+second+":"+millis;
+            if(eString.length() > 1000){
+                eString = eString.substring(0,1000)+"...";
+            }
+            new add_logAsyncTask().execute(eString, date, time);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+
+    }
+
+    public static void addToLog(Exception e){
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            int year = now.getYear();
+            int month = now.getMonthOfYear();
+            int day = now.getDayOfMonth();
+            int hour = now.getHourOfDay();
+            int minute = now.getMinuteOfHour();
+            int second = now.getSecondOfMinute();
+            int millis = now.getMillisOfSecond();
+            String date = day+"/"+month+"/"+year;
+            String time = hour+":"+minute+":"+second+":"+millis;
+            String eString = sw.toString();
+            if(eString.length() > 1000){
+                eString = eString.substring(0,1000)+"...";
+            }
+            new add_logAsyncTask().execute(eString, date, time);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
 
     }
 

@@ -331,52 +331,110 @@ public class GcmIntentService extends GcmListenerService {
                     //update details in my sql.
                     sqlHelper.update(Table_Events.Table_Name, event_id, result.get(details_index).get(0).toArray(new String[0]));
                 }
-                /*
-                //update Event users
-                ArrayList<List<String>> users = new ArrayList<>();
-                if(result.get(users_start_index+Constants.update_event_new).get(0).size() > 1)
-                    users.addAll(result.get(users_start_index+Constants.update_event_new));
-                if(result.get(users_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    users.addAll(result.get(users_start_index+Constants.update_event_not_change));
-                if(result.get(users_start_index+Constants.update_event_update).get(0).size() > 1)
-                    users.addAll(result.get(users_start_index+Constants.update_event_update));
-                event.setEventUsers(users);
-                //set tasks
-                ArrayList<List<String>> tasks = new ArrayList<>();
-                if(result.get(tasks_start_index+Constants.update_event_new).get(0).size() > 1)
-                    tasks.addAll(result.get(tasks_start_index+Constants.update_event_new));
-                if(result.get(tasks_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    tasks.addAll(result.get(tasks_start_index+Constants.update_event_not_change));
-                if(result.get(tasks_start_index+Constants.update_event_update).get(0).size() > 1)
-                    tasks.addAll(result.get(tasks_start_index+Constants.update_event_update));
-                event.setTasks(tasks);
-                //set Dates
-                ArrayList<List<String>> dates = new ArrayList<>();
-                if(result.get(date_start_index+Constants.update_event_new).get(0).size() > 1)
-                    dates.addAll(result.get(date_start_index+Constants.update_event_new));
-                if(result.get(date_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    dates.addAll(result.get(date_start_index+Constants.update_event_not_change));
-                if(result.get(date_start_index+Constants.update_event_update).get(0).size() > 1)
-                    dates.addAll(result.get(date_start_index+Constants.update_event_update));
-                event.setVoteDates(dates);
 
-                //set Locations
-                ArrayList<List<String>> locations = new ArrayList<>();
-                if(result.get(location_start_index+Constants.update_event_new).get(0).size() > 1)
-                    locations.addAll(result.get(location_start_index+Constants.update_event_new));
-                if(result.get(location_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    locations.addAll(result.get(location_start_index+Constants.update_event_not_change));
-                if(result.get(location_start_index+Constants.update_event_update).get(0).size() > 1)
-                    locations.addAll(result.get(location_start_index+Constants.update_event_update));
-                event.setVoteLocations(locations);
-*/
+
+                handleUpdateUpdate(event_id, result, users_start_index+Constants.update_event_update
+                        , tasks_start_index+Constants.update_event_update
+                        , date_start_index+Constants.update_event_update
+                        , location_start_index+Constants.update_event_update);
+
+
+                handleUpdateDelete(event_id, result, users_start_index+Constants.update_event_delete
+                        , tasks_start_index+Constants.update_event_delete
+                        , date_start_index+Constants.update_event_delete
+                        , location_start_index+Constants.update_event_delete);
+
+
+                handleUpdateNew(event_id, result, users_start_index+Constants.update_event_new
+                        , tasks_start_index+Constants.update_event_new
+                        , date_start_index+Constants.update_event_new
+                        , location_start_index+Constants.update_event_new);
+
+
                 break;
             }
             case Constants.update_event_delete: {
                 deleteEvent(event_id);
                 break;
             }
+       }
+
+    }
+
+    private void handleUpdateUpdate(String event_id, ArrayList<ArrayList<List<String>>> result, int users_index
+            , int tasks_index, int date_index, int location_index) {
+
+        //update users if needed
+        if(result.get(users_index).get(0).size() > 1) {
+            sqlHelper.updateAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
+
+        //update tasks
+        if(result.get(tasks_index).get(0).size() > 1){
+            sqlHelper.updateAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+        }
+
+        //update Dates
+        if(result.get(date_index).get(0).size() > 1){
+            sqlHelper.updateAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
+        }
+
+        //update Locations
+        if(result.get(location_index).get(0).size() > 1){
+            sqlHelper.updateAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
+        }
+
+
+    }
+
+    private void handleUpdateDelete(String event_id, ArrayList<ArrayList<List<String>>> result, int users_index
+            , int tasks_index, int date_index, int location_index) {
+
+        //delete users if needed
+        if(result.get(users_index).get(0).size() > 1) {
+            sqlHelper.deleteAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
+        }
+
+        //delete tasks
+        if(result.get(tasks_index).get(0).size() > 1){
+            sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+        }
+
+        //delete Dates
+        if(result.get(date_index).get(0).size() > 1){
+            sqlHelper.deleteAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
+        }
+
+        //delete Locations
+        if(result.get(location_index).get(0).size() > 1){
+            sqlHelper.deleteAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
+        }
+
+
+    }
+
+    private void handleUpdateNew(String event_id, ArrayList<ArrayList<List<String>>> result, int users_index
+            , int tasks_index, int date_index, int location_index) {
+
+                //add new users if needed
+                if(result.get(users_index).get(0).size() > 1) {
+                    sqlHelper.insertAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
+                }
+
+                //add new tasks
+                if(result.get(tasks_index).get(0).size() > 1){
+                    sqlHelper.insertAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+                }
+
+                //add new Dates
+                if(result.get(date_index).get(0).size() > 1){
+                    sqlHelper.insertAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
+                }
+
+                //add new Locations
+                if(result.get(location_index).get(0).size() > 1){
+                    sqlHelper.insertAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
+                }
 
     }
 
@@ -417,7 +475,8 @@ public class GcmIntentService extends GcmListenerService {
             }
         }
         if(line.charAt(line.length()-1) == split_row)
-            spl.add(data);
+            data = "";
+        spl.add(data);
         return spl.toArray(new String[0]);
     }
 
