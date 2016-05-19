@@ -1735,6 +1735,7 @@ class ExpandableListAdapter_New_Event_Tasks extends RecyclerView.Adapter<Recycle
             case Task_Child: {
                 final ViewHolder_Task_Child itemController = (ViewHolder_Task_Child) holder;
                 itemController.refferalItem = item;
+                itemController.editText.setText(task_pointer.get(task_ID_num).getSubTasks().get(subTask_ID_num)[0]);
                 ImageButton cancel = (ImageButton) view.findViewById(R.id.cancel);
                 //Set description every time the view change.
                 refresh_values(itemController.refferalItem);
@@ -1772,10 +1773,7 @@ class ExpandableListAdapter_New_Event_Tasks extends RecyclerView.Adapter<Recycle
             case Task: {
                 final ViewHolder_Task itemController = (ViewHolder_Task) holder;
                 itemController.refferalItem = item;
-                task_pointer.get(task_ID_num).setDescription(itemController.editText.getText().toString());
-                if (task_pointer.get(task_ID_num) != null) {
-                    task_pointer.get(task_ID_num).setDescription(itemController.editText.getText().toString());
-                }
+                itemController.editText.setText(task_pointer.get(task_ID_num).getDescription());
                 if (item.invisibleChildren == null) {
                     itemController.expand_arrow.setImageResource(R.mipmap.ic_collapse_arrow);
                 } else {
