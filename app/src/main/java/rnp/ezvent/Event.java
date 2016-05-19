@@ -368,14 +368,14 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     List<ExpandableListAdapter_Event_Tasks.Item> data = new ArrayList<>();
 
                     ExpandableListAdapter_Event_Tasks.Item task;
-                    for (int task_id : Event_Helper.task.keySet()) {
+                    for (long task_id : Event_Helper.task.keySet()) {
                         Task_Helper task_helper = Event_Helper.task.get(task_id);
                         if (task_helper.getType().equals(Constants.Personal_Task)) {
                             task = new ExpandableListAdapter_Event_Tasks.Item(ExpandableListAdapter_Event_Tasks.Personal_Task, task_id, 0, task_helper.getDescription());
                         } else {
                             task = new ExpandableListAdapter_Event_Tasks.Item(ExpandableListAdapter_Event_Tasks.Group_Task, task_id, 0, task_helper.getDescription());
                         }
-                        for (int subTask_id : task_helper.getSubTasks().keySet()) {
+                        for (long subTask_id : task_helper.getSubTasks().keySet()) {
                             if (task.invisibleChildren == null) {
                                 task.invisibleChildren = new ArrayList<>();
                             }
@@ -499,7 +499,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                 recyclerView_location.setLayoutManager(new LinearLayoutManager(getContext()));
                 List<ExpandableListAdapter_Event_Vote_Location.Item> data = new ArrayList<>();
                 ExpandableListAdapter_Event_Vote_Location.Item vote;
-                for (int vote_id : Event_Helper.vote_location.keySet()) {
+                for (long vote_id : Event_Helper.vote_location.keySet()) {
                     vote = new ExpandableListAdapter_Event_Vote_Location.Item(ExpandableListAdapter_Event_Vote_Location.Vote_Location_Parent, vote_id, Constants.UnCheck);
                     Vote_Location_Helper vote_location_helper = Event_Helper.vote_location.get(vote_id);
                     for (String User_ID : vote_location_helper.getVotes().keySet()) {
@@ -825,7 +825,7 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
     private List<Item> data;
     private RecyclerView recyclerView;
 
-    private int Vote_ID;
+    private long Vote_ID;
     private String User_ID;
 
     public List<Item> getData() {
@@ -1035,7 +1035,7 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
 
     public static class Item {
         public int type;
-        public int Vote_ID;
+        public long Vote_ID;
         public String User_ID;
 
         public List<Item> invisibleChildren;
@@ -1043,7 +1043,7 @@ class ExpandableListAdapter_Event_Vote_Location extends RecyclerView.Adapter<Rec
         public Item() {
         }
 
-        public Item(int type, int Vote_ID, String User_ID) {
+        public Item(int type, long Vote_ID, String User_ID) {
             this.type = type;
             this.Vote_ID = Vote_ID;
             this.User_ID = User_ID;
@@ -1224,8 +1224,8 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
     private RecyclerView recyclerView;
     private List<View> viewList;
     private String text;
-    private int task_id;
-    private int subTask_id;
+    private long task_id;
+    private long subTask_id;
 
     public ExpandableListAdapter_Event_Tasks(List<Item> data, RecyclerView recyclerView) {
         this.data = data;
@@ -1437,7 +1437,7 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    private void mark_child(int task_id, int subTask_id, String mark, Item refferalItem) {
+    private void mark_child(long task_id, long subTask_id, String mark, Item refferalItem) {
         Task_Helper task = Event_Helper.task.get(task_id);
         String description = task.getSubTasks().get(subTask_id)[0];
         task.getSubTasks().put(subTask_id, new String[]{description, mark});
@@ -1467,9 +1467,9 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-    private void mark(int task_id, String mark) {
+    private void mark(long task_id, String mark) {
         Event_Helper.task.get(task_id).setMark(mark);
-        for (int subTask_id : Event_Helper.task.get(task_id).getSubTasks().keySet()) {
+        for (long subTask_id : Event_Helper.task.get(task_id).getSubTasks().keySet()) {
             String description = Event_Helper.task.get(task_id).getSubTasks().get(subTask_id)[0];
             Event_Helper.task.get(task_id).getSubTasks().put(subTask_id, new String[]{description, mark});
         }
@@ -1534,15 +1534,15 @@ class ExpandableListAdapter_Event_Tasks extends RecyclerView.Adapter<RecyclerVie
 
     public static class Item {
         public int type;
-        public int task_id;
-        public int subTask_id;
+        public long task_id;
+        public long subTask_id;
         public String description;
         public List<Item> invisibleChildren;
 
         public Item() {
         }
 
-        public Item(int type, int task_id, int subTask_id, String description) {
+        public Item(int type, long task_id, long subTask_id, String description) {
             this.type = type;
             this.task_id = task_id;
             this.subTask_id = subTask_id;

@@ -133,7 +133,7 @@ public class Helper {
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_ID, message);
     }
 
-    public static void set_task_user_ID(Context context, String Event_ID, int task_id, String user_id) {
+    public static void set_task_user_ID(Context context, String Event_ID, long task_id, String user_id) {
         set_task_user_ID_MySQL(Event_ID, task_id, user_id);
         set_task_user_ID_ServerSQL(context, Event_ID, task_id, user_id);
         String message = Constants.Update_Task_User_ID + "|" + Event_ID + "^" + task_id + "^" + user_id;
@@ -159,7 +159,7 @@ public class Helper {
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_ID, message);
     }
 
-    public static void add_vote_date_User_ID(Context context, int Vote_ID, String User_ID) {
+    public static void add_vote_date_User_ID(Context context, long Vote_ID, String User_ID) {
         String Event_ID = Event_Helper.details[Table_Events.Event_ID_num];
         add_vote_date_User_ID_MySQL(Event_ID, Vote_ID, User_ID);
         add_vote_date_User_ID_ServerSQL(context, Event_ID, Vote_ID, User_ID);
@@ -168,7 +168,7 @@ public class Helper {
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_ID, message);
     }
 
-    public static void delete_vote_date_User_ID(Context context, int Vote_ID, String User_ID) {
+    public static void delete_vote_date_User_ID(Context context, long Vote_ID, String User_ID) {
         String Event_ID = Event_Helper.details[Table_Events.Event_ID_num];
         delete_vote_date_User_ID_MySQL(Event_ID, Vote_ID, User_ID);
         delete_vote_date_User_ID_ServerSQL(context, Event_ID, Vote_ID, User_ID);
@@ -177,7 +177,7 @@ public class Helper {
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_ID, message);
     }
 
-    public static void add_vote_location_User_ID(Context context, int Vote_ID, String User_ID) {
+    public static void add_vote_location_User_ID(Context context, long Vote_ID, String User_ID) {
         String Event_ID = Event_Helper.details[Table_Events.Event_ID_num];
         add_vote_location_User_ID_MySQL(Event_ID, Vote_ID, User_ID);
         add_vote_location_User_ID_ServerSQL(context, Event_ID, Vote_ID, User_ID);
@@ -186,7 +186,7 @@ public class Helper {
         Send_Message_To_All_My_Friend_By_Event_ServerSQL(context, Event_ID, message);
     }
 
-    public static void delete_vote_location_User_ID(Context context, int Vote_ID, String User_ID) {
+    public static void delete_vote_location_User_ID(Context context, long Vote_ID, String User_ID) {
         String Event_ID = Event_Helper.details[Table_Events.Event_ID_num];
         delete_vote_location_User_ID_MySQL(Event_ID, Vote_ID, User_ID);
         delete_vote_location_User_ID_ServerSQL(context, Event_ID, Vote_ID, User_ID);
@@ -514,7 +514,7 @@ public class Helper {
         sqlHelper.insert(Table_Vote_Date.Table_Name, vote_date);
     }
 
-    public static void add_vote_date_User_ID_MySQL(String event_id, int vote_id, String user_id) {
+    public static void add_vote_date_User_ID_MySQL(String event_id, long vote_id, String user_id) {
         String[] vote_date = new String[Table_Vote_Date.Size()];
         vote_date[Table_Vote_Date.Event_ID_num] = event_id;
         vote_date[Table_Vote_Date.Vote_ID_num] = vote_id + "";
@@ -536,7 +536,7 @@ public class Helper {
         sqlHelper.insert(Table_Vote_Location.Table_Name, vote_location);
     }
 
-    public static void add_vote_location_User_ID_MySQL(String event_id, int vote_id, String user_id) {
+    public static void add_vote_location_User_ID_MySQL(String event_id, long vote_id, String user_id) {
         String[] vote_location = new String[Table_Vote_Location.Size()];
         vote_location[Table_Vote_Location.Event_ID_num] = event_id;
         vote_location[Table_Vote_Location.Vote_ID_num] = vote_id + "";
@@ -545,12 +545,12 @@ public class Helper {
         sqlHelper.insert(Table_Vote_Location.Table_Name, vote_location);
     }
 
-    public static void mark_task_and_subTasks_MySQL(String Event_ID, int task_id, String mark) {
+    public static void mark_task_and_subTasks_MySQL(String Event_ID, long task_id, String mark) {
         sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.Mark}, new String[]{mark},
                 new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number}, new String[]{Event_ID, task_id + ""});
     }
 
-    public static void mark_one_task_MySQL(String Event_ID, int task_id, int subTask_id, String mark) {
+    public static void mark_one_task_MySQL(String Event_ID, long task_id, long subTask_id, String mark) {
         sqlHelper.update(Table_Tasks.Table_Name, new String[]{Table_Tasks.Mark}, new String[]{mark},
                 new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number}, new String[]{Event_ID, task_id + "", subTask_id + ""});
     }
