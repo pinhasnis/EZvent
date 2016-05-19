@@ -363,7 +363,7 @@ public class GcmIntentService extends GcmListenerService {
                 deleteEvent(event_id);
                 break;
             }
-       }
+        }
 
     }
 
@@ -417,7 +417,7 @@ public class GcmIntentService extends GcmListenerService {
                 String[] where_values = new String[]{event_id,result.get(tasks_index).get(i).get(0),result.get(tasks_index).get(i).get(1)};
                 sqlHelper.delete(Table_Tasks.Table_Name,where_columns , where_values, null);
             }
-           // sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+            // sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
         }
 
         //delete Dates
@@ -445,28 +445,28 @@ public class GcmIntentService extends GcmListenerService {
     private void handleUpdateNew(String event_id, ArrayList<ArrayList<List<String>>> result, int users_index
             , int tasks_index, int date_index, int location_index) {
 
-                //add new users if needed
-                if(result.get(users_index).get(0).get(0).length() > 0) {
-                    sqlHelper.insertAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
-                }
+        //add new users if needed
+        if(result.get(users_index).get(0).get(0).length() > 0) {
+            sqlHelper.insertAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
+        }
 
-                //add new tasks
-                if(result.get(tasks_index).get(0).get(0).length() > 0){
-                    for (int i = 0; i < result.get(tasks_index).size(); i++) {
-                        result.get(tasks_index).get(i).add(Constants.No);
-                    }
-                    sqlHelper.insertAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
-                }
+        //add new tasks
+        if(result.get(tasks_index).get(0).get(0).length() > 0){
+            for (int i = 0; i < result.get(tasks_index).size(); i++) {
+                result.get(tasks_index).get(i).add(Constants.No);
+            }
+            sqlHelper.insertAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+        }
 
-                //add new Dates
-                if(result.get(date_index).get(0).get(0).length() > 0){
-                    sqlHelper.insertAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
-                }
+        //add new Dates
+        if(result.get(date_index).get(0).get(0).length() > 0){
+            sqlHelper.insertAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
+        }
 
-                //add new Locations
-                if(result.get(location_index).get(0).get(0).length() > 0){
-                    sqlHelper.insertAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
-                }
+        //add new Locations
+        if(result.get(location_index).get(0).get(0).length() > 0){
+            sqlHelper.insertAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
+        }
 
     }
 
