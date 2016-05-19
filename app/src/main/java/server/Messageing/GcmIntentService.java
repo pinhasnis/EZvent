@@ -371,6 +371,9 @@ public class GcmIntentService extends GcmListenerService {
 
         //update tasks
         if(result.get(tasks_index).get(0).size() > 1){
+            for (int i = 0; i < result.get(tasks_index).size(); i++) {
+                result.get(tasks_index).get(i).add(Constants.No);
+            }
             sqlHelper.updateAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
         }
 
@@ -423,6 +426,9 @@ public class GcmIntentService extends GcmListenerService {
 
                 //add new tasks
                 if(result.get(tasks_index).get(0).size() > 1){
+                    for (int i = 0; i < result.get(tasks_index).size(); i++) {
+                        result.get(tasks_index).get(i).add(Constants.No);
+                    }
                     sqlHelper.insertAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
                 }
 
