@@ -401,22 +401,42 @@ public class GcmIntentService extends GcmListenerService {
 
         //delete users if needed
         if(result.get(users_index).get(0).get(0).length() > 0 ) {
-            sqlHelper.deleteAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
+            String[] where_columns = new String[]{Table_Events_Users.Event_ID , Table_Events_Users.User_ID};
+            for (int i = 0; i < result.get(users_index).size(); i++) {
+                String[] where_values = new String[]{event_id,result.get(users_index).get(i).get(0)};
+                sqlHelper.delete(Table_Events_Users.Table_Name,where_columns , where_values, null);
+            }
+
+            //       sqlHelper.deleteAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
 
         //delete tasks
         if(result.get(tasks_index).get(0).get(0).length() > 0){
-            sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+            String[] where_columns = new String[]{Table_Tasks.Event_ID , Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number};
+            for (int i = 0; i < result.get(tasks_index).size(); i++) {
+                String[] where_values = new String[]{event_id,result.get(tasks_index).get(i).get(0),result.get(tasks_index).get(i).get(1)};
+                sqlHelper.delete(Table_Tasks.Table_Name,where_columns , where_values, null);
+            }
+           // sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
         }
 
         //delete Dates
         if(result.get(date_index).get(0).get(0).length() > 0){
-            sqlHelper.deleteAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
+            String[] where_columns = new String[]{Table_Vote_Date.Event_ID , Table_Vote_Date.Vote_ID};
+            for (int i = 0; i < result.get(date_index).size(); i++) {
+                String[] where_values = new String[]{event_id,result.get(date_index).get(i).get(0)};
+                sqlHelper.delete(Table_Vote_Date.Table_Name,where_columns , where_values, null);
+            }
+            //sqlHelper.deleteAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
         }
 
         //delete Locations
         if(result.get(location_index).get(0).get(0).length() > 0){
-            sqlHelper.deleteAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
+            String[] where_columns = new String[]{Table_Vote_Location.Event_ID , Table_Vote_Location.Vote_ID};
+            for (int i = 0; i < result.get(location_index).size(); i++) {
+                String[] where_values = new String[]{event_id,result.get(location_index).get(i).get(0)};
+                sqlHelper.delete(Table_Vote_Location.Table_Name,where_columns , where_values, null);
+            }
         }
 
 
