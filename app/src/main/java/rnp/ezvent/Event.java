@@ -122,6 +122,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
         //Event_Helper.load_event(b.getString("Event_ID"));
         GcmIntentService.delegate = this;
         int CurrentItem = mViewPager.getCurrentItem();
+        Event_Helper.load_event(Event_Helper.details[Table_Events.Event_ID_num]);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(CurrentItem);
         TextView event_name = (TextView) findViewById(R.id.event_name);
