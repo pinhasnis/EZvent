@@ -52,6 +52,12 @@ public class GcmIntentService extends GcmListenerService {
     }
 
     @Override
+    public void onSendError(String msgId, String error) {
+        super.onSendError(msgId, error);
+
+    }
+
+    @Override
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
         Logger.getLogger("GCM_RECEIVED").log(Level.INFO, data.toString());
@@ -365,12 +371,12 @@ public class GcmIntentService extends GcmListenerService {
             , int tasks_index, int date_index, int location_index) {
 
         //update users if needed
-        if(result.get(users_index).get(0).size() > 1) {
+        if(result.get(users_index).get(0).get(0).length() > 0) {
             sqlHelper.updateAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
 
         //update tasks
-        if(result.get(tasks_index).get(0).size() > 1){
+        if(result.get(tasks_index).get(0).get(0).length() > 0){
             for (int i = 0; i < result.get(tasks_index).size(); i++) {
                 result.get(tasks_index).get(i).add(Constants.No);
             }
@@ -378,12 +384,12 @@ public class GcmIntentService extends GcmListenerService {
         }
 
         //update Dates
-        if(result.get(date_index).get(0).size() > 1){
+        if(result.get(date_index).get(0).get(0).length() > 0){
             sqlHelper.updateAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
         }
 
         //update Locations
-        if(result.get(location_index).get(0).size() > 1){
+        if(result.get(location_index).get(0).get(0).length() > 0){
             sqlHelper.updateAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
         }
 
@@ -394,22 +400,22 @@ public class GcmIntentService extends GcmListenerService {
             , int tasks_index, int date_index, int location_index) {
 
         //delete users if needed
-        if(result.get(users_index).get(0).size() > 1) {
+        if(result.get(users_index).get(0).get(0).length() > 0 ) {
             sqlHelper.deleteAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
 
         //delete tasks
-        if(result.get(tasks_index).get(0).size() > 1){
+        if(result.get(tasks_index).get(0).get(0).length() > 0){
             sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
         }
 
         //delete Dates
-        if(result.get(date_index).get(0).size() > 1){
+        if(result.get(date_index).get(0).get(0).length() > 0){
             sqlHelper.deleteAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
         }
 
         //delete Locations
-        if(result.get(location_index).get(0).size() > 1){
+        if(result.get(location_index).get(0).get(0).length() > 0){
             sqlHelper.deleteAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
         }
 
@@ -420,12 +426,12 @@ public class GcmIntentService extends GcmListenerService {
             , int tasks_index, int date_index, int location_index) {
 
                 //add new users if needed
-                if(result.get(users_index).get(0).size() > 1) {
+                if(result.get(users_index).get(0).get(0).length() > 0) {
                     sqlHelper.insertAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
                 }
 
                 //add new tasks
-                if(result.get(tasks_index).get(0).size() > 1){
+                if(result.get(tasks_index).get(0).get(0).length() > 0){
                     for (int i = 0; i < result.get(tasks_index).size(); i++) {
                         result.get(tasks_index).get(i).add(Constants.No);
                     }
@@ -433,12 +439,12 @@ public class GcmIntentService extends GcmListenerService {
                 }
 
                 //add new Dates
-                if(result.get(date_index).get(0).size() > 1){
+                if(result.get(date_index).get(0).get(0).length() > 0){
                     sqlHelper.insertAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
                 }
 
                 //add new Locations
-                if(result.get(location_index).get(0).size() > 1){
+                if(result.get(location_index).get(0).get(0).length() > 0){
                     sqlHelper.insertAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
                 }
 
