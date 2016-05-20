@@ -129,6 +129,22 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
         if (!Event_Helper.details[Table_Events.Name_num].equals("")) {
             event_name.setText(Event_Helper.details[Table_Events.Name_num]);
         }
+        my_permission = Helper.getMyPermission(Event_Helper.details[Table_Events.Event_ID_num]);
+        ImageButton edit = (ImageButton) findViewById(R.id.edit);
+        if (!my_permission.equals(Constants.Owner)) {
+            edit.setVisibility(View.GONE);
+        } else {
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), New_Event.class);
+                    Bundle data = new Bundle();
+                    data.putString("Event_ID", Event_Helper.details[Table_Events.Event_ID_num]);
+                    intent.putExtras(data);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
