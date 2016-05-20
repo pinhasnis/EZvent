@@ -345,7 +345,7 @@ public class New_Event extends AppCompatActivity {
                 if (expandableListAdapter_new_event_vote_location != null) {
                     long vote_id = expandableListAdapter_new_event_vote_location.getVote_ID_num_has_focus();
                     View view = getCurrentFocus();
-                    if (view instanceof EditText) {
+                    if (view instanceof EditText && view.getId() == R.id.editText) {
                         EditText editText = (EditText) view;
                         vote_location_pointer.get(vote_id).setDescription(editText.getText().toString());
                     }
@@ -1039,7 +1039,7 @@ class ExpandableListAdapter_New_Event_Vote_Date extends RecyclerView.Adapter<Rec
                     itemController.all_day.setChecked(true);
                     itemController.time1.setVisibility(View.GONE);
                     itemController.time2.setVisibility(View.GONE);
-                }else{
+                } else {
                     itemController.all_day.setChecked(false);
                     itemController.time1.setVisibility(View.VISIBLE);
                     itemController.time2.setVisibility(View.VISIBLE);
@@ -1305,7 +1305,7 @@ class ExpandableListAdapter_New_Event_Vote_Location extends RecyclerView.Adapter
         } else {
             this.vote_location_pointer = Event_Helper.vote_location_tmp;
         }
-        Vote_ID_num_has_focus = 1;
+        Vote_ID_num_has_focus = data.get(0).Vote_ID;
         vote_height = 35;
         add_height = 34;
         recyclerView_height_dp = (data.size() - 1) * vote_height + add_height;
