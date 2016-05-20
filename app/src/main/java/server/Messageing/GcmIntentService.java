@@ -476,7 +476,7 @@ public class GcmIntentService extends GcmListenerService {
         String[] event_data = MySplit(data,split_row);
         String id = event_data[0];
 
-        int new_item[] = {3, 3, 3, 3, 5, 5, 5, 5, 7, 7, 7, 7, 3, 3, 3, 3};
+        int new_item[] = {3, 3, 1, 3, 5, 5, 2, 5, 7, 7, 1, 7, 3, 3, 1, 3};
 
         for (int i = 1; i < event_data.length; i++) {
             String[] split_data = event_data[i].split(split_col);
