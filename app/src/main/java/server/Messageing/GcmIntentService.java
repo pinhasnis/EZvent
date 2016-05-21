@@ -79,7 +79,7 @@ public class GcmIntentService extends GcmListenerService {
                     if (event != null) {
                         //Check if the event is alredy exist. If it exist delete and insert.
                         if (!sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID},
-                                new String[]{event.getId()}, new int[]{1})[0].isEmpty()){
+                                new String[]{event.getId()}, new int[]{1})[0].isEmpty()) {
                             //Delete event.
                             sqlHelper.delete(Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{details}, new int[]{1});
                             //Delete event_user.
@@ -98,7 +98,7 @@ public class GcmIntentService extends GcmListenerService {
                 }
                 break;
             }
-            case Constants.Update_Event:{
+            case Constants.Update_Event: {
                 hundleUpdate(details);
                 break;
             }
@@ -232,7 +232,9 @@ public class GcmIntentService extends GcmListenerService {
                 break;
             }
         }
-        delegate.processFinish(Constants.Update_Activity);
+        //Check if the application is on.
+        if (delegate != null)
+            delegate.processFinish(Constants.Update_Activity);
     }
 
     private void deleteEvent(String event_id) {
@@ -262,9 +264,9 @@ public class GcmIntentService extends GcmListenerService {
 
     private void hundleUpdate(String data) {
         ArrayList<ArrayList<List<String>>> result = new ArrayList<>();
-        String event_id = parsingUpdate(result,data);
-        ArrayList<String>[] check = sqlHelper.select(null,Table_Events.Table_Name
-                ,new String[]{Table_Events.Event_ID},new String[]{event_id},null);
+        String event_id = parsingUpdate(result, data);
+        ArrayList<String>[] check = sqlHelper.select(null, Table_Events.Table_Name
+                , new String[]{Table_Events.Event_ID}, new String[]{event_id}, null);
         int details_index = 0;
         int users_start_index = 1; // in result users indexes are 1 - 4
         int tasks_start_index = 5; // in result tasks indexes are 5 - 8
@@ -272,18 +274,18 @@ public class GcmIntentService extends GcmListenerService {
         int location_start_index = 13; // in result locations indexes are 13 - 16
 
         int user_action = Constants.update_event_new;
-        if(check[0].size() > 0){
+        if (check[0].size() > 0) {
             user_action = Constants.update_event_update;
-            int delete_users_index = (Constants.update_event_delete)+users_start_index;
-            for(List<String> del_users : result.get(delete_users_index)){
-                String del_id =del_users.get(Table_Events_Users.User_ID_num - Constants.index_object_sql_diff);
-                if(del_id.equals(Constants.MY_User_ID)){
+            int delete_users_index = (Constants.update_event_delete) + users_start_index;
+            for (List<String> del_users : result.get(delete_users_index)) {
+                String del_id = del_users.get(Table_Events_Users.User_ID_num - Constants.index_object_sql_diff);
+                if (del_id.equals(Constants.MY_User_ID)) {
                     user_action = Constants.update_event_delete;
                     break;
                 }
             }
         }
-        switch (user_action){
+        switch (user_action) {
             case Constants.update_event_new: {
                 Event event = new Event();
                 event.setId(event_id);
@@ -291,40 +293,40 @@ public class GcmIntentService extends GcmListenerService {
                 event.setDetails(result.get(details_index).get(0));
                 //set Event users
                 ArrayList<List<String>> users = new ArrayList<>();
-                if(result.get(users_start_index+Constants.update_event_new).get(0).size() > 1)
-                    users.addAll(result.get(users_start_index+Constants.update_event_new));
-                if(result.get(users_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    users.addAll(result.get(users_start_index+Constants.update_event_not_change));
-                if(result.get(users_start_index+Constants.update_event_update).get(0).size() > 1)
-                    users.addAll(result.get(users_start_index+Constants.update_event_update));
+                if (result.get(users_start_index + Constants.update_event_new).get(0).size() > 1)
+                    users.addAll(result.get(users_start_index + Constants.update_event_new));
+                if (result.get(users_start_index + Constants.update_event_not_change).get(0).size() > 1)
+                    users.addAll(result.get(users_start_index + Constants.update_event_not_change));
+                if (result.get(users_start_index + Constants.update_event_update).get(0).size() > 1)
+                    users.addAll(result.get(users_start_index + Constants.update_event_update));
                 event.setEventUsers(users);
                 //set tasks
                 ArrayList<List<String>> tasks = new ArrayList<>();
-                if(result.get(tasks_start_index+Constants.update_event_new).get(0).size() > 1)
-                    tasks.addAll(result.get(tasks_start_index+Constants.update_event_new));
-                if(result.get(tasks_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    tasks.addAll(result.get(tasks_start_index+Constants.update_event_not_change));
-                if(result.get(tasks_start_index+Constants.update_event_update).get(0).size() > 1)
-                    tasks.addAll(result.get(tasks_start_index+Constants.update_event_update));
+                if (result.get(tasks_start_index + Constants.update_event_new).get(0).size() > 1)
+                    tasks.addAll(result.get(tasks_start_index + Constants.update_event_new));
+                if (result.get(tasks_start_index + Constants.update_event_not_change).get(0).size() > 1)
+                    tasks.addAll(result.get(tasks_start_index + Constants.update_event_not_change));
+                if (result.get(tasks_start_index + Constants.update_event_update).get(0).size() > 1)
+                    tasks.addAll(result.get(tasks_start_index + Constants.update_event_update));
                 event.setTasks(tasks);
                 //set Dates
                 ArrayList<List<String>> dates = new ArrayList<>();
-                if(result.get(date_start_index+Constants.update_event_new).get(0).size() > 1)
-                    dates.addAll(result.get(date_start_index+Constants.update_event_new));
-                if(result.get(date_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    dates.addAll(result.get(date_start_index+Constants.update_event_not_change));
-                if(result.get(date_start_index+Constants.update_event_update).get(0).size() > 1)
-                    dates.addAll(result.get(date_start_index+Constants.update_event_update));
+                if (result.get(date_start_index + Constants.update_event_new).get(0).size() > 1)
+                    dates.addAll(result.get(date_start_index + Constants.update_event_new));
+                if (result.get(date_start_index + Constants.update_event_not_change).get(0).size() > 1)
+                    dates.addAll(result.get(date_start_index + Constants.update_event_not_change));
+                if (result.get(date_start_index + Constants.update_event_update).get(0).size() > 1)
+                    dates.addAll(result.get(date_start_index + Constants.update_event_update));
                 event.setVoteDates(dates);
 
                 //set Locations
                 ArrayList<List<String>> locations = new ArrayList<>();
-                if(result.get(location_start_index+Constants.update_event_new).get(0).size() > 1)
-                    locations.addAll(result.get(location_start_index+Constants.update_event_new));
-                if(result.get(location_start_index+Constants.update_event_not_change).get(0).size() > 1)
-                    locations.addAll(result.get(location_start_index+Constants.update_event_not_change));
-                if(result.get(location_start_index+Constants.update_event_update).get(0).size() > 1)
-                    locations.addAll(result.get(location_start_index+Constants.update_event_update));
+                if (result.get(location_start_index + Constants.update_event_new).get(0).size() > 1)
+                    locations.addAll(result.get(location_start_index + Constants.update_event_new));
+                if (result.get(location_start_index + Constants.update_event_not_change).get(0).size() > 1)
+                    locations.addAll(result.get(location_start_index + Constants.update_event_not_change));
+                if (result.get(location_start_index + Constants.update_event_update).get(0).size() > 1)
+                    locations.addAll(result.get(location_start_index + Constants.update_event_update));
                 event.setVoteLocations(locations);
 
                 addEventWithSafeSQL(event);
@@ -333,28 +335,28 @@ public class GcmIntentService extends GcmListenerService {
             case Constants.update_event_update: {
 
                 //update Details if needed
-                if(result.get(details_index).get(0).size() > 1){
+                if (result.get(details_index).get(0).size() > 1) {
                     //update details in my sql.
                     sqlHelper.update(Table_Events.Table_Name, event_id, result.get(details_index).get(0).toArray(new String[0]));
                 }
 
 
-                handleUpdateUpdate(event_id, result, users_start_index+Constants.update_event_update
-                        , tasks_start_index+Constants.update_event_update
-                        , date_start_index+Constants.update_event_update
-                        , location_start_index+Constants.update_event_update);
+                handleUpdateUpdate(event_id, result, users_start_index + Constants.update_event_update
+                        , tasks_start_index + Constants.update_event_update
+                        , date_start_index + Constants.update_event_update
+                        , location_start_index + Constants.update_event_update);
 
 
-                handleUpdateDelete(event_id, result, users_start_index+Constants.update_event_delete
-                        , tasks_start_index+Constants.update_event_delete
-                        , date_start_index+Constants.update_event_delete
-                        , location_start_index+Constants.update_event_delete);
+                handleUpdateDelete(event_id, result, users_start_index + Constants.update_event_delete
+                        , tasks_start_index + Constants.update_event_delete
+                        , date_start_index + Constants.update_event_delete
+                        , location_start_index + Constants.update_event_delete);
 
 
-                handleUpdateNew(event_id, result, users_start_index+Constants.update_event_new
-                        , tasks_start_index+Constants.update_event_new
-                        , date_start_index+Constants.update_event_new
-                        , location_start_index+Constants.update_event_new);
+                handleUpdateNew(event_id, result, users_start_index + Constants.update_event_new
+                        , tasks_start_index + Constants.update_event_new
+                        , date_start_index + Constants.update_event_new
+                        , location_start_index + Constants.update_event_new);
 
 
                 break;
@@ -371,25 +373,25 @@ public class GcmIntentService extends GcmListenerService {
             , int tasks_index, int date_index, int location_index) {
 
         //update users if needed
-        if(result.get(users_index).get(0).get(0).length() > 0) {
+        if (result.get(users_index).get(0).get(0).length() > 0) {
             sqlHelper.updateAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
 
         //update tasks
-        if(result.get(tasks_index).get(0).get(0).length() > 0){
+        if (result.get(tasks_index).get(0).get(0).length() > 0) {
             for (int i = 0; i < result.get(tasks_index).size(); i++) {
                 result.get(tasks_index).get(i).add(Constants.No);
             }
-            sqlHelper.updateAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+            sqlHelper.updateAll(Table_Tasks.Table_Name, event_id, result.get(tasks_index));
         }
 
         //update Dates
-        if(result.get(date_index).get(0).get(0).length() > 0){
+        if (result.get(date_index).get(0).get(0).length() > 0) {
             sqlHelper.updateAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
         }
 
         //update Locations
-        if(result.get(location_index).get(0).get(0).length() > 0){
+        if (result.get(location_index).get(0).get(0).length() > 0) {
             sqlHelper.updateAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
         }
 
@@ -400,42 +402,42 @@ public class GcmIntentService extends GcmListenerService {
             , int tasks_index, int date_index, int location_index) {
 
         //delete users if needed
-        if(result.get(users_index).get(0).get(0).length() > 0 ) {
-            String[] where_columns = new String[]{Table_Events_Users.Event_ID , Table_Events_Users.User_ID};
+        if (result.get(users_index).get(0).get(0).length() > 0) {
+            String[] where_columns = new String[]{Table_Events_Users.Event_ID, Table_Events_Users.User_ID};
             for (int i = 0; i < result.get(users_index).size(); i++) {
-                String[] where_values = new String[]{event_id,result.get(users_index).get(i).get(0)};
-                sqlHelper.delete(Table_Events_Users.Table_Name,where_columns , where_values, null);
+                String[] where_values = new String[]{event_id, result.get(users_index).get(i).get(0)};
+                sqlHelper.delete(Table_Events_Users.Table_Name, where_columns, where_values, null);
             }
 
             //       sqlHelper.deleteAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
 
         //delete tasks
-        if(result.get(tasks_index).get(0).get(0).length() > 0){
-            String[] where_columns = new String[]{Table_Tasks.Event_ID , Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number};
+        if (result.get(tasks_index).get(0).get(0).length() > 0) {
+            String[] where_columns = new String[]{Table_Tasks.Event_ID, Table_Tasks.Task_ID_Number, Table_Tasks.subTask_ID_Number};
             for (int i = 0; i < result.get(tasks_index).size(); i++) {
-                String[] where_values = new String[]{event_id,result.get(tasks_index).get(i).get(0),result.get(tasks_index).get(i).get(1)};
-                sqlHelper.delete(Table_Tasks.Table_Name,where_columns , where_values, null);
+                String[] where_values = new String[]{event_id, result.get(tasks_index).get(i).get(0), result.get(tasks_index).get(i).get(1)};
+                sqlHelper.delete(Table_Tasks.Table_Name, where_columns, where_values, null);
             }
             // sqlHelper.deleteAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
         }
 
         //delete Dates
-        if(result.get(date_index).get(0).get(0).length() > 0){
-            String[] where_columns = new String[]{Table_Vote_Date.Event_ID , Table_Vote_Date.Vote_ID};
+        if (result.get(date_index).get(0).get(0).length() > 0) {
+            String[] where_columns = new String[]{Table_Vote_Date.Event_ID, Table_Vote_Date.Vote_ID};
             for (int i = 0; i < result.get(date_index).size(); i++) {
-                String[] where_values = new String[]{event_id,result.get(date_index).get(i).get(0)};
-                sqlHelper.delete(Table_Vote_Date.Table_Name,where_columns , where_values, null);
+                String[] where_values = new String[]{event_id, result.get(date_index).get(i).get(0)};
+                sqlHelper.delete(Table_Vote_Date.Table_Name, where_columns, where_values, null);
             }
             //sqlHelper.deleteAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
         }
 
         //delete Locations
-        if(result.get(location_index).get(0).get(0).length() > 0){
-            String[] where_columns = new String[]{Table_Vote_Location.Event_ID , Table_Vote_Location.Vote_ID};
+        if (result.get(location_index).get(0).get(0).length() > 0) {
+            String[] where_columns = new String[]{Table_Vote_Location.Event_ID, Table_Vote_Location.Vote_ID};
             for (int i = 0; i < result.get(location_index).size(); i++) {
-                String[] where_values = new String[]{event_id,result.get(location_index).get(i).get(0)};
-                sqlHelper.delete(Table_Vote_Location.Table_Name,where_columns , where_values, null);
+                String[] where_values = new String[]{event_id, result.get(location_index).get(i).get(0)};
+                sqlHelper.delete(Table_Vote_Location.Table_Name, where_columns, where_values, null);
             }
         }
 
@@ -446,25 +448,25 @@ public class GcmIntentService extends GcmListenerService {
             , int tasks_index, int date_index, int location_index) {
 
         //add new users if needed
-        if(result.get(users_index).get(0).get(0).length() > 0) {
+        if (result.get(users_index).get(0).get(0).length() > 0) {
             sqlHelper.insertAll(Table_Events_Users.Table_Name, event_id, result.get(users_index));
         }
 
         //add new tasks
-        if(result.get(tasks_index).get(0).get(0).length() > 0){
+        if (result.get(tasks_index).get(0).get(0).length() > 0) {
             for (int i = 0; i < result.get(tasks_index).size(); i++) {
                 result.get(tasks_index).get(i).add(Constants.No);
             }
-            sqlHelper.insertAll(Table_Tasks.Table_Name, event_id , result.get(tasks_index));
+            sqlHelper.insertAll(Table_Tasks.Table_Name, event_id, result.get(tasks_index));
         }
 
         //add new Dates
-        if(result.get(date_index).get(0).get(0).length() > 0){
+        if (result.get(date_index).get(0).get(0).length() > 0) {
             sqlHelper.insertAll(Table_Vote_Date.Table_Name, event_id, result.get(date_index));
         }
 
         //add new Locations
-        if(result.get(location_index).get(0).get(0).length() > 0){
+        if (result.get(location_index).get(0).get(0).length() > 0) {
             sqlHelper.insertAll(Table_Vote_Location.Table_Name, event_id, result.get(location_index));
         }
 
@@ -473,7 +475,7 @@ public class GcmIntentService extends GcmListenerService {
     private String parsingUpdate(ArrayList<ArrayList<List<String>>> result, String data) {
         char split_row = '[';
         String split_col = "\\]";
-        String[] event_data = MySplit(data,split_row);
+        String[] event_data = MySplit(data, split_row);
         String id = event_data[0];
 
         int new_item[] = {3, 3, 1, 3, 5, 5, 2, 5, 7, 7, 1, 7, 3, 3, 1, 3};
@@ -494,19 +496,19 @@ public class GcmIntentService extends GcmListenerService {
         }
         return id;
     }
+
     private String[] MySplit(String line, char split_row) {
         ArrayList<String> spl = new ArrayList<>();
-        String data="";
+        String data = "";
         for (int i = 0; i < line.length(); i++) {
-            if(line.charAt(i) == split_row){
+            if (line.charAt(i) == split_row) {
                 spl.add(data);
                 data = "";//new String();
-            }
-            else{
+            } else {
                 data += line.charAt(i);
             }
         }
-        if(line.charAt(line.length()-1) == split_row)
+        if (line.charAt(line.length() - 1) == split_row)
             data = "";
         spl.add(data);
         return spl.toArray(new String[0]);
