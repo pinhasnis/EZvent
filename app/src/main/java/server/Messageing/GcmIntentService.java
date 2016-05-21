@@ -24,6 +24,7 @@ import rnp.backend.ezvent.model.ChatCollection;
 import rnp.backend.ezvent.model.Event;
 import rnp.ezvent.MainActivity;
 import rnp.ezvent.R;
+import rnp.ezvent.login.login;
 import server.CloudEndpointBuilderHelper;
 import server.ServerAsyncResponse;
 import utils.Constans.Constants;
@@ -1089,7 +1090,7 @@ public class GcmIntentService extends GcmListenerService {
                         .setContentText(content)
                         .setAutoCancel(true);
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, login.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
