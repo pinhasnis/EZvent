@@ -86,32 +86,76 @@ public final class sqlHelper {
             case Table_Events.Table_Name:
                 return Table_Events.getAllFields();
             case Table_Events_Users.Table_Name:
-                return Table_Events_Users.getAllFields();
+                return new String[]{Table_Events_Users.Attending, Table_Events_Users.Permission};
             case Table_Tasks.Table_Name: {
                 return new String[]{Table_Tasks.Task_Type,Table_Tasks.Description,Table_Tasks.User_ID,Table_Tasks.Mark};
             }
             case Table_Vote_Location.Table_Name:
-                return Table_Vote_Location.getAllFields();
+                return new String[]{Table_Vote_Location.Description , Table_Vote_Location.User_ID};
             case Table_Vote_Date.Table_Name:
-                return Table_Vote_Date.getAllFields();
+                return new String[]{Table_Vote_Date.Start_Date, Table_Vote_Date.End_Date
+                        ,Table_Vote_Date.All_Day_Time,Table_Vote_Date.Start_Date,Table_Vote_Date.End_Time,Table_Vote_Date.User_ID};
         }
         return null;
     }
 
 
-    private static String[] getAllFieldsUpdateIndexs(String table) {
+    private static int[] getAllFieldsUpdateIndexs(String table) {
         switch (table) {
-            case Table_Events.Table_Name:
-                return Table_Events.getAllFields();
+            case Table_Events.Table_Name: {
+                int size = Table_Events.getAllFields().length;
+                int [] indexs = new int[size];
+                for (int i = 0; i < size; i++) {
+                    indexs[i] = i;
+                }
+                return indexs;
+            }
             case Table_Events_Users.Table_Name:
-                return Table_Events_Users.getAllFields();
+                return new int[]{Table_Events_Users.Attending_num, Table_Events_Users.Permission_num};
             case Table_Tasks.Table_Name: {
-                return new String[]{Table_Tasks.Task_Type,Table_Tasks.Description,Table_Tasks.User_ID,Table_Tasks.Mark};
+                return new int[]{Table_Tasks.Task_Type_num,Table_Tasks.Description_num,Table_Tasks.User_ID_num,Table_Tasks.Mark_num};
             }
             case Table_Vote_Location.Table_Name:
-                return Table_Vote_Location.getAllFields();
+                return new int[]{Table_Vote_Location.Description_num , Table_Vote_Location.User_ID_num};
             case Table_Vote_Date.Table_Name:
-                return Table_Vote_Date.getAllFields();
+                return new int[]{Table_Vote_Date.Start_Date_num, Table_Vote_Date.End_Date_num
+                        ,Table_Vote_Date.All_Day_Time_num,Table_Vote_Date.Start_Date_num
+                        ,Table_Vote_Date.End_Time_num,Table_Vote_Date.User_ID_num};
+        }
+        return null;
+    }
+
+    private static String[] getAllFieldsUpdateWhere(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return new String[0];
+            case Table_Events_Users.Table_Name:
+                return new String[]{Table_Events_Users.User_ID};
+            case Table_Tasks.Table_Name: {
+                return new String[]{Table_Tasks.Task_ID_Number,Table_Tasks.subTask_ID_Number};
+            }
+            case Table_Vote_Location.Table_Name:
+                return new String[]{Table_Vote_Location.Vote_ID};
+            case Table_Vote_Date.Table_Name:
+                return new String[]{Table_Vote_Date.Vote_ID};
+        }
+        return null;
+    }
+
+
+    private static int[] getAllFieldsUpdateIndexsWhere(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return new int[0];
+            case Table_Events_Users.Table_Name:
+                return new int[]{Table_Events_Users.User_ID_num};
+            case Table_Tasks.Table_Name: {
+                return new int[]{Table_Tasks.Task_ID_Number_num,Table_Tasks.subTask_ID_Number_num};
+            }
+            case Table_Vote_Location.Table_Name:
+                return new int[]{Table_Vote_Location.Vote_ID_num};
+            case Table_Vote_Date.Table_Name:
+                return new int[]{Table_Vote_Date.Vote_ID_num};
         }
         return null;
     }
@@ -120,27 +164,31 @@ public final class sqlHelper {
         try {
             event_id = event_id.replaceAll("\'", "\'\'");
             String set_columns[] = getAllFieldsUpdate(table_name);
-            String set_indexs[] = getAllFieldsUpdateIndexs(table_name);
+            int set_indexs[] = getAllFieldsUpdateIndexs(table_name);
+            String where_columns[] = getAllFieldsUpdateWhere(table_name);
+            int where_indexs[] = getAllFieldsUpdateIndexsWhere(table_name);
+
             String query ="";
             for (List<String> val_list : values) {
 
-                query += "update `" + table_name + "` set ";
-                query += "`" + set_columns[0] + "` = '" + event_id + "',";
+                query = "update `" + table_name + "` set ";
                 String[] vals = val_list.toArray(new String[0]);
-                int end = vals.length - 1;
+                int end = set_indexs.length;
                 clean(vals);
                 for (int i = 0; i < end; i++) {
-                    query += "`" + set_columns[i + Constants.index_object_sql_diff] + "` = '" + vals[i] + "',";
+                    query += "`" + set_columns[i] + "` = '" + vals[set_indexs[i]-Constants.index_object_sql_diff] + "',";
                 }
-                query += "`" + set_columns[end + Constants.index_object_sql_diff] + "` = '" + vals[end] + "' ";
-                query += "where `" + getEventIDField(table_name) + "` = '" + event_id + "';\n";
+                query = query.substring(0,query.length()-1);
+                query += " where `" + getEventIDField(table_name) + "` = '" + event_id + "'";
+                for (int i = 0; i < where_columns.length; i++) {
+                    query += " and `"+where_columns[i]+"` = '" + vals[where_indexs[i]-Constants.index_object_sql_diff] +"'";
+                }
+                query += ";";
+
+                SQLiteDatabase db = getConnection();
+                db.execSQL(query);
+                db.close();
             }
-
-            SQLiteDatabase db = getConnection();
-            db.execSQL(query);
-            db.close();
-
-
         }catch(Exception e){
             addToLog(e);
         }
