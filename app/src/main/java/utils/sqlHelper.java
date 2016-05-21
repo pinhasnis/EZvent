@@ -80,10 +80,47 @@ public final class sqlHelper {
         }
     }
 
+
+    private static String[] getAllFieldsUpdate(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return Table_Events.getAllFields();
+            case Table_Events_Users.Table_Name:
+                return Table_Events_Users.getAllFields();
+            case Table_Tasks.Table_Name: {
+                return new String[]{Table_Tasks.Task_Type,Table_Tasks.Description,Table_Tasks.User_ID,Table_Tasks.Mark};
+            }
+            case Table_Vote_Location.Table_Name:
+                return Table_Vote_Location.getAllFields();
+            case Table_Vote_Date.Table_Name:
+                return Table_Vote_Date.getAllFields();
+        }
+        return null;
+    }
+
+
+    private static String[] getAllFieldsUpdateIndexs(String table) {
+        switch (table) {
+            case Table_Events.Table_Name:
+                return Table_Events.getAllFields();
+            case Table_Events_Users.Table_Name:
+                return Table_Events_Users.getAllFields();
+            case Table_Tasks.Table_Name: {
+                return new String[]{Table_Tasks.Task_Type,Table_Tasks.Description,Table_Tasks.User_ID,Table_Tasks.Mark};
+            }
+            case Table_Vote_Location.Table_Name:
+                return Table_Vote_Location.getAllFields();
+            case Table_Vote_Date.Table_Name:
+                return Table_Vote_Date.getAllFields();
+        }
+        return null;
+    }
+
     public static void updateAll(String table_name,String event_id,List<List<String>> values) {
         try {
             event_id = event_id.replaceAll("\'", "\'\'");
-            String set_columns[] = getAllFields(table_name);
+            String set_columns[] = getAllFieldsUpdate(table_name);
+            String set_indexs[] = getAllFieldsUpdateIndexs(table_name);
             String query ="";
             for (List<String> val_list : values) {
 
@@ -98,9 +135,12 @@ public final class sqlHelper {
                 query += "`" + set_columns[end + Constants.index_object_sql_diff] + "` = '" + vals[end] + "' ";
                 query += "where `" + getEventIDField(table_name) + "` = '" + event_id + "';\n";
             }
+
             SQLiteDatabase db = getConnection();
             db.execSQL(query);
             db.close();
+
+
         }catch(Exception e){
             addToLog(e);
         }
@@ -252,6 +292,7 @@ public final class sqlHelper {
         }
         return null;
     }
+
 
     public static void delete(String table, String[] where_columns, String[] where_values, int[] limit) {
         try{
