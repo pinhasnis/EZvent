@@ -10,7 +10,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import rnp.ezvent.MainActivity;
+import server.Messageing.GcmIntentService;
 import server.add_logAsyncTask;
 import utils.Constans.Constants;
 import utils.Constans.Table_Events;
@@ -36,6 +40,10 @@ public final class sqlHelper {
         SQLiteDatabase db = null;
         if (context != null) {
             db = context.openOrCreateDatabase(Constants.SQL_DB_NAME, context.MODE_PRIVATE, null);
+           // addToLog(context.getDatabasePath(Constants.SQL_DB_NAME).toString());
+        }
+        else{
+           db = SQLiteDatabase.openOrCreateDatabase(Constants.SQL_DIR + Constants.SQL_DB_NAME, null);
         }
         // SQLiteDatabase.openOrCreateDatabase(Constants.SQL_DIR + Constants.SQL_DB_NAME, null);
         //SQLiteDatabase db = SQLiteDatabase.openDatabase(Constants.SQL_DIR + Constants.SQL_DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
@@ -278,8 +286,10 @@ public final class sqlHelper {
             query = query.substring(0, query.length() - 1);
             query += ";";
             SQLiteDatabase db = getConnection();
+            sqlHelper.addToLog(db+"");
             db.execSQL(query);
             db.close();
+            sqlHelper.addToLog((sqlHelper.select(null,Table_Events.Table_Name,new String[]{Table_Events.Event_ID},new String[]{value},null))[0].toString());
 
         }catch (Exception e){
             addToLog(e);
@@ -476,6 +486,7 @@ public final class sqlHelper {
     }
 
     public static void addToLog(String eString){
+        Logger.getLogger("DEBUG").log(Level.INFO,eString);
         LocalDateTime now = LocalDateTime.now();
         try {
             int year = now.getYear();

@@ -43,7 +43,7 @@ public final class Constants {
      */
     public static final boolean SIGN_IN_REQUIRED = BuildConfig.SIGN_IN_REQUIRED;
 
-    public static final String SQL_DIR = "/data/data/some_lie.brings/databases/";
+    public static final String SQL_DIR = "/data/user/0/rnp.ezvent/databases/";
     public static final String SQL_DB_NAME = "_edata";
 
 

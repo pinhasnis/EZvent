@@ -68,6 +68,7 @@ public class GcmIntentService extends GcmListenerService {
                 try {
                     Event event = getEvent(details);
                     addEventWithSafeSQL(event);
+                    //Logger.getLogger("DEBUG").log(Level.INFO,event.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -817,7 +818,11 @@ public class GcmIntentService extends GcmListenerService {
             e.printStackTrace();
         }
   */
-        addNotification("New Event", "You got invite to new event: " + event.getDetails().get(Table_Events.Name_num));
+        //Logger.getLogger("DEBUG").log(Level.INFO,event.toString());
+       // Logger.getLogger("DEBUG").log(Level.INFO,event.getDetails().get(Table_Events.Name_num));
+       // Logger.getLogger("DEBUG").log(Level.INFO,event.getDetails().toString());
+        //Logger.getLogger("DEBUG").log(Level.INFO,"NUM: "+Table_Events.Name_num);
+        addNotification("New Event", "You got invite to new event: " + event.getDetails().get(Table_Events.Name_num-Constants.index_object_sql_diff));
 
     }
 
