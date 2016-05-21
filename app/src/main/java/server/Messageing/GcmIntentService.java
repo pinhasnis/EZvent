@@ -54,7 +54,7 @@ public class GcmIntentService extends GcmListenerService {
     @Override
     public void onSendError(String msgId, String error) {
         super.onSendError(msgId, error);
-
+        String bp = msgId;
     }
 
     @Override

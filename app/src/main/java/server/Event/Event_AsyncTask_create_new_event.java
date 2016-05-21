@@ -16,10 +16,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.Random;
 
 import rnp.backend.ezvent.Ezvent;
 import rnp.backend.ezvent.model.Event;
 import server.CloudEndpointBuilderHelper;
+import utils.Constans.Constants;
 
 /**
  * Created by Ravid on 25/09/2015.
@@ -41,20 +43,52 @@ public class Event_AsyncTask_create_new_event extends AsyncTask<Event, Void, Voi
             myApiService = CloudEndpointBuilderHelper.getEndpoints();
         }
 
+
+        int backoff = Constants.BACKOFF_INITIAL_DELAY;
+        Random random = new Random();
+        boolean finish = true;
+        for (int attemp = 0; attemp < Constants.MaxSendAttemp; attemp++) {
+            finish = true;
+            try {
+                myApiService.newEvent(params[0]).execute();
+            } catch (Exception e) {
+                finish = false;
+            }
+            finally {
+                if(finish){
+                    attemp = Constants.MaxSendAttemp;
+                }
+                else{
+                    try {
+                        int sleepTime = backoff / 2 + random.nextInt(backoff);
+                        Thread.sleep(sleepTime);
+                        if (2 * backoff < Constants.MAX_BACKOFF_DELAY) {
+                            backoff *= 2;
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        if(!finish){
+            //TODO in case message didn't send add it to some database and try again latter..
+        }
+  /*
         try {
             myApiService.newEvent(params[0]).execute();
-           /*
+            /*
             File f = new File(params[8]);
             if (f.exists()) {
                 String file_name = ipath.getPath();
                 //cloudStorage.uploadFile(Constants.bucket_name, params[8], context, file_name);
 
             }
-            */
+            *//*
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
         return null;
     }
 

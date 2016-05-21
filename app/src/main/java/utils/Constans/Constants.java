@@ -61,6 +61,10 @@ public final class Constants {
     public final static int update_event_delete = 2;
     public final static int update_event_update = 3;
 
+    public final static int MaxSendAttemp = 5;
+    public final static int BACKOFF_INITIAL_DELAY = 1000;
+    public final static int MAX_BACKOFF_DELAY = 1024000;
+
     /**
      * Default constructor, never called.
      */
