@@ -1,5 +1,6 @@
 package server.Messageing;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -1088,7 +1089,8 @@ public class GcmIntentService extends GcmListenerService {
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(title)
                         .setContentText(content)
-                        .setAutoCancel(true);
+                        .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_SOUND);
 
         Intent notificationIntent = new Intent(this, login.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
