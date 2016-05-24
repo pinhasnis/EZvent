@@ -54,12 +54,6 @@ public class GcmIntentService extends GcmListenerService {
     }
 
     @Override
-    public void onSendError(String msgId, String error) {
-        super.onSendError(msgId, error);
-        String bp = msgId;
-    }
-
-    @Override
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
         Logger.getLogger("GCM_RECEIVED").log(Level.INFO, data.toString());
@@ -131,6 +125,7 @@ public class GcmIntentService extends GcmListenerService {
                     if (event_name.length() == 0) event_name = "Event Name";
                     String sender = Contacts_List.contacts.get(Chat[Table_Chat.User_ID_num]);
                     addNotification("New Message - " + event_name, sender + ": \n" + Chat[Table_Chat.Message_num]);
+
                 }
                 break;
             }

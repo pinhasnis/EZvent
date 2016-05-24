@@ -73,12 +73,9 @@ public class UpdateEventEndPoint {
 
     private void handleExistUsers(UpdateEvent update_event, String user_id) throws Exception {
         ArrayList<String[]> old_users = new ArrayList<>();
-        addToLog("BEFORE BEFORE: "+update_event.toString2());
         old_users.addAll(update_event.getEvent_users()[Constants.update_event_not_change]);
         old_users.addAll(update_event.getEvent_users()[Constants.update_event_update]);
-        addToLog("BEFORE: "+update_event.toString2());
         update_event.clearUnchangedData();
-        addToLog("AFTER: "+update_event.toString2());
         sendToUsers(update_event, old_users, user_id);
     }
 

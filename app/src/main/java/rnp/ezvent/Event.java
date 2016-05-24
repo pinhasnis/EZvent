@@ -134,6 +134,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
         if (!my_permission.equals(Constants.Owner)) {
             edit.setVisibility(View.GONE);
         } else {
+            edit.setVisibility(View.VISIBLE);
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -178,12 +179,35 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     int status = Event_Helper.load_event(Event_Helper.details[Table_Events.Event_ID_num]);
                     if (status == -1) return;
                     int CurrentItem = mViewPager.getCurrentItem();
+
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setCurrentItem(CurrentItem);
                     TextView event_name = (TextView) findViewById(R.id.event_name);
                     if (!Event_Helper.details[Table_Events.Name_num].equals("")) {
                         event_name.setText(Event_Helper.details[Table_Events.Name_num]);
                     }
+
+                    final RecyclerView recyclerview = (RecyclerView) mViewPager.getRootView().findViewById(R.id.recyclerView);
+                    recyclerview.scrollToPosition(1);
+
+                    my_permission = Helper.getMyPermission(Event_Helper.details[Table_Events.Event_ID_num]);
+                    ImageButton edit = (ImageButton) findViewById(R.id.edit);
+                    if (!my_permission.equals(Constants.Owner)) {
+                        edit.setVisibility(View.GONE);
+                    } else {
+                        edit.setVisibility(View.VISIBLE);
+                        edit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), New_Event.class);
+                                Bundle data = new Bundle();
+                                data.putString("Event_ID", Event_Helper.details[Table_Events.Event_ID_num]);
+                                intent.putExtras(data);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
                 }
             });
 
@@ -409,7 +433,8 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     View rootView = inflater.inflate(R.layout.fragment_event_chat, container, false);
 
                     final RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-                    recyclerview.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext());
+                    recyclerview.setLayoutManager(linearLayoutManager);
 
                     final String Chat_ID = Table_Chat.Table_Name + Helper.Clean_Event_ID(Event_Helper.details[Table_Events.Event_ID_num]);
                     final ArrayList<String>[] dbChat = sqlHelper.select(null, Chat_ID, null, null, null);
