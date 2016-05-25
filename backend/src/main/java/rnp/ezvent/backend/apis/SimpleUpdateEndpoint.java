@@ -72,7 +72,7 @@ public class SimpleUpdateEndpoint {
                 case Constants.New_Chat_Message: {
                     java.sql.ResultSet resultSet = MySQL_Util.select(null, simpleUpdate.getChat_Table_name(), new String[]{Table_Chat.Message_ID, Table_Chat.User_ID}
                             , new String[]{values[Table_Chat.Message_ID_num], values[Table_Chat.User_ID_num]}, new int[]{1});
-                    if (resultSet.next())
+                    if (!resultSet.next())
                         MySQL_Util.insert(simpleUpdate.getChat_Table_name(), simpleUpdate.getValues());
                     resultSet.close();
                     break;
