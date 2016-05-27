@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -181,13 +182,15 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     int CurrentItem = mViewPager.getCurrentItem();
 
                     mViewPager.setAdapter(mSectionsPagerAdapter);
+
                     mViewPager.setCurrentItem(CurrentItem);
                     TextView event_name = (TextView) findViewById(R.id.event_name);
                     if (!Event_Helper.details[Table_Events.Name_num].equals("")) {
                         event_name.setText(Event_Helper.details[Table_Events.Name_num]);
                     }
-
-                    final RecyclerView recyclerview = (RecyclerView) mViewPager.getRootView().findViewById(R.id.recyclerView);
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View rootView = inflater.inflate(R.layout.fragment_event_chat, mViewPager, false);
+                    final RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
                     recyclerview.scrollToPosition(1);
 
                     my_permission = Helper.getMyPermission(Event_Helper.details[Table_Events.Event_ID_num]);
@@ -434,6 +437,10 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
 
                     final RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext());
+                 //   linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                 //   linearLayoutManager.setStackFromEnd(true);
+                 //   linearLayoutManager.setSmoothScrollbarEnabled(false);
+//                    linearLayoutManager.scrollToPosition();
                     recyclerview.setLayoutManager(linearLayoutManager);
 
                     final String Chat_ID = Table_Chat.Table_Name + Helper.Clean_Event_ID(Event_Helper.details[Table_Events.Event_ID_num]);
@@ -453,7 +460,28 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                         }
                     final ExpandableListAdapter_Event_Chat expandableListAdapter_event_chat = new ExpandableListAdapter_Event_Chat(data, dbChat, Chat_ID);
                     recyclerview.setAdapter(expandableListAdapter_event_chat);
-                    recyclerview.scrollToPosition(data.size() - 1);
+                    recyclerview.smoothScrollToPosition(data.size()-1);
+
+                    final ViewTreeObserver vto = recyclerview.getViewTreeObserver();
+                    vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        public void onGlobalLayout() {
+                            recyclerview.scrollToPosition(data.size()-1);
+                            if (vto.isAlive()) {
+                                // Unregister the listener to only call scrollToPosition once
+                                vto.removeGlobalOnLayoutListener(this);
+                                // Use vto.removeOnGlobalLayoutListener(this) on API16+ devices as
+                                // removeGlobalOnLayoutListener is deprecated.
+                                // They do the same thing, just a rename so your choice.
+                            }
+                        }
+                    });
+
+                    //    recyclerview.scrollToPosition(data.size() - 1);
+
+                    //  recyclerview.getLayoutManager().scrollVerticallyBy(data.size() - 1,null,null);//.smoothScrollToPosition(data.size() - 1);
+
+                  //  recyclerview.getLayoutManager().smoothScrollToPosition(recyclerview, null, data.size() - 1);
+                 //   linearLayoutManager.scrollToPositionWithOffset(data.size()-1,0);
                     ImageButton send = (ImageButton) rootView.findViewById(R.id.send);
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override
