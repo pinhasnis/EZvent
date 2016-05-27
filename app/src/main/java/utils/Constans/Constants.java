@@ -46,7 +46,7 @@ public final class Constants {
     public static final String SQL_DIR = "/data/user/0/rnp.ezvent/databases/";
     public static final String SQL_DB_NAME = "_edata";
 
-
+    public static boolean fromDeletedChatMessage = false;
     public static final String bucket_name = "a_bucket";
     public static final String cloudStorageScope = "https://www.googleapis.com/auth/devstorage.read_write";
     public static final String projectName = "Brings";

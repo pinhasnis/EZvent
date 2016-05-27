@@ -437,9 +437,9 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
 
                     final RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext());
-                 //   linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                 //   linearLayoutManager.setStackFromEnd(true);
-                 //   linearLayoutManager.setSmoothScrollbarEnabled(false);
+                    //   linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    //   linearLayoutManager.setStackFromEnd(true);
+                    //   linearLayoutManager.setSmoothScrollbarEnabled(false);
 //                    linearLayoutManager.scrollToPosition();
                     recyclerview.setLayoutManager(linearLayoutManager);
 
@@ -461,27 +461,32 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     final ExpandableListAdapter_Event_Chat expandableListAdapter_event_chat = new ExpandableListAdapter_Event_Chat(data, dbChat, Chat_ID);
                     recyclerview.setAdapter(expandableListAdapter_event_chat);
                     //recyclerview.smoothScrollToPosition(data.size()-1);
-
-                    final ViewTreeObserver vto = recyclerview.getViewTreeObserver();
-                    vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        public void onGlobalLayout() {
-                            recyclerview.scrollToPosition(data.size()-1);
-                            if (vto.isAlive()) {
-                                // Unregister the listener to only call scrollToPosition once
-                                vto.removeOnGlobalLayoutListener(this);//.removeGlobalOnLayoutListener(this);
-                                // Use vto.removeOnGlobalLayoutListener(this) on API16+ devices as
-                                // removeGlobalOnLayoutListener is deprecated.
-                                // They do the same thing, just a rename so your choice.
+                //    if (!Constants.fromDeletedChatMessage) {
+                  //      Constants.fromDeletedChatMessage = false;
+                        final ViewTreeObserver vto = recyclerview.getViewTreeObserver();
+                        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            public void onGlobalLayout() {
+                                recyclerview.scrollToPosition(data.size() - 1);
+                                if (vto.isAlive()) {
+                                    // Unregister the listener to only call scrollToPosition once
+                                    if(!Constants.fromDeletedChatMessage) {
+                                        Constants.fromDeletedChatMessage = false;
+                                        vto.removeOnGlobalLayoutListener(this);
+                                    }
+                                    //.removeGlobalOnLayoutListener(this);
+                                    // Use vto.removeOnGlobalLayoutListener(this) on API16+ devices as
+                                    // removeGlobalOnLayoutListener is deprecated.
+                                    // They do the same thing, just a rename so your choice.
+                                }
                             }
-                        }
-                    });
-
+                        });
+                  //  }
                     //    recyclerview.scrollToPosition(data.size() - 1);
 
                     //  recyclerview.getLayoutManager().scrollVerticallyBy(data.size() - 1,null,null);//.smoothScrollToPosition(data.size() - 1);
 
-                  //  recyclerview.getLayoutManager().smoothScrollToPosition(recyclerview, null, data.size() - 1);
-                 //   linearLayoutManager.scrollToPositionWithOffset(data.size()-1,0);
+                    //  recyclerview.getLayoutManager().smoothScrollToPosition(recyclerview, null, data.size() - 1);
+                    //   linearLayoutManager.scrollToPositionWithOffset(data.size()-1,0);
                     ImageButton send = (ImageButton) rootView.findViewById(R.id.send);
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override

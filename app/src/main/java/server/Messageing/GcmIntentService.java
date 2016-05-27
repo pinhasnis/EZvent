@@ -133,6 +133,7 @@ public class GcmIntentService extends GcmListenerService {
                 String Chat_Table_Name = details.split("\\^")[0];
                 String Message = details.split("\\^")[1];
                 String[] Chat = Message.split("\\|");
+                Constants.fromDeletedChatMessage = true;
                 if (!sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
                         new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null)[0].isEmpty())
                     sqlHelper.delete(Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
