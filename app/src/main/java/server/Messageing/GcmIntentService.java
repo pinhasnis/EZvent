@@ -1087,7 +1087,9 @@ public class GcmIntentService extends GcmListenerService {
                         .setAutoCancel(true)
                         .setDefaults(Notification.DEFAULT_SOUND);
 
+
         Intent notificationIntent = new Intent(this, login.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);

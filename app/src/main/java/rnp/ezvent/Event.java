@@ -465,7 +465,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     final ViewTreeObserver vto = recyclerview.getViewTreeObserver();
                     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                         public void onGlobalLayout() {
-                            recyclerview.smoothScrollToPosition(data.size()-1);
+                            recyclerview.scrollToPosition(data.size()-1);
                             if (vto.isAlive()) {
                                 // Unregister the listener to only call scrollToPosition once
                                 vto.removeOnGlobalLayoutListener(this);//.removeGlobalOnLayoutListener(this);
