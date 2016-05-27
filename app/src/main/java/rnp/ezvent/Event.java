@@ -460,12 +460,12 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                         }
                     final ExpandableListAdapter_Event_Chat expandableListAdapter_event_chat = new ExpandableListAdapter_Event_Chat(data, dbChat, Chat_ID);
                     recyclerview.setAdapter(expandableListAdapter_event_chat);
-                    recyclerview.smoothScrollToPosition(data.size()-1);
+                    //recyclerview.smoothScrollToPosition(data.size()-1);
 
                     final ViewTreeObserver vto = recyclerview.getViewTreeObserver();
                     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                         public void onGlobalLayout() {
-                            recyclerview.scrollToPosition(data.size()-1);
+                            recyclerview.smoothScrollToPosition(data.size()-1);
                             if (vto.isAlive()) {
                                 // Unregister the listener to only call scrollToPosition once
                                 vto.removeOnGlobalLayoutListener(this);//.removeGlobalOnLayoutListener(this);
