@@ -468,7 +468,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                             recyclerview.scrollToPosition(data.size()-1);
                             if (vto.isAlive()) {
                                 // Unregister the listener to only call scrollToPosition once
-                                vto.removeGlobalOnLayoutListener(this);
+                                vto.removeOnGlobalLayoutListener(this);//.removeGlobalOnLayoutListener(this);
                                 // Use vto.removeOnGlobalLayoutListener(this) on API16+ devices as
                                 // removeGlobalOnLayoutListener is deprecated.
                                 // They do the same thing, just a rename so your choice.
