@@ -1,7 +1,7 @@
 package rnp.ezvent.backend.utils;
 
 import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
-
+import java.util.logging.Logger;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
@@ -20,11 +20,15 @@ import rnp.ezvent.backend.utils.Constans.Table_Vote_Location;
  */
 public class MySQL_Util {
     private static Connection conn;
+    private static final Logger log = Logger.getLogger(MySQL_Util.class.getName());
 
-    private static Connection getConnection() throws Exception {
-        if (conn == null) {
+    private static Connection getConnection(){
+        try{
             Class.forName(Constants.sqlClassName);
             conn = DriverManager.getConnection(Constants.Database_PATH);
+        }
+        catch(Exception e){
+            addToLog(e);
         }
         return conn;
     }
@@ -107,13 +111,17 @@ public class MySQL_Util {
             int millis = now.getMillisOfSecond();
             String date = day + "/" + month + "/" + year;
             String time = hour + ":" + minute + ":" + second + ":" + millis;
-            MySQL_Util.insert("Logs", new String[]{sw.toString(), date, time});
+             MySQL_Util.insert("Logs", new String[]{sw.toString(), date, time});
         } catch (Exception e1) {
-            e1.printStackTrace();
+            StringWriter sw2 = new StringWriter();
+            e1.printStackTrace(new PrintWriter(sw2));
+            log.info(sw.toString());
+            log.info(sw2.toString());
+           // e1.printStackTrace();
         }
     }
 
-    public static void addToLog(String log) {
+    public static void addToLog(String logM) {
         LocalDateTime now = LocalDateTime.now();
         try {
             int year = now.getYear();
@@ -125,9 +133,12 @@ public class MySQL_Util {
             int millis = now.getMillisOfSecond();
             String date = day + "/" + month + "/" + year;
             String time = hour + ":" + minute + ":" + second + ":" + millis;
-            MySQL_Util.insert("Logs", new String[]{log, date, time});
+            MySQL_Util.insert("Logs", new String[]{logM, date, time});
         } catch (Exception e1) {
-            e1.printStackTrace();
+            StringWriter sw2 = new StringWriter();
+            e1.printStackTrace(new PrintWriter(sw2));
+            log.info(logM);
+            log.info(sw2.toString());
         }
     }
 
