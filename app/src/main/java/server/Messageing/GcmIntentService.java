@@ -1135,9 +1135,9 @@ public class GcmIntentService extends GcmListenerService {
 
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
-        if(closeNotificationNow)
-            manager.cancel(0);
+
+        if(!closeNotificationNow)
+            manager.notify(0, builder.build());
 
     }
 
