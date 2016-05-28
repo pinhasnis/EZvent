@@ -71,7 +71,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
     private ViewPager mViewPager;
 
     private static String my_permission;
-
+    private static String Event_ID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +82,8 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Bundle b = getIntent().getExtras();
-        Event_Helper.load_event(b.getString("Event_ID"));
+        Event_ID = b.getString("Event_ID");
+        Event_Helper.load_event(Event_ID);
         TextView event_name = (TextView) findViewById(R.id.event_name);
         my_permission = Helper.getMyPermission(Event_Helper.details[Table_Events.Event_ID_num]);
         if (!Event_Helper.details[Table_Events.Name_num].equals("")) {
@@ -113,6 +114,11 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     startActivity(intent);
                 }
             });
+        }
+        String NM = b.getString(Constants.FromNotification);
+        if(NM != null
+                && NM.equals(Constants.Notification_New_Message)){
+            mViewPager.setCurrentItem(2);
         }
     }
 
@@ -354,6 +360,9 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     recyclerview.setNestedScrollingEnabled(false);
                     RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.radioGroup);
                     radioGroup.clearCheck();
+                   if(Event_Helper.friends.get(Constants.MY_User_ID) == null){
+                       Event_Helper.load_event(Event_ID);
+                   }
                     switch (Event_Helper.friends.get(Constants.MY_User_ID).getAttending()) {
                         case Constants.Yes: {
                             radioGroup.check(R.id.radioGroup_yes);

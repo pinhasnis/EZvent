@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -116,15 +117,23 @@ public class GcmIntentService extends GcmListenerService {
                 String Chat_Table_Name = details.split("\\^")[0];
                 String Message = details.split("\\^")[1];
                 String[] Chat = Message.split("\\|");
-                if (sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
-                        new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null)[0].isEmpty()) {
+                ArrayList<String>[] chat = sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
+                        new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null);
+                String Event_ID = Chat_Table_Name.substring(Table_Chat.Table_Name.length());
+                if(chat == null){
+                    String Chat_ID = Table_Chat.Table_Name + Event_ID;
+                    sqlHelper.Create_Table(Chat_ID, Table_Chat.getAllFields(), Table_Chat.getAllSqlParams());
+                    chat = sqlHelper.select(null, Chat_Table_Name, new String[]{Table_Chat.Message_ID, Table_Chat.User_ID},
+                            new String[]{Chat[Table_Chat.Message_ID_num], Chat[Table_Chat.User_ID_num]}, null);
+                }
+                if (chat[0].isEmpty()) {
                     sqlHelper.insert(Chat_Table_Name, Chat);
-                    String Event_ID = Chat_Table_Name.substring(Table_Chat.Table_Name.length());
+
                     ArrayList<String>[] event = sqlHelper.select(null, Table_Events.Table_Name, new String[]{Table_Events.Event_ID}, new String[]{Event_ID}, new int[]{1});
                     String event_name = event[Table_Events.Name_num].get(0);
                     if (event_name.length() == 0) event_name = "Event Name";
                     String sender = Contacts_List.contacts.get(Chat[Table_Chat.User_ID_num]);
-                    addNotification("New Message - " + event_name, sender + ": \n" + Chat[Table_Chat.Message_num]);
+                    addNotification(Constants.Notification_New_Message + " - " + event_name, sender + ": \n" + Chat[Table_Chat.Message_num], Event_ID);
 
                 }
                 break;
@@ -817,10 +826,10 @@ public class GcmIntentService extends GcmListenerService {
         }
   */
         //Logger.getLogger("DEBUG").log(Level.INFO,event.toString());
-       // Logger.getLogger("DEBUG").log(Level.INFO,event.getDetails().get(Table_Events.Name_num));
-       // Logger.getLogger("DEBUG").log(Level.INFO,event.getDetails().toString());
+        // Logger.getLogger("DEBUG").log(Level.INFO,event.getDetails().get(Table_Events.Name_num));
+        // Logger.getLogger("DEBUG").log(Level.INFO,event.getDetails().toString());
         //Logger.getLogger("DEBUG").log(Level.INFO,"NUM: "+Table_Events.Name_num);
-        addNotification("New Event", "You got invite to new event: " + event.getDetails().get(Table_Events.Name_num-Constants.index_object_sql_diff));
+        addNotification(Constants.Notification_New_Event, "You got invite to new event: " + event.getDetails().get(Table_Events.Name_num - Constants.index_object_sql_diff), event.getId());
 
     }
 
@@ -1078,7 +1087,7 @@ public class GcmIntentService extends GcmListenerService {
 
     // Add app running notification
 
-    private void addNotification(String title, String content) {
+    private void addNotification(String title, String content, String event_id) {
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
@@ -1087,17 +1096,48 @@ public class GcmIntentService extends GcmListenerService {
                         .setContentText(content)
                         .setAutoCancel(true)
                         .setDefaults(Notification.DEFAULT_SOUND);
+        Intent resultIntent = null;// = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
 
-        Intent notificationIntent = new Intent(this, login.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
+// Adds the Intent that starts the Activity to the top of the stack
+        boolean chatMessage = true;
+        if (title.startsWith(Constants.Notification_New_Event))
+            chatMessage = false;
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.Notification_Event_Id, event_id);
+        boolean closeNotificationNow = false;
+        if (chatMessage)
+            bundle.putString(Constants.FromNotification, Constants.Notification_New_Message);
+        else
+            bundle.putString(Constants.FromNotification, Constants.Notification_New_Event);
+
+        if (delegate == null) {
+            resultIntent = new Intent(this, login.class);
+
+        } else {
+            //Logger.getLogger("DEBUG").log(Level.INFO, delegate.currentLocation());
+            resultIntent = new Intent(this, MainActivity.class);
+           // stackBuilder.addParentStack(MainActivity.class);
+
+            if (delegate.currentLocation().equals(Constants.mainActivity)) {
+            } else {
+                if (delegate.currentLocation().equals(event_id)) {
+                    closeNotificationNow = true;
+                }
+            }
+        }
+        resultIntent.putExtras(bundle);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0
+                , PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        builder.setContentIntent(resultPendingIntent);
 
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+        if(closeNotificationNow)
+            manager.cancel(0);
 
     }
 

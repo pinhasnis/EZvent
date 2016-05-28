@@ -65,7 +65,12 @@ public final class Constants {
     public final static int BACKOFF_INITIAL_DELAY = 1000;
     public final static int MAX_BACKOFF_DELAY = 1024000;
 
+    public final static String Notification_New_Event = "Event";
+    public final static String Notification_New_Message = "Message";
+    public final static String FromNotification = "FromNotification";
+    public final static String Notification_Event_Id = "Event_ID";
     /**
+     *
      * Default constructor, never called.
      */
     private Constants() {

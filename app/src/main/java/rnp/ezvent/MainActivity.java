@@ -166,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements ServerAsyncRespon
                 startActivity(intent);
             }
         });*/
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.getString(Constants.Notification_Event_Id)!=null){
+            Intent IEvent = new Intent(this,Event.class);
+            IEvent.putExtras(bundle);
+            startActivity(IEvent);
+        }
     }
 
 

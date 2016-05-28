@@ -63,11 +63,16 @@ public class login extends AppCompatActivity implements ServerAsyncResponse {
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected;
     private View coordinatorLayoutView;
+    private static boolean addBundle = false;
+    private static Bundle bundle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        bundle = getIntent().getExtras();
+        if(bundle != null && bundle.getString(Constants.FromNotification) != null)
+            addBundle = true;
         sqlHelper.setContext(this);
         sqlHelper.createALLTables();
         permissionSuccess = (FrameLayout) findViewById(R.id.permissionSuccess);
@@ -121,7 +126,7 @@ public class login extends AppCompatActivity implements ServerAsyncResponse {
 
                     // your computer is too fast, sleep 1 second
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(150);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -255,6 +260,8 @@ public class login extends AppCompatActivity implements ServerAsyncResponse {
         */
         Intent mainActivity = new Intent(this, MainActivity.class);
         progressBarStatus = false;
+        if(addBundle)
+            mainActivity.putExtras(bundle);
         startActivity(mainActivity);
         finish();
     }
