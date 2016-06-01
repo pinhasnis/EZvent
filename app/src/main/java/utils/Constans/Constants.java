@@ -5,6 +5,9 @@ package utils.Constans;
  */
 
 import android.net.Uri;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.ViewTreeObserver;
 
 import rnp.ezvent.BuildConfig;
 
@@ -150,5 +153,5 @@ public final class Constants {
     public final static int False = 0;
     public final static int True = 1;
 
-
+    public static boolean newChatMessage = true;
 }

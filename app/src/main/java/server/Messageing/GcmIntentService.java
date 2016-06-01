@@ -1113,8 +1113,10 @@ public class GcmIntentService extends GcmListenerService {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.Notification_Event_Id, event_id);
         boolean closeNotificationNow = false;
-        if (chatMessage)
+        if (chatMessage) {
             bundle.putString(Constants.FromNotification, Constants.Notification_New_Message);
+            Constants.newChatMessage = true;
+        }
         else
             bundle.putString(Constants.FromNotification, Constants.Notification_New_Event);
 
@@ -1145,6 +1147,7 @@ public class GcmIntentService extends GcmListenerService {
         if(!closeNotificationNow)
             manager.notify(0, builder.build());
         else{
+
             Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
             MediaPlayer mediaPlayer = new MediaPlayer();

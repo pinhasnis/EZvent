@@ -32,6 +32,10 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +76,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
 
     private static String my_permission;
     private static String Event_ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +121,8 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
             });
         }
         String NM = b.getString(Constants.FromNotification);
-        if(NM != null
-                && NM.equals(Constants.Notification_New_Message)){
+        if (NM != null
+                && NM.equals(Constants.Notification_New_Message)) {
             mViewPager.setCurrentItem(2);
         }
     }
@@ -360,9 +365,9 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     recyclerview.setNestedScrollingEnabled(false);
                     RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.radioGroup);
                     radioGroup.clearCheck();
-                   if(Event_Helper.friends.get(Constants.MY_User_ID) == null){
-                       Event_Helper.load_event(Event_ID);
-                   }
+                    if (Event_Helper.friends.get(Constants.MY_User_ID) == null) {
+                        Event_Helper.load_event(Event_ID);
+                    }
                     switch (Event_Helper.friends.get(Constants.MY_User_ID).getAttending()) {
                         case Constants.Yes: {
                             radioGroup.check(R.id.radioGroup_yes);
@@ -445,12 +450,11 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     View rootView = inflater.inflate(R.layout.fragment_event_chat, container, false);
 
                     final RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext());
+                    final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext());
                     //   linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     //   linearLayoutManager.setStackFromEnd(true);
                     //   linearLayoutManager.setSmoothScrollbarEnabled(false);
 //                    linearLayoutManager.scrollToPosition();
-                    recyclerview.setLayoutManager(linearLayoutManager);
 
                     final String Chat_ID = Table_Chat.Table_Name + Helper.Clean_Event_ID(Event_Helper.details[Table_Events.Event_ID_num]);
                     final ArrayList<String>[] dbChat = sqlHelper.select(null, Chat_ID, null, null, null);
@@ -467,21 +471,31 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                             }
 
                         }
+
+
+                    recyclerview.setLayoutManager(linearLayoutManager);
                     final ExpandableListAdapter_Event_Chat expandableListAdapter_event_chat = new ExpandableListAdapter_Event_Chat(data, dbChat, Chat_ID);
                     recyclerview.setAdapter(expandableListAdapter_event_chat);
                     //recyclerview.smoothScrollToPosition(data.size()-1);
-                //    if (!Constants.fromDeletedChatMessage) {
-                  //      Constants.fromDeletedChatMessage = false;
-                        final ViewTreeObserver vto = recyclerview.getViewTreeObserver();
+                    //    if (!Constants.fromDeletedChatMessage) {
+                    //      Constants.fromDeletedChatMessage = false;
+
+                  //  if (Constants.newChatMessage) {
+                        ViewTreeObserver vto = recyclerview.getViewTreeObserver();
+
+                        // recyclerview
+
                         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                             public void onGlobalLayout() {
+//                                if (Constants.newChatMessage) {
                                 recyclerview.scrollToPosition(data.size() - 1);
-                                if (vto.isAlive()) {
+                                Constants.newChatMessage = false;
+                                //                              }
+                                if (recyclerview.getViewTreeObserver().isAlive()) {
                                     // Unregister the listener to only call scrollToPosition once
-                                    if(!Constants.fromDeletedChatMessage) {
-                                        Constants.fromDeletedChatMessage = false;
-                                        vto.removeOnGlobalLayoutListener(this);
-                                    }
+
+                                    recyclerview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
                                     //.removeGlobalOnLayoutListener(this);
                                     // Use vto.removeOnGlobalLayoutListener(this) on API16+ devices as
                                     // removeGlobalOnLayoutListener is deprecated.
@@ -489,7 +503,15 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                                 }
                             }
                         });
+                  //  } else {
+                 //       recyclerview.clearOnScrollListeners();
+                  //      recyclerview.clearOnChildAttachStateChangeListeners();
                   //  }
+                    if (!Constants.fromDeletedChatMessage) {
+                        Constants.fromDeletedChatMessage = false;
+                    }
+
+                    //  }
                     //    recyclerview.scrollToPosition(data.size() - 1);
 
                     //  recyclerview.getLayoutManager().scrollVerticallyBy(data.size() - 1,null,null);//.smoothScrollToPosition(data.size() - 1);
@@ -542,6 +564,20 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return null;
+        }
+
+        public static Object deepClone(Object object) {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos);
+                oos.writeObject(object);
+                ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                return ois.readObject();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         private void setSwitcher_time_view(RecyclerView recyclerView_date, RelativeLayout relativeLayout_titles, RelativeLayout relativeLayout_date, TextView date) {

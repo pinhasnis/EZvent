@@ -40,7 +40,6 @@
         <activity
             android:name=".login.login"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,8 +58,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Event"
-            android:exported="true"
-            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".login.Registration"
