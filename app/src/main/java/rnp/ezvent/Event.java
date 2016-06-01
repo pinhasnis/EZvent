@@ -137,6 +137,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
         Event_Helper.load_event(Event_Helper.details[Table_Events.Event_ID_num]);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(CurrentItem);
+
         TextView event_name = (TextView) findViewById(R.id.event_name);
         if (!Event_Helper.details[Table_Events.Name_num].equals("")) {
             event_name.setText(Event_Helper.details[Table_Events.Name_num]);
@@ -260,6 +261,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+
             return PlaceholderFragment.newInstance(position + 1);
         }
 
@@ -332,6 +334,11 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1: {
                     View rootView = inflater.inflate(R.layout.fragment_event_details, container, false);
+                    View cview = getActivity().getCurrentFocus();
+                    if (cview != null) {
+                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(cview.getWindowToken(), 0);
+                    }
                     CardView CardView_description = (CardView) rootView.findViewById(R.id.CardView_description);
                     TextView description = (TextView) rootView.findViewById(R.id.description);
                     final TextView date = (TextView) rootView.findViewById(R.id.date);
@@ -418,8 +425,14 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                     return rootView;
                 }
                 case 2: {
+                    View cview = getActivity().getCurrentFocus();
+                    if (cview != null) {
+                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(cview.getWindowToken(), 0);
+                    }
                     View rootView = inflater.inflate(R.layout.fragment_event_tasks, container, false);
-
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
                     RecyclerView recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerView);
                     recyclerview.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
                     List<ExpandableListAdapter_Event_Tasks.Item> data = new ArrayList<>();
@@ -489,7 +502,6 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                             public void onGlobalLayout() {
 //                                if (Constants.newChatMessage) {
                                 recyclerview.scrollToPosition(data.size() - 1);
-                                Constants.newChatMessage = false;
                                 //                              }
                                 if (recyclerview.getViewTreeObserver().isAlive()) {
                                     // Unregister the listener to only call scrollToPosition once
@@ -507,10 +519,6 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                  //       recyclerview.clearOnScrollListeners();
                   //      recyclerview.clearOnChildAttachStateChangeListeners();
                   //  }
-                    if (!Constants.fromDeletedChatMessage) {
-                        Constants.fromDeletedChatMessage = false;
-                    }
-
                     //  }
                     //    recyclerview.scrollToPosition(data.size() - 1);
 
@@ -518,6 +526,7 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
 
                     //  recyclerview.getLayoutManager().smoothScrollToPosition(recyclerview, null, data.size() - 1);
                     //   linearLayoutManager.scrollToPositionWithOffset(data.size()-1,0);
+
                     ImageButton send = (ImageButton) rootView.findViewById(R.id.send);
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -538,8 +547,8 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
                                 max_message_id++;
                                 String message_id = max_message_id + "";
                                 editText.setText("");
-                                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                     //           InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                      //          imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                                 String chat[] = new String[]{message_id, Constants.MY_User_ID, message, date, time};
                                 //sqlHelper.insert(Chat_ID, chat);
                                 //Update the dcChat and the adapter.
@@ -566,19 +575,6 @@ public class Event extends AppCompatActivity implements ServerAsyncResponse {
             return null;
         }
 
-        public static Object deepClone(Object object) {
-            try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(baos);
-                oos.writeObject(object);
-                ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-                ObjectInputStream ois = new ObjectInputStream(bais);
-                return ois.readObject();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
 
         private void setSwitcher_time_view(RecyclerView recyclerView_date, RelativeLayout relativeLayout_titles, RelativeLayout relativeLayout_date, TextView date) {
             if (Event_Helper.details[Table_Events.Vote_Time_num].equals(Constants.Yes)) {
